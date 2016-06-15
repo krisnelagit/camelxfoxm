@@ -80,9 +80,16 @@
             </tr>
 
             <tr>
-                <td width="31%" align="left" valign="top">Additional Work(comments).</td>
+                <td width="31%" align="left" valign="top">Additional Work</td>
                 <td width="69%" align="left" valign="top">
                     <label for="textfield">${pcldt.additionalwork}</label>
+                </td>
+            </tr>
+
+            <tr>
+                <td width="31%" align="left" valign="top">Comments</td>
+                <td width="69%" align="left" valign="top">
+                    <label for="textfield">${pcldt.comments}</label>
                 </td>
             </tr>
 
@@ -94,8 +101,8 @@
 
         <TABLE id="dataTable" border="0" class="CSSTableGenerator">
             <TR>
-                <TD width="47%" align="left"><strong>Service List</strong></TD>
-                <td width="53%" align="center"><strong>Categories</strong></td>
+                <TD width="47%" align="left"><strong>Categories</strong></TD>
+                <td width="53%" align="center"><strong>Service List</strong></td>
             </TR>
             <c:forEach var="ni" items="${partandcategoriesdt}">
                 <tr>

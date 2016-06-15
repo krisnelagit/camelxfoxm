@@ -85,7 +85,7 @@
                             <td>${estuserdtls.vinnumber}</td>
                         </tr>
                         <tr>
-                            <td>Additional work</td>
+                            <td>Service-checklist comments</td>
                             <td>
                                 <c:choose>
                                     <c:when test="${empty estuserdtls.additionalwork}">
@@ -95,6 +95,38 @@
                                         ${estuserdtls.additionalwork}                                        
                                     </c:otherwise>
                                 </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>180point comments</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty estuserdtls.pclcomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${estuserdtls.pclcomments}                                        
+                                    </c:otherwise>
+                                </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Estimate comments</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty estuserdtls.estcomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${estuserdtls.estcomments}                                        
+                                    </c:otherwise>
+                                </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Comments</td>
+                            <td>
+                                <textarea name="jobsheetcomments" rows="4" cols="20"></textarea> 
                             </td>
                         </tr>
                     </table>

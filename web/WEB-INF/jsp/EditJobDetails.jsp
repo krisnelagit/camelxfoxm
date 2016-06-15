@@ -47,13 +47,59 @@
                     <td>${jsuserdtls.vinnumber}</td>
                 </tr>
                 <tr>
+                    <td>Service-checklist comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.additionalwork}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.additionalwork}                                        
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+                <tr>
+                    <td>180point comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.pclcomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.pclcomments}                                        
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Estimate comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.estcomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.estcomments}                                        
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jobsheet comments</td>
+                    <td>
+                        <textarea name="jobsheetcomments" rows="4" cols="20">${jsuserdtls.jscomments}</textarea>
+                        
+                    </td>
+                </tr>
+                <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                 </tr>
             </table>
             <br>
             <h2>Car parts</h2>
-                <br />
+            <br />
             <table id="dataTable" class="CSSTableGenerator" border="0">
                 <tr>
                     <td align="left" width="6%"><strong>Sr.No.</strong></td>

@@ -19,6 +19,7 @@
         <h2>Spares Requisition</h2>
         <br />
         <form action="updateRequisition" method="POST">
+            <input type="hidden" name="myjsid" value="${param.jsid}" />
             <table width="100%" cellpadding="5">
                 <tr>
                     <td align="left" valign="top">Date</td>
@@ -44,6 +45,64 @@
                 <tr>
                     <td>VIN No.</td>
                     <td>${jsuserdtls.vinnumber}</td>
+                </tr>
+                <tr>
+                    <td>Service-checklist comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.additionalwork}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.additionalwork}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>180point comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.pclcomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.pclcomments}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Estimate comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.estcomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.estcomments}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jobsheet comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.jscomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.jscomments}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Comments</td>
+                    <td>
+                        <textarea name="spcomments" rows="4" cols="20">${jsuserdtls.spcomments}</textarea>
+                    </td>
                 </tr>
             </table>
             <br>

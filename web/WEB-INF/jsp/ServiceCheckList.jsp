@@ -44,7 +44,7 @@
         </script>
     </head>
     <body>
-        <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}"><a href="create_service_checklist.html" class="view">Create</a></c:if>
+        <c:if test="${!sessionScope.USERTYPE.equals('spares')}"><a href="create_service_checklist.html" class="view">Create</a></c:if>
             <h2>Service Check List</h2>
 
             <br />
@@ -53,8 +53,8 @@
                     <tr>
                         <td>Sr. No.</td>
                         <td>Checklist id.</td>
-                        <td >Date</td>
-                        <td >Customer Name</td>
+                        <td>Date</td>
+                        <td>Customer Name</td>
                         <td>Brand</td>
                         <td>Model </td>
                         <td>Vehicle N0. </td>
@@ -77,10 +77,10 @@
                         </td>
                         <td align="left"> 
                             <a href="viewServiceCheckList.html?id=${ob.id}&bdid=${ob.brandid}"><img src="images/view.png" width="21" height="13" title="View Service CheckList" />&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                                <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">                                    
+                                <c:if test="${!sessionScope.USERTYPE.equals('spares')}">                                    
                                 <a href="180pointchecklist?id=${ob.cvdid}&branddetailid=${ob.branddetailid}&cvid=${ob.id}&isr=${ob.is180ready}"><img src="images/180_icon.png" width="16" height="14"  title="180 point Check List" />&nbsp;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;
-                                <a onclick="confirmdelete('${ob.id}', this);"><img src="images/delete.png" width="16" height="17" /></a>                                       
                                 </c:if> 
+                                <a onclick="confirmdelete('${ob.id}', this);" title="Delete" href=""><img src="images/delete.png" width="16" height="17" /></a>
                         </td>
                     </tr>  
                     <c:set value="${count+1}" var="count"></c:set>

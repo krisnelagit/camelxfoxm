@@ -16,9 +16,9 @@
             $(document).ready(function () {
                 console.log("ready!");
             });
-            function getManufacturerList(){
-                var modelid=$("#carmodel").val();
-                
+            function getManufacturerList() {
+                var modelid = $("#carmodel").val();
+
             }
         </script>
     </head>
@@ -61,6 +61,64 @@
                             <td>VIN No.</td>
                             <td>${jsuserdtls.vinnumber}</td>
                         </tr>
+                        <tr>
+                            <td>Service-checklist comments</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty jsuserdtls.additionalwork}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${jsuserdtls.additionalwork}                                  
+                                    </c:otherwise>
+                                </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>180point comments</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty jsuserdtls.pclcomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${jsuserdtls.pclcomments}                                  
+                                    </c:otherwise>
+                                </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Estimate comments</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty jsuserdtls.estcomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${jsuserdtls.estcomments}                                  
+                                    </c:otherwise>
+                                </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Jobsheet comments</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty jsuserdtls.jscomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${jsuserdtls.jscomments}                                  
+                                    </c:otherwise>
+                                </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Comments</td>
+                            <td>
+                                <textarea name="spcomments" rows="4" cols="20"></textarea>
+                            </td>
+                        </tr>
                     </table>
                     <br>
                     <table id="dataTable" class="CSSTableGenerator" border="0">
@@ -98,9 +156,20 @@
                             <c:set value="${count+1}" var="count"></c:set>
                         </c:forEach>
                     </table>
-                    <center>        
-                        <input type="submit" class="view3" style="cursor: pointer" value="Save" />&nbsp;&nbsp;&nbsp;
-                    </center>
+                    <c:choose>
+                        <c:when test="${jsuserdtls.isinvoiceconverted=='No'}">
+                            <center>        
+                                <input type="submit" class="view3" style="cursor: pointer" value="Save" />&nbsp;&nbsp;&nbsp;
+                            </center>
+                        </c:when>
+                        <c:otherwise>
+                            <br>
+                            <br>
+                            <center>        
+                                <h1>Invoice created!</h1>
+                            </center>
+                        </c:otherwise>
+                    </c:choose>
                 </form>
             </c:otherwise>
         </c:choose>

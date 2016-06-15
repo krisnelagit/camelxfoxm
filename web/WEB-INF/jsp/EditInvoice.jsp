@@ -1226,7 +1226,7 @@
                         <input type="text" name="transactionmail" value="${invoiceDt.transactionmail}" required="" id="transactionmail" /> 
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td width="31%" align="left" valign="top">Ledger</td>
                     <td width="69%" align="left" valign="top"><label for="textfield"></label>
@@ -1255,6 +1255,22 @@
                     <td align="left" valign="top"><label for="textfield3"></label>
                         <input type="text" required="" value="${invoiceDt.vehiclenumber}" name="vehiclenumber" /></td>
                 </tr>
+                <c:choose>
+                    <c:when test="${empty finalcomments}">
+                        
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td align="left" valign="top">Final comments</td>
+                            <td align="left" valign="top">
+                                <label for="textfield3">
+                                    ${finalcomments}   
+                                </label>
+                            </td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
+
                 <tr>
                     <td align="left" valign="top">Insurance </td>
                     <td align="left" valign="top">

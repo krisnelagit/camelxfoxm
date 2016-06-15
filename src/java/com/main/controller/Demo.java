@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 public class Demo {
 
-    public static void main(String args[]) throws Exception {
+    public static void main(int... args) throws Exception {
         HashSet hs=new HashSet<Object>();
         hs.add("Hey");
         hs.add("Hello");

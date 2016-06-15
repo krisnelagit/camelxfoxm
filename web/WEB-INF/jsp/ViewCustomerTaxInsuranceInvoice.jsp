@@ -392,7 +392,7 @@
                         <div align="center"><strong style="font-size:18px">TAX INVOICE</strong></div>                    
                     </div>
                     <div class="box1" align="left" style="display: inline-block;">
-                        <strong>${customerinvoiceDt.customer_name}</strong><input type="hidden" id="customername" name="customername" value="${customerinvoiceDt.customer_name}" />
+                        <strong>${invoiceDt.customer_name}</strong><input type="hidden" id="customername" name="customername" value="${customerinvoiceDt.customer_name}" />
                         <input type="hidden" name="" id="jspdfdata" value="" /><br />
                         ${customerinvoiceDt.address}<br />
                         ${customerinvoiceDt.mobilenumber}<br />                    

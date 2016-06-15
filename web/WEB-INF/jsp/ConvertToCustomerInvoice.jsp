@@ -1206,6 +1206,104 @@
                         <td align="left" valign="top"><label for="textfield3">${custdtls.vehiclenumber}</label><input type="hidden" required="" value="${custdtls.vehiclenumber}"  name="vehiclenumber" /></td>
                     </tr>
                     <tr>
+                        <td align="left" valign="top">Service-checklist comments</td>
+                        <td align="left" valign="top">
+                            <label for="textfield3">
+                                <c:choose>
+                                    <c:when test="${empty custdtls.additionalwork}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${custdtls.additionalwork}                                        
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">180point comments</td>
+                        <td align="left" valign="top">
+                            <label for="textfield3">
+                                <c:choose>
+                                    <c:when test="${empty custdtls.pclcomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${custdtls.pclcomments}                                        
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">Estimate comments</td>
+                        <td align="left" valign="top">
+                            <label for="textfield3">
+                                <c:choose>
+                                    <c:when test="${empty custdtls.estcomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${custdtls.estcomments}                                        
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">Jobsheet comments</td>
+                        <td align="left" valign="top">
+                            <label for="textfield3">
+                                <c:choose>
+                                    <c:when test="${empty custdtls.jscomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${custdtls.jscomments}                                        
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">Spares comments</td>
+                        <td align="left" valign="top">
+                            <label for="textfield3">
+                                <c:choose>
+                                    <c:when test="${empty custdtls.spcomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${custdtls.spcomments}                                        
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">Verification comments</td>
+                        <td align="left" valign="top">
+                            <label for="textfield3">
+                                <c:choose>
+                                    <c:when test="${empty custdtls.jvcomments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${custdtls.jvcomments}                                        
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top">Final comments</td>
+                        <td align="left" valign="top">
+                            <label for="textfield3">
+                                <textarea name="finalcomments" rows="4" cols="20"></textarea>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
                         <td align="left" valign="top">Insurance </td>
                         <td align="left" valign="top"><select name="isinsurance" id="selectinsurance">                            
                                 <option selected="">No</option>

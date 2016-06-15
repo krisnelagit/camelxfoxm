@@ -19,9 +19,9 @@
             //add rows
             function addRow(tableID) {
                                 if (tableID === "dataTable") {
-                                    $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" class="test" name="chk"/><input type="hidden" name="part_type" value="part" /><input type="hidden" name="newpartlistid" id="partlistid" /></td><td align="left" valign="top"><input name="newpartname" type="text" id="partname" /></td><td align="left" valign="top"> <select name="fivePrice" class="fivePrice" style="width: 100px" onchange="iambatman(this)"><option selected="" disabled="">--select--</option></select></td><td align="left" valign="top"><textarea name="newdescription" maxlength="1000" id="textfield2"></textarea></td><td align="left" valign="top"><input name="newquantity" type="number" class="quantity" style="width: 60px" value="1" onchange="calculatebalance(this)" onclick="calculatebalance(this)" /></td><td align="left" valign="top"><input name="newpartrs" style="width: 60px" type="number" step="0.01" class="sellingprice" onchange="calculatebalance(this)" onclick="calculatebalance(this)" /></td><td align="left" valign="top"><input name="newlabourrs" style="width: 60px" type="number" step="0.01" id="textfield6" /></td><td align="left" valign="top"><input name="newtotalpartrs" readonly="" type="number" class="itemtotal" style="width: 100px"/></td><td align="left" valign="top"><a onClick="deleteRow1(this)"><img src="images/delete.png" width="16" height="17" /></a></td></tr>');
+                                    $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" class="test" name="chk"/><input type="hidden" name="part_type" value="part" /><input type="hidden" name="newpartlistid" id="partlistid" /></td><td align="left" valign="top"><input name="newpartname" type="text" id="partname" /></td><td align="left" valign="top"> <select name="fivePrice" class="fivePrice" style="width: 100px" onchange="iambatman(this)"><option selected="" disabled="">--select--</option></select></td><td align="left" valign="top"><textarea name="newdescription" maxlength="1000" id="textfield2"></textarea></td><td align="left" valign="top"><input name="newquantity" type="number" class="quantity" style="width: 60px" value="1" onchange="calculatebalance(this)" /></td><td align="left" valign="top"><input name="newpartrs" value="0" style="width: 60px" type="number" step="0.01" class="sellingprice" onchange="calculatebalance(this)" /></td><td align="left" valign="top"><input name="newlabourrs" style="width: 60px" type="number" step="0.01" class="charges tabspecific" onchange="laborcall()" id="textfield6" /></td><td align="left" valign="top"><input name="newtotalpartrs" readonly="" value="0" type="number" class="itemtotal" style="width: 100px"/></td><td align="left" valign="top"><a onClick="deleteRow1(this)"><img src="images/delete.png" width="16" height="17" /></a></td></tr>');
                                 } else {
-                            $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" name="chk"/><input type="hidden" name="labour_type" value="service" /><input type="hidden" name="newserviceid" value="" id="serviceid"/><input type="hidden" name="serviceAction" class="serviceAction"/></td><td align="left" valign="top"><input name="newservicename" type="text" id="labour" /></td><td align="left" valign="top"><textarea name="newlabourdescription" class="labourdescription" id="textfield2"></textarea></td><td align="left" valign="top"><input name="newservicetotal" type="text" class="charges" /></td><td align="left" valign="top"><a onClick="deleteRow1(this)"><img src="images/delete.png" width="16" height="17" /></a></td></tr>');
+                            $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" name="chk"/><input type="hidden" name="labour_type" value="service" /><input type="hidden" name="newserviceid" value="" id="serviceid"/><input type="hidden" name="serviceAction" class="serviceAction"/></td><td align="left" valign="top"><input name="newservicename" type="text" id="labour" /></td><td align="left" valign="top"><textarea name="newlabourdescription" class="labourdescription" id="textfield2"></textarea></td><td align="left" valign="top"><input name="newservicetotal" type="text" onchange="laborcall()" class="charges" /></td><td align="left" valign="top"><a onClick="deleteRow1(this)"><img src="images/delete.png" width="16" height="17" /></a></td></tr>');
                             }
                         }
 
@@ -122,14 +122,7 @@
                 
             }
             
-            //calculate total part price
-            function calculatebalance(b) {
-                var qty = Number($(b).closest('tr').find('.quantity').val());
-                var percost=Number($(b).closest('tr').find('.sellingprice').val());
-                var totalprice=qty*percost;
-                $(b).closest('tr').find('.itemtotal').val(totalprice);
-            }
-            //labour auto complete            
+                     
             var labour;
             $(function () {
                 labour = [
@@ -171,6 +164,7 @@
                                             }
                                             var servicename=curr.closest('tr').find("#labour").val(); // display the selected text 
                                             curr.closest('tr').find(".serviceAction").val(servicename);                                            
+                                            laborcall();
                                         }
                                     }, error: function () {
                                     }
@@ -203,7 +197,8 @@
                                                 currentelement.closest('tr').find('.charges').val(data[i].rate);
                                             }
                                             var servicename=currentelement.closest('tr').find("#labour").val(); // display the selected text 
-                                            currentelement.closest('tr').find(".serviceAction").val(servicename);                                            
+                                            currentelement.closest('tr').find(".serviceAction").val(servicename);
+                                            laborcall();
                                         }
                                     }, error: function () {
                                     }
@@ -241,9 +236,59 @@
                 });
             });
         </SCRIPT>
+        <SCRIPT>
+            //calculate total part price
+            function calculatebalance(b) {
+            
+            var qty = Number($(b).closest('tr').find('.quantity').val() || 0);
+            var percost = Number($(b).closest('tr').find('.sellingprice').val() || 0);
+            var totalprice = qty * percost;
+            $(b).closest('tr').find('.itemtotal').val(totalprice);
+            var partTotal = 0;
+            $('.itemtotal').each(function(){
+            partTotal += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
+            });
+            //code for grand total and taxes begins! here
+            var myVat = $(".taxpercent1").val();
+            var vatamt = Number(partTotal) * Number(myVat / 100);
+            $(".taxAmount1").val(vatamt.toFixed(2));
+            //code for labor total
+            var laborSum = 0;
+            $('.charges').each(function(){
+            laborSum += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
+            });
+            //taxes for labor
+            var myst = $(".taxpercent2").val();
+            var stamt = Number(laborSum) * Number(myst / 100);
+            $(".taxAmount2").val(stamt.toFixed(2));
+            $("#grandtotal").val(partTotal + vatamt + laborSum + stamt);
+            //code for grand total and taxes ends! here            
+            }
+
+            function laborcall(){
+            //code for taxes and grandtotal begins! here
+            var partSum = 0;
+            $('.itemtotal').each(function(){
+            partSum += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
+            });
+            var myVat = $(".taxpercent1").val();
+            var vatamt = Number(partSum) * Number(myVat / 100);
+            var laborSum = 0;
+            $('.charges').each(function(){
+            laborSum += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
+            });
+            var myst = $(".taxpercent2").val();
+            var stamt = Number(laborSum) * Number(myst / 100);
+            $(".taxAmount2").val(stamt.toFixed(2));
+            $("#grandtotal").val(partSum + vatamt + laborSum + stamt);
+            //code for taxes and grandtotal ends! here
+            }
+        </SCRIPT>
+        
     </head>
     <body>
         <form action="updateEstimate" method="post">
+            <input type="hidden" name="confirm_estimate" value="${estimatedtncustdt.confirm_estimate}" />
             <input type="hidden" name="cvid" value="${estimatedtncustdt.cvid}" />
             <input type="hidden" name="branddetailids" id="vehicleid" value="${estimatedtncustdt.branddetailid}" />
             <a href="estimate.html" class="view">Back</a>
@@ -273,12 +318,27 @@
                     <td>${estimatedtncustdt.vehiclenumber}</td>
                 </tr>
                 <tr>
+                    <td>Service-checklist comments</td>
+                    <td>${estimatedtncustdt.additionalwork}</td>
+                </tr>
+                <tr>
+                    <td>180point comments</td>
+                    <td>${estimatedtncustdt.pclcomments}</td>
+                </tr>
+                <tr>
+                    <td>Comments</td>
+                    <td><textarea name="comments" rows="4" cols="20">${estimatedtncustdt.estcomments}</textarea></td>
+                </tr>
+                <tr>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                 </tr>
             </table>
             <c:forEach var="obc" items="${partlistdtls}">
                 <input type="hidden" name="allEstDetailIds" value="${obc.estdid}" />
+            </c:forEach>
+            <c:forEach var="oba" items="${servicelistdtls}">
+                <input type="hidden" name="allEstDetailIds" value="${oba.estdid}" />
             </c:forEach>
 
             <hr> 
@@ -309,9 +369,9 @@
                             </select> 
                         </td>
                         <td align="left" valign="top"><textarea name="description" maxlength="1000" id="textfield2">${ob.description}</textarea></td>
-                        <td align="left" valign="top"><input name="quantity" type="number" step="0.01" class="quantity tabspecific" style="width: 60px" value="${ob.quantity}" onchange="calculatebalance(this)" onclick="calculatebalance(this)" /></td>
-                        <td align="left" valign="top"><input name="partrs" style="width: 60px" type="number" step="0.01" value="${ob.partrs}" class="sellingprice tabspecific" onchange="calculatebalance(this)" onclick="calculatebalance(this)" /></td>
-                        <td align="left" valign="top"><input name="labourrs" style="width: 60px" type="number" step="0.01" class="tabspecific" id="textfield6" value="${ob.labourrs}" /></td>
+                        <td align="left" valign="top"><input name="quantity" type="number" step="0.01" class="quantity tabspecific" style="width: 60px" value="${ob.quantity}" onchange="calculatebalance(this)" /></td>
+                        <td align="left" valign="top"><input name="partrs" style="width: 60px" type="number" step="0.01" value="${ob.partrs}" class="sellingprice tabspecific" onchange="calculatebalance(this)" /></td>
+                        <td align="left" valign="top"><input name="labourrs" style="width: 60px" type="number" step="0.01" class="charges tabspecific" id="textfield6" value="${ob.labourrs}" onchange="laborcall()" /></td>
                         <td align="left" valign="top"><input name="totalpartrs" readonly="" type="number" value="${ob.totalpartrs}" class="itemtotal" style="width: 100px"/></td>
                         <td align="left" valign="top"><a onClick="deleteRow1(this)"><img src="images/delete.png" width="16" height="17" /></a></td>
                     </tr>
@@ -336,7 +396,7 @@
                     <td align="left" valign="top"><INPUT type="checkbox" name="chk"/><input type="hidden" name="labour_type" value="service" /><input type="hidden" name="estdetailids" value="${ov.estdid}" /><input type="hidden" name="serviceestdetailids" value="${ov.estdid}" /><input type="hidden" name="serviceid" value="${ov.partlistid}" id="serviceid"/><input type="hidden" name="serviceAction" class="serviceAction"/></td>
                     <td align="left" valign="top"><input name="servicename" value="${ov.servicename}" type="text" id="labour" /></td>
                     <td align="left" valign="top"><textarea name="labourdescription" class="labourdescription" id="textfield2"> ${ov.description}</textarea></td>
-                    <td align="left" valign="top"><input name="servicetotal" value="${ov.labourrs}" type="text" class="charges" /></td>
+                    <td align="left" valign="top"><input name="servicetotal" value="${ov.labourrs}" type="text" class="charges" onchange="laborcall()" /></td>
                     <td align="left" valign="top"><a onClick="deleteRow1(this)"><img src="images/delete.png" width="16" height="17" /></a></td>
                 </tr>
                 </c:forEach>
@@ -345,6 +405,41 @@
                 <INPUT type="button" value="Add Labour" onclick="addRow('dataTable1')"  class="view3"/>
                 </div>  
             <br>
+            <!--code for tax and grand total begi here-->
+                    <TABLE id="dataTable2">   
+                            <tr>
+                                <td width="24%" align="left">
+                                    <strong>Add ${taxDetails[0].name} @ ${taxDetails[0].percent}%</strong>
+                                </td>
+                                <td align="left" valign="top">
+                                    <input name="taxAmount1" type="text" readonly="" value="${vattax}" class="taxAmount1" style="width: 100px"/>
+                                    <input name="taxname" type="hidden" readonly value="${taxDetails[0].name}" class="taxname" />
+                                    <input name="taxid" type="hidden" id="taxid" value="${taxDetails[0].id}"  />
+                                    <input name="taxpercent1" value="${taxDetails[0].percent}" type="hidden" class="taxpercent1" />
+                                </td>                
+                            </tr>
+                            <tr>
+                                <td width="24%" align="left">
+                                    <strong>Add ${taxDetails[1].name} @ ${taxDetails[1].percent}%</strong>
+                                </td>
+                                <td align="left" valign="top">
+                                    <input name="taxAmount2" type="text" readonly="" value="${servicetax}" class="taxAmount2" style="width: 100px"/>
+                                    <input name="taxname" type="hidden" readonly value="${taxDetails[1].name}" class="taxname" />
+                                    <input name="taxid" type="hidden" id="taxid" value="${taxDetails[1].id}"  />
+                                    <input name="taxpercent2" value="${taxDetails[1].percent}" type="hidden" class="taxpercent2" />
+                                </td>                
+                            </tr>
+                        <tr>
+                            <td width="24%" align="left">
+                                <strong>Your total</strong>
+                            </td>
+                            <td align="left" valign="top">
+                                <input name="amountTotal" style="width: 100px" readonly="" value="${grandtotal}" type="text" id="grandtotal" />
+                            </td>
+                        </tr>
+                    </TABLE>
+
+                    <!--code for tax and grand total ends here-->
 
             <center>
                 <input type="submit" value="Save" class="view3" style="cursor: pointer"/> 

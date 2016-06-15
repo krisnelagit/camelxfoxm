@@ -31,7 +31,7 @@
                     $.ajax({
                         type: "post",
                         url: "deleteinvoicerecord",
-                        data: {id: id, deskname: "invoice"
+                        data: {id: id, deskname: "invoice", immediateup: "jobsheet", idcolumnname: "jobno"
                         },
                         success: function (data) {
                         },
@@ -43,7 +43,7 @@
         </script>
     </head>
     <body>
-        <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
+        <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
             <a href="createcustomerinvoice" class="view">Create</a>&nbsp;
         </c:if>
             <a href="paidcustomerinvoice" class="view">Paid invoice</a>&nbsp;
@@ -87,7 +87,7 @@
                             </c:choose>
                         </td>
                         <td align="left">
-                            <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
+                            <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
                                 <c:choose>
                                     <c:when test="${ob.ispaid=='No'}">
                                         <!--condition to edit invoice changes-->
@@ -103,11 +103,14 @@
                                             </c:choose>
                                         <!--condition to edit invoice changes-->
 
-                                        <a href="makePaymentLink?invoiceid=${ob.id}&custno=${ob.customermobilenumber}" title="Make Payment"><img src="images/Bill_with_dollar_sign_and_coins_24.png" width="22" height="19" /></a>
+                                        <a href="makePaymentLink?invoiceid=${ob.id}&custno=${ob.customer_id}" title="Make Payment"><img src="images/Bill_with_dollar_sign_and_coins_24.png" width="22" height="19" /></a>
                                         </c:when>
                                     </c:choose>
-                                <a onclick="confirmdelete('${ob.id}', this);" title="Delete Invoice"><img src="images/delete.png" width="16" height="17" /></a>
                                 
+                                
+                                </c:if>
+                                <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
+                                    <a onclick="confirmdelete('${ob.id}', this);" title="Delete Invoice"><img src="images/delete.png" width="16" height="17" /></a>
                                 </c:if>
                             <!--<a href="viewCustomerInvoice?invoiceid=$ {ob.id}"><img src="images/view.png" width="21" height="13" /></a>&nbsp;&nbsp;-->
                             <a href="viewCustomerInsuranceInvoice?invoiceid=${ob.id}" title="View Invoice"><img src="images/view.png" width="21" height="13" /></a>
@@ -116,8 +119,6 @@
                                     <c:when test="${ob.isinsurance=='Yes'}">
                                     <a href="viewLiabilityInvoice?invoiceid=${ob.id}" title="View Liability Invoice"><img src="images/transport.png" width="21" height="13" /></a>
                                     </c:when>
-                                    <c:otherwise>
-                                    </c:otherwise>
                                 </c:choose>                          
 
                         </td>

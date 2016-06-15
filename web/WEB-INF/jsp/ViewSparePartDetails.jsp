@@ -58,15 +58,41 @@
                     <td align="left" valign="top">${getparts.name}</td>
                 </tr>
                 <tr>
+                    <td align="left" valign="top">OEM Part No.</td>
+                    <td align="left" valign="top">
+                        <c:choose>
+                            <c:when test="${empty getparts.oempartnumber}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${getparts.oempartnumber}
+                            </c:otherwise>
+                        </c:choose>                        
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="top">Part location</td>
+                    <td align="left" valign="top">
+                        <c:choose>
+                            <c:when test="${empty getparts.partlocation}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>                                
+                                ${getparts.partlocation}
+                            </c:otherwise>
+                        </c:choose>                        
+                    </td>
+                </tr>
+                <tr>
                     <td align="left" valign="top">Category name</td>
                     <td align="left" valign="top">
-                            <c:forEach var="ob" items="${catdtls}">
-                                <c:choose>
-                                    <c:when test="${getparts.categoryid==ob.id}">
-                                        ${ob.name}
-                                    </c:when>
-                                </c:choose>
-                            </c:forEach>
+                        <c:forEach var="ob" items="${catdtls}">
+                            <c:choose>
+                                <c:when test="${getparts.categoryid==ob.id}">
+                                    ${ob.name}
+                                </c:when>
+                            </c:choose>
+                        </c:forEach>
                     </td>
                 </tr>
                 <tr>

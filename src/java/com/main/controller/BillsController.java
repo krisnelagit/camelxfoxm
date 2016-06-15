@@ -62,6 +62,8 @@ public class BillsController {
             @RequestParam(value = "viz") String viz,
             @RequestParam(value = "poids") String poids) {
         ModelAndView modelAndView = new ModelAndView("ViewPaymentDetails");
+        //get branch prefix
+        String whichBranchPo = podid.substring(0, 1);
         String allpodid = podid.replaceAll(",$", "");
         String[] ids = allpodid.split(",");
         modelAndView.addObject("amount", viz);
@@ -79,23 +81,45 @@ public class BillsController {
         List<String> poid = Arrays.asList(poids.split(","));
         modelAndView.addObject("podt", viewService.getspecifichqldata(PurchaseOrder.class, poid.get(0)));
         modelAndView.addObject("ledgerdtls", viewService.getanyhqldatalist("from ledger where isdelete='No' and ledger_type='expense'"));
-        //code for part details quanttiy sold not sold goes here
+
         List<Map<String, Object>> podqtyList = new ArrayList<Map<String, Object>>();
-        for (int i = 0; i < ids.length; i++) {
-            List<Map<String, Object>> poDetailList = viewService.getanyjdbcdatalist("SELECT inv.sold,inv.sell_qty out_qty, inv.quantity in_qty,cpv.`name` partname,mfg.`name` mfgname  FROM inventory inv\n"
-                    + "inner join carpartinfo cpi on cpi.id=inv.partid\n"
-                    + "inner join carpartvault cpv on cpv.id=cpi.vaultid\n"
-                    + "inner join manufacturer mfg on mfg.id=inv.manufacturerid\n"
-                    + "where inv.isdelete='No' and inv.podetailid='" + ids[i] + "'");
-            Map<String, Object> setmap = new HashMap<String, Object>();
-            setmap.put("sold", poDetailList.get(0).get("sold"));
-            setmap.put("out_qty", poDetailList.get(0).get("out_qty"));
-            setmap.put("in_qty", poDetailList.get(0).get("in_qty"));
-            setmap.put("partname", poDetailList.get(0).get("partname"));
-            setmap.put("mfgname", poDetailList.get(0).get("mfgname"));
-            podqtyList.add(setmap);
+        if (whichBranchPo.equals("M")) {
+            //code for part details quantity sold not sold goes here
+
+            for (int i = 0; i < ids.length; i++) {
+                List<Map<String, Object>> poDetailList = viewService.getanyjdbcdatalist("SELECT inv.sold,inv.sell_qty out_qty, inv.quantity in_qty,cpv.`name` partname,mfg.`name` mfgname  FROM inventory inv\n"
+                        + "inner join carpartinfo cpi on cpi.id=inv.partid\n"
+                        + "inner join carpartvault cpv on cpv.id=cpi.vaultid\n"
+                        + "inner join manufacturer mfg on mfg.id=inv.manufacturerid\n"
+                        + "where inv.isdelete='No' and inv.podetailid='" + ids[i] + "'");
+                Map<String, Object> setmap = new HashMap<String, Object>();
+                setmap.put("sold", poDetailList.get(0).get("sold"));
+                setmap.put("out_qty", poDetailList.get(0).get("out_qty"));
+                setmap.put("in_qty", poDetailList.get(0).get("in_qty"));
+                setmap.put("partname", poDetailList.get(0).get("partname"));
+                setmap.put("mfgname", poDetailList.get(0).get("mfgname"));
+                podqtyList.add(setmap);
+            }
+            modelAndView.addObject("podetailsdt", podqtyList);
+            modelAndView.addObject("showDetails", "Yes");
+        } else {
+            for (int i = 0; i < ids.length; i++) {
+                List<Map<String, Object>> poDetailList = viewService.getanyjdbcdatalist("SELECT pod.partQuantity qty,pod.itemtotal,cpv.name partname,mfg.name mfgname FROM purchaseorderdetails pod\n"
+                        + "inner join carpartinfo cpi on cpi.id=pod.partid\n"
+                        + "inner join carpartvault cpv on cpv.id=cpi.vaultid\n"
+                        + "inner join manufacturer mfg on mfg.id=pod.manufacturerid\n"
+                        + "where pod.isdelete='No' and pod.id='" + ids[i] + "'");
+                Map<String, Object> setmap = new HashMap<String, Object>();
+                setmap.put("itemtotal", poDetailList.get(0).get("itemtotal"));
+                setmap.put("in_qty", poDetailList.get(0).get("qty"));
+                setmap.put("partname", poDetailList.get(0).get("partname"));
+                setmap.put("mfgname", poDetailList.get(0).get("mfgname"));
+                podqtyList.add(setmap);
+            }
+            modelAndView.addObject("podetailsdt", podqtyList);
+            modelAndView.addObject("showDetails", "No");
         }
-        modelAndView.addObject("podetailsdt", podqtyList);
+
         return modelAndView;
     }
 
@@ -158,11 +182,8 @@ public class BillsController {
             modelAndView.addObject("billids", sbbillid);
             //code for po and pod details ends! here     
             //code for part details quanttiy sold not sold goes here
-            String sumpodids=""+sbpodid;
-            
-            
-            
-            
+            String sumpodids = "" + sbpodid;
+
             String sumpodidsd = sbpodid.toString().replaceAll(",$", "");
             String[] idv = sumpodidsd.split(",");
             List<Map<String, Object>> podqtyList = new ArrayList<Map<String, Object>>();

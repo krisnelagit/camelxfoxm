@@ -22,7 +22,7 @@
             function confirmdelete(id, ob)
             {
                 var res = confirm('Are you sure to delete?');
-                if (res == true)
+                if (res === true)
                 {
                     $(ob).closest('tr').find('td').fadeOut(600,
                             function () {
@@ -31,8 +31,8 @@
 
                     $.ajax({
                         type: "post",
-                        url: "deleterecord",
-                        data: {id: id, deskname: "jobsheet"
+                        url: "deleteTransactionrecord",
+                        data: {id: id, deskname: "jobsheet", immediateup: "estimate", idcolumnname: "estimateid"
                         },
                         success: function (data) {
                         },
@@ -68,13 +68,19 @@
                         <td align="left">${ob.vehiclenumber}</td>
                         <td align="left">
                             <a href="viewTaskLink?jsid=${ob.jsid}"><img src="images/task.png" width="17" height="17" /></a>&nbsp;&nbsp;
-                            <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
+                                <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
+                                    <c:choose>
+                                        <c:when test="${ob.isinvoiceconverted=='No'}">
+                                        <a href="editJobDetailsLink?jsid=${ob.jsid}"><img src="images/edit.png" width="16" height="15"></a>&nbsp;&nbsp;
+
+                                    </c:when>
+                                </c:choose>
                                 <c:choose>
-                                    <c:when test="${ob.isinvoiceconverted=='No'}">
-                                    <a href="editJobDetailsLink?jsid=${ob.jsid}"><img src="images/edit.png" width="16" height="15"></a>&nbsp;&nbsp;
-                                    <a onclick="confirmdelete('${ob.jsid}', this);"><img src="images/delete.png" width="16" height="17" /></a>
-                                </c:when>
-                            </c:choose>
+                                    <c:when test="${ob.enableDelete=='Yes'}">
+                                        <a onclick="confirmdelete('${ob.jsid}', this);"><img src="images/delete.png" width="16" height="17" /></a>
+                                        </c:when>
+                                    </c:choose>
+
                             </c:if>
                         </td>
                     </tr>  

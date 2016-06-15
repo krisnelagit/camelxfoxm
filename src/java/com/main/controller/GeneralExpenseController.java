@@ -92,7 +92,8 @@ public class GeneralExpenseController {
     @RequestMapping(value = "insertVendorPayments")
     public String insertVendorPayments(@ModelAttribute ExpenseArray ea, @ModelAttribute GeneralExpense ge, @RequestParam(value = "expenseid") List podids) {
         for (int i = 0; i < ea.getAmounts().length; i++) {
-            String prefix2 = env.getProperty("generalexpense");
+            String whichBranchPo = podids.get(0).toString().substring(0, 1);
+            String prefix2 = env.getProperty("generalexpense").replaceFirst(env.getProperty("branch_prefix"), whichBranchPo);
             String id = prefix2 + insertService.getmaxcount("generalexpense", "id", 4);
             ge.setId(id);
             ge.setBill_date(ge.getExpense_date());

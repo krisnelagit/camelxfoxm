@@ -59,11 +59,18 @@
                     <td align="left" valign="top"><input type="text" required="" name="d" id="textfield5" /></td>
                 </tr>
                 <tr>
-                    <td>&nbsp;</td>
-                    <td>
-                        <input type="hidden" name="itemtype" value="part" />
-                        <input type="submit" value="Save" class="view3" /> &nbsp;&nbsp;&nbsp;<input type="reset" value="Reset" class="view3" />
+                    <td align="left" valign="top">Type: </td>
+                    <td align="left" valign="top">
+                        <select required="" name="itemtype">
+                            <option value="">--Select--</option>
+                            <option value="part">part</option>
+                            <option value="consumable">consumable</option>
+                        </select>
                     </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td><input type="submit" value="Save" class="view3" /> &nbsp;&nbsp;&nbsp;<input type="reset" value="Reset" class="view3" /></td>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>

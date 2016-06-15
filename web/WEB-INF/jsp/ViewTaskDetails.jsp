@@ -176,7 +176,7 @@
                         <td>${jsuserdtls.vinnumber}</td>
                     </tr>
                     <tr>
-                        <td>Additional work</td>
+                        <td>Service-checklist comments</td>
                         <td>
                             <c:choose>
                                 <c:when test="${empty jsuserdtls.additionalwork}">
@@ -184,6 +184,45 @@
                                 </c:when>
                                 <c:otherwise>
                                     ${jsuserdtls.additionalwork}                                  
+                                </c:otherwise>
+                            </c:choose>  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>180point comments</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty jsuserdtls.pclcomments}">
+                                    N/A
+                                </c:when>
+                                <c:otherwise>
+                                    ${jsuserdtls.pclcomments}                                  
+                                </c:otherwise>
+                            </c:choose>  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Estimate comments</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty jsuserdtls.estcomments}">
+                                    N/A
+                                </c:when>
+                                <c:otherwise>
+                                    ${jsuserdtls.estcomments}                                  
+                                </c:otherwise>
+                            </c:choose>  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Comments</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty jsuserdtls.jscomments}">
+                                    N/A
+                                </c:when>
+                                <c:otherwise>
+                                    ${jsuserdtls.jscomments}                                  
                                 </c:otherwise>
                             </c:choose>  
                         </td>

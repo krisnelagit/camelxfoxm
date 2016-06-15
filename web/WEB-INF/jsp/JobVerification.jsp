@@ -62,6 +62,77 @@
                     <td>KM. out</td>
                     <td><input type="text" name="km_out" value="${jsuserdtls.km_out}" /></td>
                 </tr>
+                <tr>
+                    <td>Service-checklist comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.additionalwork}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.additionalwork}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>180point comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.pclcomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.pclcomments}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Estimate comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.estcomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.estcomments}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Jobsheet comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.jobsheetcomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.jobsheetcomments}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Spares Requisition comments</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.spcomments}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.spcomments}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Comments</td>
+                    <td>
+                        <textarea name="jvcomments" rows="4" cols="20">${jsuserdtls.jvcomments}</textarea>
+                    </td>
+                </tr>
             </table>
             <br>
             <hr>

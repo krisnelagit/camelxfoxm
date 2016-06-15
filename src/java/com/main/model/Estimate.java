@@ -21,13 +21,38 @@ public class Estimate {
 
     @Id
     private String id;
-    private String pclid,cvid,isjobsheetready="No",isvoid="No",reason, isdelete = "No", modifydate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+    private String pclid, cvid, confirm_estimate = "No", isjobsheetready = "No", isvoid = "No", reason,comments, isdelete = "No", enableDelete = "Yes", modifydate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
-    public Estimate(String id, String pclid, String cvid, String reason) {
+    public Estimate(String id, String pclid, String cvid, String reason, String comments) {
         this.id = id;
         this.pclid = pclid;
         this.cvid = cvid;
         this.reason = reason;
+        this.comments = comments;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+    
+    public String getConfirm_estimate() {
+        return confirm_estimate;
+    }
+
+    public void setConfirm_estimate(String confirm_estimate) {
+        this.confirm_estimate = confirm_estimate;
+    }
+        
+    public String getEnableDelete() {
+        return enableDelete;
+    }
+
+    public void setEnableDelete(String enableDelete) {
+        this.enableDelete = enableDelete;
     }
 
     public String getIsvoid() {
@@ -45,14 +70,14 @@ public class Estimate {
     public void setReason(String reason) {
         this.reason = reason;
     }
-    
+
     public String getIsjobsheetready() {
         return isjobsheetready;
     }
 
     public void setIsjobsheetready(String isjobsheetready) {
         this.isjobsheetready = isjobsheetready;
-    }    
+    }
 
     public String getCvid() {
         return cvid;
@@ -64,7 +89,6 @@ public class Estimate {
 
     public Estimate() {
     }
-     
 
     public String getId() {
         return id;
@@ -98,6 +122,4 @@ public class Estimate {
         this.modifydate = modifydate;
     }
 
-    
 }
- 

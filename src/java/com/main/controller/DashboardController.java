@@ -7,8 +7,10 @@ package com.main.controller;
 
 import com.main.service.AllInsertService;
 import com.main.service.AllViewService;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -39,6 +41,49 @@ public class DashboardController {
     public String gotobranchinfo(@RequestParam(value = "prefixid") String prefixid, Map<String, Object> map) {
         map.put("prefixdt", prefixid);
         return "Dashboard_menu";
+    }
+
+    //code for transactional dashboard
+    @RequestMapping(value = "transaction_Dashboard")
+    public ModelAndView transaction_Dashboard(@RequestParam(value = "prefixid") String prefix) {
+        ModelAndView modelAndView = new ModelAndView("Dashboard_transaction");
+        //show all Service cheklist that has yet to creat service checklist
+        modelAndView.addObject("servicedtls", viewService.getanyjdbcdatalist("SELECT cv.*,cv.id as cvid,c.name,cvd.id as cvdid FROM customervehicles cv\n"
+                + "inner join customervehiclesdetails cvd on cvd.custvehicleid=cv.id\n"
+                + "inner join customer c on cv.custid=c.id \n"
+                + "where  c.isdelete='No' and cv.isdelete='No' and cv.ishidden='No' \n"
+                + "and cv.is180ready='No' and cv.id like '" + prefix + "%' \n"
+                + "order by cv.savedate desc"));
+
+        //code for 180 point check list goes here
+        modelAndView.addObject("pointchecklistdt", viewService.getanyjdbcdatalist("SELECT pcl.date as pcldate,pcl.id,pcl.isestimate as estimatestatus,pcl.customervehiclesid,cv.vehiclenumber,cv.carmodel,cv.branddetailid,c.`name` customername,pcl.enableDelete,cv.id cvid FROM pointchecklist pcl\n"
+                + "inner join customervehicles cv on cv.id=pcl.customervehiclesid \n"
+                + "inner join customer c on cv.custid=c.id\n"
+                + "where c.isdelete='No' and pcl.isdelete='No' and pcl.ishidden='No' and pcl.isestimate='No' and pcl.id like '" + prefix + "%' \n"
+                + "order by pcl.savedate desc"));
+
+        //code for estimate here
+        modelAndView.addObject("estimatedtls", viewService.getanyjdbcdatalist("SELECT cv.id cvid,est.isjobsheetready, est.id as estid,est.approval,cu.name as custname,cv.carmodel,cv.vehiclenumber,est.savedate,est.enableDelete FROM estimate est\n"
+                + "inner join customervehicles cv on cv.id=est.cvid\n"
+                + "inner join customer cu on cu.id=cv.custid where cu.isdelete='No' and est.isdelete='No' and est.ishidden='No' and est.isjobsheetready='No' and est.id like '" + prefix + "%' \n"
+                + "order by length(est.id) desc,est.id desc"));
+
+        //code for jobsheet goes here
+        modelAndView.addObject("jobdtls", viewService.getanyjdbcdatalist("SELECT cv.id cvid,js.id as jsid,cu.name as custname,cv.carmodel,cv.branddetailid,cv.vehiclenumber,js.isinvoiceconverted,js.istaskcompleted,js.enableDelete FROM jobsheet js\n"
+                + "inner join customervehicles cv on cv.id=js.cvid\n"
+                + "inner join customer cu on cu.id=cv.custid\n"
+                + "where cu.isdelete='No' and js.isdelete='No' and js.ishidden='No' and js.isinvoiceconverted='No' and js.id like '" + prefix + "%' order by length(js.id) desc,js.id desc"));
+
+        //code for invoice goes here
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        Date date = new Date();
+        String month = dateFormat.format(date);
+        modelAndView.addObject("currentmonth", month);
+        modelAndView.addObject("invoiceListDt", viewService.getanyjdbcdatalist("SELECT inv.*,cu.name,SUBSTRING(inv.savedate,1,7) as monthcheck,substring_index(inv.savedate,' ',1)as invoicedate FROM invoice inv\n"
+                + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+                + "where inv.isdelete='No' and cu.isdelete='No' and inv.ispaid='No' and inv.id like 'M%' order by length(inv.id) desc,inv.id desc"));
+
+        return modelAndView;
     }
 
     @RequestMapping(value = "operation_Dashboard")

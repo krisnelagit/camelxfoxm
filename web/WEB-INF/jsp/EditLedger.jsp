@@ -83,6 +83,7 @@
         <br />
         <form action="updateLedgerAccount" method="POST">
             <input type="hidden" name="id" value="${editLedgerDtls.id}" />
+            <input type="hidden" name="customerid" value="${editLedgerDtls.customerid}" />
             <table width="100%" cellpadding="5">
                 <tr>
                     <td width="34%" align="left" valign="top">Group </td>

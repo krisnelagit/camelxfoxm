@@ -68,14 +68,7 @@
                     <c:forEach var="ob" items="${billdt}">
                         <tr>
                             <td align="left">
-                                <c:choose>
-                                    <c:when test="${ob.isreceived=='No'}">
-                                        <input class="selection" readonly="" disabled type="checkbox"/>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <input class="selection" type="checkbox"/>
-                                    </c:otherwise>
-                                </c:choose>                                
+                                <input class="selection" readonly="" disabled type="checkbox"/>                              
                                 <input class="billids" type="hidden" disabled="" name="billids" value="${ob.expense_billnumber}" />
                                 <input class="totals" type="hidden" disabled="" name="total" value="${ob.total}" />
                                 <input class="poids" type="hidden" disabled="" name="poid" value="${ob.poid}" />
@@ -90,14 +83,7 @@
                             <td align="left">${ob.total}</td>
                             <td align="left">${ob.isreceived}</td>
                             <td align="left">
-                                <c:choose>
-                                    <c:when test="${ob.isreceived=='No'}">
-                                        &nbsp;
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="makeVendorPaymentLink?podid=${ob.podetailid}&viz=${ob.total}&poids=${ob.poid}"><img src="images/payments.png" width="18" height="17" title="Payment Details" /></a>
-                                        </c:otherwise>
-                                    </c:choose>
+                                <a href="makeVendorPaymentLink?podid=${ob.podetailid}&viz=${ob.total}&poids=${ob.poid}"><img src="images/payments.png" width="18" height="17" title="Payment Details" /></a>
                             </td>
                         </tr>  
                         <c:set value="${count+1}" var="count"></c:set>

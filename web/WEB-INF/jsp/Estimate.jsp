@@ -1,6 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%-- 
-    Document   : ServiceCheckList
+    Document   : Estimate
     Created on : 24 Apr, 2015, 12:55:26 PM
     Author     : pc2
 --%>
@@ -10,13 +10,37 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Service CheckList</title>
+        <title>Estimate</title>
         <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">        
         <script src="js/jquery.dataTables.js"></script>
         <script>
             $(document).ready(function () {
                 $('#table_id').DataTable();
             });
+        </script>        
+        <script>
+            function confirmdelete(id, ob)
+            {
+                var res = confirm('Are you sure to delete?');
+                if (res == true)
+                {
+                    $(ob).closest('tr').find('td').fadeOut(600,
+                            function () {
+                                $(ob).parents('tr:first').remove();
+                            });
+
+                    $.ajax({
+                        type: "post",
+                        url: "deleteTransactionrecord",
+                        data: {id: id, deskname: "estimate", immediateup: "pointchecklist", idcolumnname: "pclid"
+                        },
+                        success: function (data) {
+                        },
+                        error: function () {
+                        }
+                    });
+                }
+            }
         </script>
     </head>
     <body>
@@ -25,9 +49,9 @@
         <table class="display tablestyle" id="table_id">
             <thead>
                 <tr>
-                    <td >Date</td>
-                    <td >Estimate no.&nbsp;&nbsp;</td>
-                    <td >Customer name</td>
+                    <td>Date</td>
+                    <td>Estimate no.&nbsp;&nbsp;</td>
+                    <td>Customer name</td>
                     <td>Vehicle Model</td>
                     <td>Vehicle No.</td>
                     <td>Customer Approval</td>
@@ -46,21 +70,33 @@
                         <td align="left">
                             <c:choose>
                                 <c:when test="${ob.isjobsheetready=='No'}">
-                                    <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
+                                    <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
                                         <a href="jobsheet-add?estid=${ob.estid}&jsre=${ob.isjobsheetready}"><img src="images/psjs.png" width="14" height="16" title="Create Job Sheet"/></a> &nbsp;&nbsp;
                                         </c:if> 
-                                    
-                                    </c:when>
-                                </c:choose>
 
-                            <c:if test="${sessionScope.USERTYPE.equals('admin')}">
+                                </c:when>
+                            </c:choose>
+
+                            <c:if test="${sessionScope.USERTYPE.equals('admin') || sessionScope.USERTYPE.equals('spares')}">
                                 <c:if test="${ob.approval=='No'}">
                                     <a href="estimategridlink?estimateid=${ob.estid}&jsre=${ob.isjobsheetready}"><img src="images/Accept_file_or_checklist_24.png" width="16" height="15" />&nbsp;&nbsp;</a>
-                                    </c:if>   
+                                </c:if>   
+
+                            </c:if>
+                            <c:if test="${sessionScope.USERTYPE.equals('admin') || sessionScope.USERTYPE.equals('spares') || sessionScope.USERTYPE.equals('crm')}">
+                                <c:if test="${ob.approval=='No'}">
                                     <a href="editEstimatePage?estid=${ob.estid}"><img src="images/edit.png" width="16" height="15" />&nbsp;&nbsp;</a>
+                                    </c:if>
                                 </c:if>
                             <a href="estimate-view?estid=${ob.estid}"><img src="images/view.png" width="21" height="13" /></a>&nbsp;&nbsp; 
                             <a href="estimate-viewmail?estid=${ob.estid}"><img src="images/email.png" width="15" /></a>&nbsp;&nbsp; 
+                            <!--code to delete estimate begins here-->
+                            <c:choose>
+                                <c:when test="${ob.enableDelete=='Yes'}">
+                                    <a onclick="confirmdelete('${ob.estid}', this);"><img src="images/delete.png" width="16" height="17" /></a>
+                                    </c:when>
+                                </c:choose>                            
+                            <!--code to delete estimate ends! here-->
                             <!--<img src="images/delete.png" width="16" height="17" />-->
                         </td>
                     </tr>

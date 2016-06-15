@@ -21,9 +21,9 @@
         <script type="text/javascript" src="js/jspdf.debug.js"></script>
         <script src="js/nicEdit.js" type="text/javascript"></script>
         <script type="text/javascript">
-            bkLib.onDomLoaded(function () {
-                nicEditors.allTextAreas()
-            });
+//            bkLib.onDomLoaded(function () {
+//                nicEditors.allTextAreas();
+//            });
         </script>
         <script type="text/javascript">
             function test_value() {
@@ -171,6 +171,15 @@
                 $("#send").hide();
                 $("#senturmail").hide();
                 $("#sendError").hide();
+                //code to hide unhide confim
+                var isconf = "${estcustdtls.confirm_estimate}";
+                if (isconf === 'Yes') {
+                    $(".unconfirmclick").show();
+                    $(".confirmclick").hide();
+                } else {
+                    $(".unconfirmclick").hide();
+                    $(".confirmclick").show();
+                }
 //                convert_amount_into_amttotal_paisa();
 
                 //code written to display mail comment box begin here
@@ -178,14 +187,13 @@
                     e.preventDefault();
                     //get customer email in the textbox of comment dialog
                     var customerEmail = $("#customeremail").val();
-                    $("#emailList").val(customerEmail);
-
+                    $("#emailList").val('${company_mail},' + customerEmail);
 //                    var invoicehistoryid = $(this).attr('href');
                     $("#dialogmailDetail").dialog({
                         modal: true,
                         effect: 'drop',
-                        width: 950,
-                        height: 450,
+                        width: 925,
+                        height: 300,
                         show: {
                             effect: "drop"
                         },
@@ -198,11 +206,55 @@
                 });
                 //code written to display mail comment box ends! here
 
+                //code for confirm estimate goes here
+                $(".confirmclick").click(function (e) {
+                    var result = confirm("Are you sure to confirm");
+                    if (result == true) {
+                        var id = "${param.estid}";
+                        $.ajax({
+                            type: "post",
+                            url: "confirmEstimate",
+                            data: {id: id, deskname: "estimate", values: "Yes"
+                            },
+                            success: function (data) {
+                                if (data === 'Yes') {
+                                    $(".unconfirmclick").show();
+                                    $(".confirmclick").hide();
+                                }
+                            },
+                            error: function () {
+                            }
+                        });
+                    }
+
+                });
+                //code for unconfirm estimate goes here
+                $(".unconfirmclick").click(function (e) {
+                    var result = confirm("Are you sure to un-confirm");
+                    if (result == true) {
+                        var id = "${param.estid}";
+                        $.ajax({
+                            type: "post",
+                            url: "confirmEstimate",
+                            data: {id: id, deskname: "estimate", values: "No"
+                            },
+                            success: function (data) {
+                                if (data === 'No') {
+                                    $(".unconfirmclick").hide();
+                    $(".confirmclick").show();
+                                }
+                            },
+                            error: function () {
+                            }
+                        });
+                    }
+
+                });
+
                 //code written here to show payment history begins here
                 $(".paymenthistory").click(function (e) {
                     e.preventDefault();
                     var invoicehistoryid = $(this).attr('href');
-
                     $.ajax({
                         url: "getPaymentDetails",
                         datatype: 'json',
@@ -249,7 +301,6 @@
                 $('#partsrs').html(sum);
                 var grand = sum + sum1;
                 console.log("price grand" + grand);
-
                 $('#grandamount').text(grand);
                 //code for part total details ends here
 
@@ -259,7 +310,6 @@
                     sum2 += parseFloat($(this).text());
                 });
                 $('#servicelabourrs').html(sum2);
-
                 $('#grandserviceamount').text(sum2);
                 //code for service total details ends here
 
@@ -307,7 +357,6 @@
                 var customerdate = $("#custdate").val();
                 var customervehicle = $("#custvehicle").val();
                 var invoicename = customervehicle + " " + customerdate;
-
                 var customerName = $("#customername").val();
                 var customerEmail = $("#emailList").val();
                 var emailComments = $('.nicEdit-main').html().substring(0, 20000);
@@ -337,7 +386,6 @@
                         alert("i m err");
                     }
                 });
-
 //                var pdf = new jsPDF('p', 'pt', 'a4');
 //                source = $('#testcase')[0];
 //                specialElementHandlers = {
@@ -382,8 +430,8 @@
                 $("#dialogmailDetail").dialog({
                     modal: true,
                     effect: 'drop',
-                    width: 600,
-                    height: 400,
+                    width: 500,
+                    height: 200,
                     show: {
                         effect: "drop"
                     },
@@ -391,7 +439,6 @@
                         effect: "drop"
                     }
                 });
-
             }
             //mod code witten here is modification to show dialog and allow user to write cusotom mail message ends! here
 
@@ -400,7 +447,7 @@
     <body>
 
 
-        <a href="#" class="view button-001 mailclick">Send Mail</a>  <a href="estimate" class="view button-001">Back</a>
+        <a href="#" class="view button-001 unconfirmclick">Un-confirm</a>  <a href="#" class="view button-001 confirmclick">Confirm</a>  <a href="#" class="view button-001 mailclick">Send Mail</a>  <a href="estimate" class="view button-001">Back</a>
 
 
         <label id="send"><h2>Sending mail <img src="images/ajax-loader.gif" alt="loader View"></h2></label><label id="senturmail"><h2>Mail sent successfully <img src="images/MB__mail_icon.png" alt="loader View"></h2></label><label id="sendError"><h2>Please Check Your Connectivity</h2></label>
@@ -611,7 +658,7 @@
                 <tr>
                     <td><strong>Email</strong></td>
                     <td>
-                        <input type="text" name="emailList" style="width: 300px" id="emailList" value="" />
+                        <input type="text" name="emailList" style="width: 813px" id="emailList" value="" />
                     </td>
                 </tr>
                 <tr>

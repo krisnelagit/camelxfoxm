@@ -21,28 +21,43 @@ import javax.persistence.Table;
 public class PointChecklist {
     @Id
     private String id;
-    private String date,customervehiclesid,servicechecklistid,isestimate="No",isdelete="No",ishidden="No",modifydate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+    private String date,customervehiclesid,servicechecklistid,isestimate="No",comments,isdelete="No",enableDelete="Yes",ishidden="No",modifydate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
     public PointChecklist() {
     }
 
-    public PointChecklist(String id, String date, String customervehiclesid, String servicechecklistid) {
+    public PointChecklist(String id, String date, String customervehiclesid, String servicechecklistid, String comments) {
         this.id = id;
         this.date = date;
         this.customervehiclesid = customervehiclesid;
         this.servicechecklistid = servicechecklistid;
+        this.comments = comments;
     }
 
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+    
+    public String getEnableDelete() {
+        return enableDelete;
+    }
+
+    public void setEnableDelete(String enableDelete) {
+        this.enableDelete = enableDelete;
+    }
+        
     public String getIshidden() {
         return ishidden;
     }
 
     public void setIshidden(String ishidden) {
         this.ishidden = ishidden;
-    }
+    }   
     
-    
-
     public String getIsestimate() {
         return isestimate;
     }

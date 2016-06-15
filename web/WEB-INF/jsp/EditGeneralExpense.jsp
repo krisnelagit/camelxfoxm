@@ -269,7 +269,6 @@
         <form action="editGeneralExpense" method="POST">
             <input type="hidden" name="id" value="${expensedtls.id}" />
             <input type="hidden" name="oldmode" value="${expensedtls.mode}" />
-            <input type="hidden" name="oldmode" value="${expensedtls.mode}" />
             <input type="hidden" name="bill_date" value="${expensedtls.bill_date}" />
             <input type="hidden" name="expense_billnumber" value="${expensedtls.expense_billnumber}" />
             <table width="100%" cellpadding="5">

@@ -65,7 +65,8 @@
                         
             <c:if test="${sessionScope.USERTYPE.equals('admin') ||sessionScope.USERTYPE.equals('floor manager')}">
                 <div class="box"> 
-                    <a href="operation_Dashboard?prefixid=${prefixdt}">
+                    <!--<a href="operation_Dashboard?prefixid=$ {prefixdt}">-->
+                    <a href="transaction_Dashboard?prefixid=${prefixdt}">
                         <div class="box02" style="margin: 0px;width: 158px">
                             <div class="img02">
                                 <img src="images/dashboard_operation.png" height="70" width="70">

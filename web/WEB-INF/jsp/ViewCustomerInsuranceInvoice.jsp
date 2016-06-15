@@ -436,7 +436,7 @@
                                         <td width="24%" class="wn1" ><strong>Service Name</strong></td>
                                         <td width="29%" class="wn1" ><strong>Description</strong></td>
                                         <td width="11%" class="wn1" ><strong>&nbsp;</strong></td>
-                                        <td width="14%" class="wn1" align="center"><strong>Labour Rs.</strong></td>
+                                        <td width="14%" class="wn1" align="center"><strong>Price Rs.</strong></td>
                                         <!--<td width="16%"><strong>Total Amount</strong></td>-->
                                     </tr>
                                     <tr>

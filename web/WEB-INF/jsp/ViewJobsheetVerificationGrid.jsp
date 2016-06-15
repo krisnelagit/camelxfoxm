@@ -67,7 +67,7 @@
                         <td align="left">${ob.carmodel}</td>
                         <td align="left">${ob.vehiclenumber}</td>
                         <td align="left">
-                            <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
+                            <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
                                 <a href="converttoinovice?jsid=${ob.jsid}&carbrandid=${ob.branddetailid}&isinc=${ob.isinvoiceconverted}"><img src="images/c_invoiceh.png" width="17" height="17" /></a>&nbsp;&nbsp;
                                 <a href="jobVerificationView?jsid=${ob.jsid}&istkdone=${ob.istaskcompleted}"><img src="images/verify.png" width="17" height="17" /></a>&nbsp;&nbsp;
                                 </c:if>

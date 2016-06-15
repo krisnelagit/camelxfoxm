@@ -523,8 +523,7 @@
                 <tr>    
                     <td>Comment</td>
                     <td>
-                        <textarea name="comment" rows="4" maxlength="1000" cols="20">
-                        </textarea>
+                        <textarea name="comment" rows="4" maxlength="1000" cols="20"></textarea>
                     </td>
                 </tr>
                 <tr>    

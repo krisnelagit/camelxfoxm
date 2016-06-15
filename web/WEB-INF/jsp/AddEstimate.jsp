@@ -15,13 +15,13 @@
         <link rel="stylesheet" href="css/jquery-ui.css" />
         <script src="js/jquery-1.8.3.js" type="text/javascript"></script>
         <script src="js/jquery-ui.js" type="text/javascript"></script>
-        <SCRIPT language="javascript">
+        <SCRIPT>
             //add rows
             function addRow(tableID) {
             if (tableID === "dataTable") {
-            $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" class="test" name="chk"/><input type="hidden" name="part_type" value="part" /><input type="hidden" name="partlistid" id="partlistid" /></td><td align="left" valign="top"><input name="partname" type="text" id="partname" /></td><td align="left" valign="top"> <select name="fivePrice" class="fivePrice" style="width: 100px" onchange="iambatman(this)"><option selected="" disabled="">--select--</option></select></td><td align="left" valign="top"><textarea name="description" maxlength="1000" id="textfield2"></textarea></td><td align="left" valign="top"><input name="quantity" type="number" class="quantity" style="width: 60px" value="1" onchange="calculatebalance(this)" onclick="calculatebalance(this)" /></td><td align="left" valign="top"><input name="partrs" style="width: 60px" type="number" step="0.01" required="" class="sellingprice" onchange="calculatebalance(this)" onclick="calculatebalance(this)" /></td><td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" id="textfield6" /></td><td align="left" valign="top"><input name="totalpartrs" readonly="" type="number" class="itemtotal" style="width: 100px"/></td></tr>');
+            $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" class="test" name="chk"/><input type="hidden" name="part_type" value="part" /><input type="hidden" name="partlistid" id="partlistid" /></td><td align="left" valign="top"><input name="partname" type="text" id="partname" /></td><td align="left" valign="top"> <select name="fivePrice" class="fivePrice" style="width: 100px" onchange="iambatman(this)"><option selected="" disabled="">--select--</option></select></td><td align="left" valign="top"><textarea name="description" maxlength="1000" id="textfield2"></textarea></td><td align="left" valign="top"><input name="quantity" type="number" class="quantity" style="width: 60px" value="1" onchange="calculatebalance(this)" /></td><td align="left" valign="top"><input name="partrs" value="0" style="width: 60px" type="number" step="0.01" required="" class="sellingprice" onchange="calculatebalance(this)" /></td><td align="left" valign="top"><input name="labourrs" required="" class="charges" style="width: 60px" type="number" step="0.01" onchange="laborcall()" id="textfield6" /></td><td align="left" valign="top"><input name="totalpartrs" readonly="" value="0" type="number" class="itemtotal" style="width: 100px"/></td></tr>');
             } else {
-            $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" name="chk"/><input type="hidden" name="labour_type" value="service" /><input type="hidden" name="serviceid" value="" id="serviceid"/><input type="hidden" name="serviceAction" class="serviceAction"/></td><td align="left" valign="top"><input name="servicename" type="text" id="labour" /></td><td align="left" valign="top"><textarea name="labourdescription" class="labourdescription" id="textfield2"></textarea></td><td align="left" valign="top"><input name="servicetotal" type="number" step="0.01" class="charges" /></td></tr>');
+            $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" name="chk"/><input type="hidden" name="labour_type" value="service" /><input type="hidden" name="serviceid" value="" id="serviceid"/><input type="hidden" name="serviceAction" class="serviceAction"/></td><td align="left" valign="top"><input name="servicename" type="text" id="labour" /></td><td align="left" valign="top"><textarea name="labourdescription" class="labourdescription" id="textfield2"></textarea></td><td align="left" valign="top"><input name="servicetotal" type="number" step="0.01" onchange="laborcall()" class="charges" /></td></tr>');
             }
             }
 
@@ -142,13 +142,7 @@
             //end of computing
             }
 
-            //calculate total part price
-            function calculatebalance(b) {
-            var qty = Number($(b).closest('tr').find('.quantity').val());
-            var percost = Number($(b).closest('tr').find('.sellingprice').val());
-            var totalprice = qty * percost;
-            $(b).closest('tr').find('.itemtotal').val(totalprice);
-            }
+
 
             //labour auto complete            
             var labour;
@@ -192,6 +186,7 @@
                             }
                             var servicename = curr.closest('tr').find("#labour").val(); // display the selected text 
                             curr.closest('tr').find(".serviceAction").val(servicename);
+                            laborcall();
                             }
                             }, error: function () {
                     }
@@ -225,6 +220,7 @@
                             }
                             var servicename = currentelement.closest('tr').find("#labour").val(); // display the selected text 
                             currentelement.closest('tr').find(".serviceAction").val(servicename);
+                            laborcall();
                             }
                             }, error: function () {
                     }
@@ -262,6 +258,55 @@
             });
             }
             });
+        </SCRIPT>
+        <SCRIPT>
+            //calculate total part price
+            function calculatebalance(b) {
+            
+            var qty = Number($(b).closest('tr').find('.quantity').val() || 0);
+            var percost = Number($(b).closest('tr').find('.sellingprice').val() || 0);
+            var totalprice = qty * percost;
+            $(b).closest('tr').find('.itemtotal').val(totalprice);
+            var partTotal = 0;
+            $('.itemtotal').each(function(){
+            partTotal += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
+            });
+//            var partTotal = Number(partSum) + Number(totalprice);
+            //code for grand total and taxes begins! here
+            var myVat = $(".taxpercent1").val();
+            var vatamt = Number(partTotal) * Number(myVat / 100);
+            $(".taxAmount1").val(vatamt.toFixed(2));
+            //code for labor total
+            var laborSum = 0;
+            $('.charges').each(function(){
+            laborSum += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
+            });
+            //taxes for labor
+            var myst = $(".taxpercent2").val();
+            var stamt = Number(laborSum) * Number(myst / 100);
+            $(".taxAmount2").val(stamt.toFixed(2));
+            $("#grandtotal").val(partTotal + vatamt + laborSum + stamt);
+            //code for grand total and taxes ends! here            
+            }
+
+            function laborcall(){
+            //code for taxes and grandtotal begins! here
+            var partSum = 0;
+            $('.itemtotal').each(function(){
+            partSum += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
+            });
+            var myVat = $(".taxpercent1").val();
+            var vatamt = Number(partSum) * Number(myVat / 100);
+            var laborSum = 0;
+            $('.charges').each(function(){
+            laborSum += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
+            });
+            var myst = $(".taxpercent2").val();
+            var stamt = Number(laborSum) * Number(myst / 100);
+            $(".taxAmount2").val(stamt.toFixed(2));
+            $("#grandtotal").val(partSum + vatamt + laborSum + stamt);
+            //code for taxes and grandtotal ends! here
+            }
         </SCRIPT>
     </head>
     <body>
@@ -315,6 +360,25 @@
                             </td>
                         </tr>
                         <tr>
+                            <td>180 Comments</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${empty pcldtncustdt.comments}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${pcldtncustdt.comments}                                        
+                                    </c:otherwise>
+                                </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Comments</td>
+                            <td>
+                                <textarea name="comments" rows="4" cols="20"></textarea> 
+                            </td>
+                        </tr>
+                        <tr>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                         </tr>
@@ -346,24 +410,24 @@
                                     </select>
                                 </td>
                                 <td align="left" valign="top"><textarea name="description" maxlength="1000" id="textfield2"></textarea></td>
-                                <td align="left" valign="top"><input name="quantity" type="number" step="0.01" class="quantity tabspecific" style="width: 60px" value="1" onchange="calculatebalance(this)" onclick="calculatebalance(this)" /></td>
-                                <td align="left" valign="top"><input name="partrs" type="number" step="0.01" class="sellingprice tabspecific" required="" style="width: 60px" onchange="calculatebalance(this)" onclick="calculatebalance(this)" /></td>
+                                <td align="left" valign="top"><input name="quantity" type="number" step="0.01" class="quantity tabspecific" style="width: 60px" value="1" onchange="calculatebalance(this)" /></td>
+                                <td align="left" valign="top"><input name="partrs" type="number" step="0.01" class="sellingprice tabspecific" required="" value="0" style="width: 60px" onchange="calculatebalance(this)" /></td>
                                     <c:choose>
                                         <c:when test="${pcldtncustdt.labourChargeType=='a'}">
-                                        <td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" class="tabspecific" value="0" id="textfield6" /></td>
+                                        <td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" class="charges tabspecific" onchange="laborcall()" value="0" id="textfield6" /></td>
                                         </c:when>
                                         <c:when test="${pcldtncustdt.labourChargeType=='b'}">
-                                        <td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" class="tabspecific" value="0" id="textfield6" /></td>
+                                        <td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" class="charges tabspecific" onchange="laborcall()" value="0" id="textfield6" /></td>
                                         </c:when>
                                         <c:when test="${pcldtncustdt.labourChargeType=='c'}">
-                                        <td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" class="tabspecific" value="0" id="textfield6" /></td>
+                                        <td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" class="charges tabspecific" onchange="laborcall()" value="0" id="textfield6" /></td>
                                         </c:when>
                                         <c:otherwise>
-                                        <td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" class="tabspecific" value="0" id="textfield6" /></td>
+                                        <td align="left" valign="top"><input name="labourrs" required="" style="width: 60px" type="number" step="0.01" class="charges tabspecific" onchange="laborcall()" value="0" id="textfield6" /></td>
                                         <!--<td align="left" valign="top"><input name="labourrs" style="width: 60px" type="number" step="0.01" class="tabspecific" value="$ {ob.d}" id="textfield6" /></td>-->
                                     </c:otherwise>
                                 </c:choose>
-                                <td align="left" valign="top"><input name="totalpartrs" readonly="" type="number" class="itemtotal" style="width: 100px"/></td>
+                                        <td align="left" valign="top"><input name="totalpartrs" readonly="" type="number" class="itemtotal" value="0" style="width: 100px"/></td>
                             </tr>
                         </c:forEach>
                     </TABLE>
@@ -385,7 +449,7 @@
                             <td align="left" valign="top"><INPUT type="checkbox" name="chk"/><input type="hidden" name="labour_type" value="service" /><input type="hidden" name="serviceid" value="" id="serviceid"/><input type="hidden" name="serviceAction" class="serviceAction"/></td>
                             <td align="left" valign="top"><input name="servicename" type="text" id="labour" /></td>
                             <td align="left" valign="top"><textarea name="labourdescription" class="labourdescription" id="textfield2"></textarea></td>
-                            <td align="left" valign="top"><input name="servicetotal" type="number" step="0.01" class="charges" /></td>
+                            <td align="left" valign="top"><input name="servicetotal" type="number" step="0.01" class="charges" onchange="laborcall()" /></td>
                         </tr>
                     </TABLE>
 
@@ -411,14 +475,14 @@
                             </tr>
                             <c:set value="${count+1}" var="count"></c:set>
                         </c:forEach>
-                            <tr>
-                                <td width="24%" align="left">
-                                    <strong>Your total</strong>
-                                </td>
-                                <td align="left" valign="top">
-                                    <input name="amountTotal" style="width: 100px" readonly="" value="0" type="text" id="grandtotal" />
-                                </td>
-                            </tr>
+                        <tr>
+                            <td width="24%" align="left">
+                                <strong>Your total</strong>
+                            </td>
+                            <td align="left" valign="top">
+                                <input name="amountTotal" style="width: 100px" readonly="" value="0" type="text" id="grandtotal" />
+                            </td>
+                        </tr>
                     </TABLE>
 
                     <!--code for tax and grand total ends here-->

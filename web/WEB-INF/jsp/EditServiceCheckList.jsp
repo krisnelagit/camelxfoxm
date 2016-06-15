@@ -102,7 +102,7 @@
                     //getting data from controller
                     var person = [
             <c:forEach var="occ" items="${custdtls}">
-                        {custname: "${occ.name}", custid: "${occ.id}", custMobile: "${occ.mobilenumber}"},
+                        {custname: "${occ.name}", custid: "${occ.id}", custMobile: "${occ.mobilenumber}", custEmail: "${occ.email}"},
             </c:forEach>
                     ];
 
@@ -111,7 +111,7 @@
                     //mapping customer mobile number to id and customer id to name
                     for (var i = 0; i < person.length; ++i) {
                         source.push(person[i].custMobile);
-                        mapping[person[i].custMobile] = person[i].custid + ',' + person[i].custname;
+                        mapping[person[i].custMobile] = person[i].custid + ',' + person[i].custname + ',' + person[i].custEmail;
                     }
 
                     jQuery("input:text[id^='mobilenumber']").live("focus.autocomplete", null, function () {
@@ -123,6 +123,7 @@
                                 var splitvar = data.split(',');
                                 $("#custid").val(splitvar[0]);
                                 $("#custname").val(splitvar[1]);
+                                $("#transactionmail").val(splitvar[2]);
                             },
                             change: function () {
                                 var val = jQuery(this).val();
@@ -174,7 +175,7 @@
                     //getting data from controller
                     var person = [
             <c:forEach var="occ" items="${custdtls}">
-                        {custname: "${occ.name}", custid: "${occ.id}", custMobile: "${occ.mobilenumber}"},
+                        {custname: "${occ.name}", custid: "${occ.id}", custMobile: "${occ.mobilenumber}", custEmail: "${occ.email}"},
             </c:forEach>
                     ];
 
@@ -183,7 +184,7 @@
                     //mapping customer mobile number to id and customer id to name
                     for (var i = 0; i < person.length; ++i) {
                         source.push(person[i].custname);
-                        mapping[person[i].custname] = person[i].custid + ',' + person[i].custMobile;
+                        mapping[person[i].custname] = person[i].custid + ',' + person[i].custMobile + ',' + person[i].custEmail;
                     }
 
                     $("input:text[id^='custname']").live("focus.autocomplete", null, function () {
@@ -194,6 +195,7 @@
                                 var splitvar = data.split(',');
                                 $("#custid").val(splitvar[0]);
                                 $("#mobilenumber").val(splitvar[1]);
+                                $("#transactionmail").val(splitvar[2]);
 
                                 //ajax call voe vehicle list for this customers.
                                 vehiclenumber = [];
@@ -462,7 +464,7 @@
                     <td width="13%" align="left" valign="top">Transaction email</td>
                     <td width="26%" align="left" valign="top">
                         <label for="textfield"></label>                        
-                        <input type="text" name="transactionmail" value="${servicedtls.transactionmail}" />
+                        <input type="text" name="transactionmail" id="transactionmail" value="${servicedtls.transactionmail}" />
                     </td>
                     <td width="23%" align="left" valign="top">&nbsp;</td>
                     <td width="38%" align="left" valign="top">

@@ -79,7 +79,7 @@
                                 <td align="left">${ob.categoryname}</td>
                                 <td align="left">${ob.balancequantity}</td>
                                 <td align="left"> 
-                                    <a href="viewspareparts?id=${ob.vaultid}"><img src="images/view.png" width="16" height="13" /></a>&nbsp;&nbsp;
+                                    <!--<a href="viewspareparts?id=$ {ob.vaultid}"><img src="images/view.png" width="16" height="13" /></a>&nbsp;&nbsp;-->
                                     <!--<a href="inventory-transfer?branddetailid=$ {param.id}&carpartid=$ {ob.id}"><img src="images/transfer.png" width="18" height="17" title="Transfer"/></a>&nbsp;&nbsp;-->
                                     <a href="inventoryqty?id=${ob.id}&carmodel=${param.id}"><img src="images/add-qty.png" width="18" height="16" title="Add Quantity"/></a>&nbsp;&nbsp;
                                     <!--<a onclick="confirmdelete('${ob.id}', this);"> <img src="images/delete.png" width="16" height="17" /></a>-->
@@ -113,7 +113,7 @@
                                 <td align="left">${ob.categoryname}</td>
                                 <td align="left">${ob.balancequantity}</td>
                                 <td align="left"> 
-                                    <a href="viewspareparts?id=${ob.vaultid}"><img src="images/view.png" width="16" height="13" /></a>&nbsp;&nbsp;
+                                    <!--<a href="viewspareparts?id=$ {ob.vaultid}"><img src="images/view.png" width="16" height="13" /></a>&nbsp;&nbsp;-->
                                     <!--<a href="inventory-transfer?branddetailid=$ {param.id}&carpartid=$ {ob.id}"><img src="images/transfer.png" width="18" height="17" title="Transfer"/></a>&nbsp;&nbsp;-->
                                     <a href="inventoryqty?id=${ob.id}&carmodel=${param.id}"><img src="images/add-qty.png" width="18" height="16" title="Add Quantity"/></a>&nbsp;&nbsp;
                                     <!--<a onclick="confirmdelete('${ob.id}', this);"> <img src="images/delete.png" width="16" height="17" /></a>-->

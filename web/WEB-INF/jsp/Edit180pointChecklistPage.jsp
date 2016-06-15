@@ -73,9 +73,16 @@
                 </tr>
 
                 <tr>
-                    <td width="31%" align="left" valign="top">Additional Work(comments).</td>
+                    <td width="31%" align="left" valign="top">Additional Work</td>
                     <td width="69%" align="left" valign="top">
                         <label for="textfield">${pcldt.additionalwork}</label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td width="31%" align="left" valign="top">Comments</td>
+                    <td width="69%" align="left" valign="top">
+                        <label for="textfield"><textarea name="comments" rows="4" cols="20">${pcldt.comments}</textarea></label>
                     </td>
                 </tr>
             </table>

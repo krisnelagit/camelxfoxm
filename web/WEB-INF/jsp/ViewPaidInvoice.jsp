@@ -60,22 +60,20 @@
             });
         </script>
         <script>
-            function confirmdelete(id, ob) {
+            function confirmdelete(id, ob)
+            {
                 var res = confirm('Are you sure to delete?');
-                if (res === true)
+                if (res == true)
                 {
                     $(ob).closest('tr').find('td').fadeOut(600,
                             function () {
                                 $(ob).parents('tr:first').remove();
                             });
 
-                    //code to prompt for password
-
-
                     $.ajax({
                         type: "post",
                         url: "deleteinvoicerecord",
-                        data: {id: id, deskname: "invoice"
+                        data: {id: id, deskname: "invoice", immediateup: "jobsheet", idcolumnname: "jobno"
                         },
                         success: function (data) {
                         },
@@ -87,8 +85,8 @@
         </script>
     </head>
     <body>
-        <a href="invoiceMasterLink" class="view">Back</a>
-
+            <a href="invoiceMasterLink" class="view">Back</a>
+        
         <h2>Paid Invoice</h2>
 
         <br />
@@ -110,7 +108,7 @@
                 <c:forEach var="ob" items="${invoiceListDt}">
                     <tr>
                         <td align="left">${ob.invoicedate}</td>
-                        <td align="left">${ob.id}</td>
+                        <td align="left">${ob.invoiceid}</td>
                         <td align="left">${ob.customer_name}</td>
                         <td align="left">${ob.customermobilenumber}</td>
                         <td align="left">${ob.vehiclenumber}</td>
@@ -127,23 +125,24 @@
                             </c:choose>
                         </td>
                         <td align="left">
-                            <a href="viewCustomerInsuranceInvoice?invoiceid=${ob.id}" title="View Invoice"><img src="images/view.png" width="21" height="13" /></a>&nbsp;
-                                <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
-                                    <c:choose>
-                                        <c:when test="${ob.ispaid=='No'}">                                    
-                                        <a href="editInvoiceDetailsLink?invoiceid=${ob.id}"><img src="images/edit.png" width="16" height="15" /></a>
-                                        <a href="makePaymentLink?invoiceid=${ob.id}&custno=${ob.customermobilenumber}"><img src="images/Bill_with_dollar_sign_and_coins_24.png" width="22" height="19" /></a>
-                                        </c:when>
-                                    </c:choose>
-                                <a onclick="confirmdelete('${ob.id}', this);" style="cursor: pointer" title="Delete"><img src="images/delete.png" width="16" height="17" /></a>&nbsp;
+                            <a href="viewCustomerInvoice?invoiceid=${ob.id}" title="View Invoice"><img src="images/view.png" width="21" height="13" /></a>&nbsp;
+                            <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
+                            <c:choose>
+                                <c:when test="${ob.ispaid=='No'}">
+                                    <a href="editInvoiceDetailsLink?invoiceid=${ob.id}"><img src="images/edit.png" width="16" height="15" /></a>&nbsp;
+                                    <a href="makePaymentLink?invoiceid=${ob.id}&custno=${ob.customermobilenumber}"><img src="images/Bill_with_dollar_sign_and_coins_24.png" width="22" height="19" /></a>&nbsp;
+                                    </c:when>
+                                </c:choose>
+                                    <a onclick="confirmdelete('${ob.id}', this);" style="cursor: pointer" title="Delete"><img src="images/delete.png" width="16" height="17" /></a>&nbsp;
                                     <c:choose>
                                         <c:when test="${sessionScope.USERTYPE.equals('admin')}">
                                         <a href="${ob.id}" style="cursor: pointer" class="email_link3" title="Permanent Delete"><img src="images/pdelete.png" width="16" height="17" /></a>
                                         </c:when>
                                     </c:choose>
-                                </c:if>
-                            <!--<a href="viewCustomerInvoice?invoiceid=$ {ob.id}"><img src="images/view.png" width="21" height="13" /></a>-->
-
+                            </c:if>
+                            <!--<a href="viewCustomerInvoice?invoiceid=$ {ob.id}"><img src="images/view.png" width="21" height="13" /></a>&nbsp;&nbsp;-->
+                            
+                            
                         </td>
                     </tr>
                 </c:forEach>

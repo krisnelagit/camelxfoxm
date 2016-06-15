@@ -19,6 +19,7 @@
         <!--<link rel="stylesheet" href="css/tablegrid.css" />-->
         <!--<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>-->
         <script type="text/javascript" src="js/jspdf.debug.js"></script>
+        <script src="js/nicEdit.js" type="text/javascript"></script>
         <script type="text/javascript">
             function test_value() {
                 var junkVal = document.getElementById('amttotal').value;
@@ -168,6 +169,8 @@
         <script>
             //called on ready
             $(document).ready(function () {
+
+                nicEditors.allTextAreas();
                 $("#comments").val("");
                 $("#dialogPaymentDetail").hide();
                 $("#dialogmailDetail").hide();
@@ -187,7 +190,7 @@
                     $("#dialogmailDetail").dialog({
                         modal: true,
                         effect: 'drop',
-                        width: 500,
+                        width: 925,
                         height: 300,
                         show: {
                             effect: "drop"
@@ -393,7 +396,7 @@
                         <div align="center"><strong style="font-size:18px">TAX INVOICE</strong></div>                    
                     </div>
                     <div class="box1" align="left" style="display: inline-block;">
-                        <strong>${customerinvoiceDt.customer_name}</strong><input type="hidden" id="customername" name="customername" value="${customerinvoiceDt.customer_name}" />
+                        <strong>${invoiceDt.customer_name}</strong><input type="hidden" id="customername" name="customername" value="${customerinvoiceDt.customer_name}" />
                         <input type="hidden" name="" id="jspdfdata" value="" /><br />
                         ${customerinvoiceDt.address}<br />
                         ${customerinvoiceDt.mobilenumber}<br />                    
@@ -578,13 +581,13 @@
                 <tr>
                     <td><strong>Email</strong></td>
                     <td>
-                        <input type="text" name="emailList" id="emailList" value="" />
+                        <input type="text" name="emailList" style="width: 813px" id="emailList" value="" />
                     </td>
                 </tr>                
                 <tr>
                     <td><strong>Comments</strong></td>
                     <td>
-                        <textarea name="" id="comments" rows="7" cols="50">
+                        <textarea name="area1" id="comments" cols="100">
                         </textarea>
                     </td>
                 </tr>

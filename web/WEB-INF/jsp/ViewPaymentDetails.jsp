@@ -221,8 +221,7 @@
                 <tr>
                     <td width="34%" align="left" valign="top">Narration</td>
                     <td width="66%" align="left" valign="top">
-                        <textarea name="narration" rows="4" cols="20">
-                        </textarea>
+                        <textarea name="narration" rows="4" cols="20"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -286,7 +285,9 @@
         </form>
         <h3>Part Details</h3>
 
-        <!--code for showing podetails for the bills begins here-->
+        <c:choose>
+            <c:when test="${showDetails=='Yes'}">
+                <!--code for showing podetails for the bills begins here-->
         <TABLE id="dataTablepod" border="0" class="CSSTableGenerator">
             <TR>
                 <td width="" align="center"><strong>Part</strong></td>
@@ -320,5 +321,41 @@
         <br/>
         <br/>
         <!--code for showing podetails for the bills ends! here-->
+            </c:when>
+            <c:otherwise>
+                <!--code for showing podetails for the bills begins here-->
+        <TABLE id="dataTablepod" border="0" class="CSSTableGenerator">
+            <TR>
+                <td width="" align="center"><strong>Part</strong></td>
+                <td width="" align="center"><strong>Manufacturer</strong></td>
+                <td width="" align="center"><strong>Quantity</strong></td>
+                <!--<td width="" align="center"><strong>Total (Rs.)</strong></td>-->
+            </TR>
+            <c:forEach var="ob" items="${podetailsdt}">
+                <TR>
+                    <td align="left" valign="top">
+                        ${ob.partname}
+                    </td>
+                    <td align="left" valign="top">
+                        ${ob.mfgname}
+                    </td>
+                    <td align="left" valign="top">
+                        ${ob.in_qty}
+                    </td>
+<!--                    <td align="left" valign="top">
+                        Rs.$ {ob.itemtotal}
+                    </td>-->
+                </TR>
+            </c:forEach>
+        </TABLE>
+
+        <br/>
+        <br/>
+        <br/>
+        <!--code for showing podetails for the bills ends! here-->
+            </c:otherwise>
+        </c:choose>
+
+        
     </body>
 </html>

@@ -119,6 +119,32 @@ public class AllUpdateController {
         return "true";
     }
 
+    //Confirm estimate
+    @RequestMapping(value = "confirmEstimate", method = RequestMethod.POST)
+    public @ResponseBody
+    String confirmEstimate(@RequestParam(value = "id") String id,
+            @RequestParam(value = "deskname") String tablename,
+            @RequestParam(value = "values") String values) {
+        String query = "update " + tablename + " set confirm_estimate='" + values + "',modifydate=now() where id='" + id + "'";
+        updateService.updateanyhqlquery(query);
+        return values;
+    }
+
+    //delete any record
+    @RequestMapping(value = "deleteTransactionrecord", method = RequestMethod.POST)
+    public @ResponseBody
+    String deleteTransactionrecord(@RequestParam(value = "id") String id,
+            @RequestParam(value = "immediateup") String immediateup,
+            @RequestParam(value = "idcolumnname") String idcolumnname,
+            @RequestParam(value = "deskname") String tablename) {
+        String query = "update " + tablename + " set isdelete='Yes',modifydate=now() where id='" + id + "'";
+        updateService.updateanyhqlquery(query);
+        //code to enable immediate upper table delete 
+        List<Map<String, Object>> enableidList = viewService.getanyjdbcdatalist("select * from " + tablename + " where id='" + id + "'");
+        updateService.updateanyhqlquery("update " + immediateup + " set enableDelete='Yes',modifydate=now() where id='" + enableidList.get(0).get(idcolumnname) + "'");
+        return "true";
+    }
+
     //delete any record
     @RequestMapping(value = "deleteIncomerecord", method = RequestMethod.POST)
     public @ResponseBody
@@ -164,7 +190,10 @@ public class AllUpdateController {
     //delete invoice record
     @RequestMapping(value = "deleteinvoicerecord", method = RequestMethod.POST)
     public @ResponseBody
-    String deleteinvoicerecord(@RequestParam(value = "id") String id, @RequestParam(value = "deskname") String tablename) {
+    String deleteinvoicerecord(@RequestParam(value = "id") String id,
+            @RequestParam(value = "immediateup") String immediateup,
+            @RequestParam(value = "idcolumnname") String idcolumnname,
+            @RequestParam(value = "deskname") String tablename) {
         //code for customer advance mod begin here 
         List<Map<String, Object>> advanceList = viewService.getanyjdbcdatalist("SELECT cu.id as customerid,bd.brandid,bd.id as branddetailid,gi.total as advanceamount FROM generalincome gi\n"
                 + "inner join invoice inv on inv.id=gi.invoiceid\n"
@@ -201,6 +230,13 @@ public class AllUpdateController {
         //code here deletes invoice details
         String queryforDetails = "update invoicedetails set isdelete='Yes',modifydate=now() where invoiceid='" + id + "'";
         updateService.updateanyhqlquery(queryforDetails);
+
+        //code to enable immediate upper table delete 
+        List<Map<String, Object>> enableidList = viewService.getanyjdbcdatalist("select * from " + tablename + " where id='" + id + "'");
+        if (enableidList.get(0).get(idcolumnname) != null) {
+            updateService.updateanyhqlquery("update " + immediateup + " set enableDelete='Yes',modifydate=now() where id='" + enableidList.get(0).get(idcolumnname) + "'");
+        }
+
         return "true";
     }
 
@@ -490,11 +526,18 @@ public class AllUpdateController {
 
     //add verification / also update jobsheetdetails table
     @RequestMapping(value = "insertverification")
-    public String insertVerification(@RequestParam(value = "verifiedids", required = false) String[] verifiedids, @RequestParam(value = "jobno") String jobno, @ModelAttribute CleaningDto cleaningDto, @RequestParam(value = "km_out") String km_out) {
+    public String insertVerification(@RequestParam(value = "verifiedids", required = false) String[] verifiedids, 
+            @RequestParam(value = "jobno") String jobno, 
+            @ModelAttribute CleaningDto cleaningDto, 
+            @RequestParam(value = "km_out") String km_out,
+            @RequestParam(value = "jvcomments") String jvcomments) {
         boolean flag = true;
         //update km_out if only tha is updated
         if (km_out != null && !km_out.isEmpty()) {
             updateService.updateanyhqlquery("update jobsheet set km_out='" + km_out + "',modifydate=now() where id='" + jobno + "' ");
+        }
+        if (jvcomments != null && !jvcomments.isEmpty()) {
+            updateService.updateanyhqlquery("update jobsheet set jvcomments='" + jvcomments + "',modifydate=now() where id='" + jobno + "' ");
         }
         //checking for the verified task and updating verified as yes when all the ids are verified
         if (verifiedids != null && verifiedids.length > 0) {
@@ -541,7 +584,16 @@ public class AllUpdateController {
 
     //basically updates the johshettdetials table
     @RequestMapping(value = "saveRequisition")
-    public String saveRequisition(@RequestParam(value = "jsdid") String[] jsdid, @RequestParam(value = "partstatus2") String[] partstatus2, @RequestParam(value = "mfgnames") List mfgnames, @RequestParam(value = "myjsid") String myjsid, HttpSession session) {
+    public String saveRequisition(@RequestParam(value = "jsdid") String[] jsdid,
+            @RequestParam(value = "partstatus2") String[] partstatus2,
+            @RequestParam(value = "mfgnames") List mfgnames,
+            @RequestParam(value = "myjsid") String myjsid,
+            @RequestParam(value = "spcomments") String spcomments,
+            HttpSession session) {
+        if (spcomments!=null) {
+            updateService.updateanyhqlquery("update jobsheet set spcomments='" + spcomments + "' where id='" + myjsid + "'");
+        }
+        
         if (mfgnames.size() > 0) {
             for (int i = 0; i < mfgnames.size(); i++) {
                 if (mfgnames.get(i).equals("")) {
@@ -571,7 +623,15 @@ public class AllUpdateController {
 
     //basically updates the johshettdetials table
     @RequestMapping(value = "updateRequisition")
-    public String updateRequisition(@RequestParam(value = "jsdid") String[] jsdid, @RequestParam(value = "partstatus2") String[] partstatus2, @RequestParam(value = "mfgnames") String[] mfgnames) {
+    public String updateRequisition(@RequestParam(value = "jsdid") String[] jsdid,
+            @RequestParam(value = "partstatus2") String[] partstatus2,
+            @RequestParam(value = "mfgnames") String[] mfgnames,
+            @RequestParam(value = "myjsid") String myjsid,
+            @RequestParam(value = "spcomments") String spcomments) {
+        if (spcomments!=null) {
+            updateService.updateanyhqlquery("update jobsheet set spcomments='"+spcomments+"' where id='"+myjsid+"'");
+        }
+        
         if (partstatus2.length > 0) {
             for (int i = 0; i < partstatus2.length; i++) {
                 updateService.updateanyhqlquery("update jobsheetdetails set partstatus='" + partstatus2[i] + "',modifydate=now(), mfgid='" + mfgnames[i] + "' where id='" + jsdid[i] + "'");
@@ -585,13 +645,19 @@ public class AllUpdateController {
     public String updateEstimate(@RequestParam(value = "estdetailids") List estdetailids,
             @ModelAttribute AllArrayPojo aap, @ModelAttribute Estimate estimate,
             @RequestParam(value = "allEstDetailIds", required = false) List allEstDetailIds,
+            @RequestParam(value = "comments") String comments,
             @RequestParam(value = "estimateid") String estimateid,
             @ModelAttribute EstimateLabourArray labourArray) {
+        //code to update estimate comments
+        if (estimateid!=null) {
+            updateService.updateanyhqlquery("update estimate set comments='"+comments+"' where id='"+estimateid+"'");
+        }
+        
         //code to update old part estimate begin here
         if (aap.getEstdetailids().length > 0) {
             for (int i = 0; i < aap.getEstdetailids().length; i++) {
                 try {
-                    if (aap.getDescription()[i] != null && !aap.getDescription()[i].isEmpty()) {
+                    if (aap.getDescription().length > 0 && aap.getDescription()[i] != null && !aap.getDescription()[i].isEmpty()) {
                         updateService.updateanyhqlquery("update estimatedetails set partlistid='" + aap.getPartlistid()[i] + "',modifydate=now(), description='" + aap.getDescription()[i] + "', partrs='" + aap.getPartrs()[i] + "', labourrs='" + aap.getLabourrs()[i] + "', quantity='" + aap.getQuantity()[i] + "', partlistname='" + aap.getPartname()[i] + "', totalpartrs='" + aap.getTotalpartrs()[i] + "' where id='" + aap.getEstdetailids()[i] + "'");
                     } else {
                         updateService.updateanyhqlquery("update estimatedetails set partlistid='" + aap.getPartlistid()[i] + "',modifydate=now(), description='', partrs='" + aap.getPartrs()[i] + "', labourrs='" + aap.getLabourrs()[i] + "', quantity='" + aap.getQuantity()[i] + "', partlistname='" + aap.getPartname()[i] + "', totalpartrs='" + aap.getTotalpartrs()[i] + "' where id='" + aap.getEstdetailids()[i] + "'");
@@ -621,7 +687,7 @@ public class AllUpdateController {
                     e.setPartrs(aap.getNewpartrs()[i]);
                     e.setQuantity(aap.getNewquantity()[i]);
                     e.setTotalpartrs(aap.getNewtotalpartrs()[i]);
-                    if (aap.getNewdescription()[i] != null && !aap.getNewdescription()[i].isEmpty()) {
+                    if (aap.getNewdescription().length > 0 && aap.getNewdescription()[i] != null && !aap.getNewdescription()[i].isEmpty()) {
                         e.setDescription(aap.getNewdescription()[i]);
                     } else {
                         e.setDescription("");
@@ -664,13 +730,18 @@ public class AllUpdateController {
                     e.setPartrs(aap.getNewpartrs()[i]);
                     e.setQuantity(aap.getNewquantity()[i]);
                     e.setTotalpartrs(aap.getNewtotalpartrs()[i]);
-                    e.setDescription(aap.getNewdescription()[i]);
+                    if (aap.getNewdescription().length > 0 && aap.getNewdescription()[i] != null && !aap.getNewdescription()[i].isEmpty()) {
+                        e.setDescription(aap.getNewdescription()[i]);
+                    } else {
+                        e.setDescription("");
+                    }
+//                    e.setDescription(aap.getNewdescription()[i]);
                     e.setItem_type("part");
                     e.setPartlistname(aap.getNewpartname()[i]);
                     insertService.insert(e);
                 }
-            } //code to update new part estimate ends! here        //nitz code modified 02-03-2016 ends! here
-        }        //delete part & service code begin here
+            } //code to update new part estimate ends! here        //nitz code modified 02-03-2016 ends! here        //delete part & service code begin here
+        }
         for (int i = 0; i < allEstDetailIds.size(); i++) {
             if (!estdetailids.contains(allEstDetailIds.get(i))) {
                 updateService.updateanyhqlquery("update estimatedetails set isdelete='Yes',modifydate=now() where id='" + allEstDetailIds.get(i) + "'");
@@ -685,7 +756,7 @@ public class AllUpdateController {
         //code to update old service estimate begin here
         if (labourArray.getServiceid() != null && labourArray.getServiceid().length > 0) {
             for (int i = 0; i < labourArray.getServiceid().length; i++) {
-                if (labourArray.getLabourdescription()[i] != null && !labourArray.getLabourdescription()[i].isEmpty()) {
+                if (labourArray.getLabourdescription().length > 0 && labourArray.getLabourdescription()[i] != null && !labourArray.getLabourdescription()[i].isEmpty()) {
                     updateService.updateanyhqlquery("update estimatedetails set partlistid='" + labourArray.getServiceid()[i] + "', partlistname='" + labourArray.getServicename()[i] + "', modifydate=now(), description='" + labourArray.getLabourdescription()[i] + "', partrs='0', labourrs='" + labourArray.getServicetotal()[i] + "', quantity='0', totalpartrs='" + labourArray.getServicetotal()[i] + "' where id='" + labourArray.getServiceestdetailids()[i] + "'");
                 } else {
                     updateService.updateanyhqlquery("update estimatedetails set partlistid='" + labourArray.getServiceid()[i] + "', partlistname='" + labourArray.getServicename()[i] + "', modifydate=now(), description='', partrs='0', labourrs='" + labourArray.getServicetotal()[i] + "', quantity='0', totalpartrs='" + labourArray.getServicetotal()[i] + "' where id='" + labourArray.getServiceestdetailids()[i] + "'");
@@ -706,7 +777,7 @@ public class AllUpdateController {
                 e.setPartrs("0");
                 e.setQuantity("0");
                 e.setTotalpartrs(labourArray.getNewservicetotal()[i]);
-                if (labourArray.getNewlabourdescription()[i] != null && !labourArray.getNewlabourdescription()[i].isEmpty()) {
+                if (labourArray.getNewlabourdescription().length > 0 && labourArray.getNewlabourdescription()[i] != null && !labourArray.getNewlabourdescription()[i].isEmpty()) {
                     e.setDescription(labourArray.getNewlabourdescription()[i]);
                 } else {
                     e.setDescription("");
@@ -726,8 +797,13 @@ public class AllUpdateController {
     public String updateWorkmanJob(@RequestParam(value = "estimatedtime") float[] estimatedtime,
             @RequestParam(value = "workmen") String[] workmenids,
             @RequestParam(value = "jsdid") String[] jsdids,
-            @RequestParam(value = "jobno") String jobno) {
-
+            @RequestParam(value = "jobno") String jobno,
+            @RequestParam(value = "jobsheetcomments") String jobsheetcomments) {
+        //code to update jobsheet table goes here
+        if (jobsheetcomments!=null) {
+            updateService.updateanyhqlquery("update jobsheet set jobsheetcomments='" + jobsheetcomments + "' where id='" + jobno + "'");
+        }
+        
         updateService.updateanyhqlquery("delete from taskboard where jobsheetid='" + jobno + "'");
 
         for (int i = 0; i < jsdids.length; i++) {
@@ -1062,7 +1138,11 @@ public class AllUpdateController {
 
     //general expense edit 
     @RequestMapping(value = "editGeneralExpense")
-    public String editGeneralExpense(@ModelAttribute GeneralExpense generalExpense, @RequestParam(value = "oldmode") String oldmode, @RequestParam(value = "tax_amount", required = false) String tax_amount, @RequestParam(value = "vattax", required = false) String vattax, @RequestParam(value = "servicetax", required = false) String servicetax) {
+    public String editGeneralExpense(@ModelAttribute GeneralExpense generalExpense,
+            @RequestParam(value = "oldmode") String oldmode,
+            @RequestParam(value = "tax_amount", required = false) String tax_amount,
+            @RequestParam(value = "vattax", required = false) String vattax,
+            @RequestParam(value = "servicetax", required = false) String servicetax) {
         //fetching limit information from limit approvals table
         String limit = env.getProperty("general_expense_limit");
         List<ApprovalLimit> limitdtls = viewService.getanyhqldatalist("from approvallimit where id='" + limit + "'");

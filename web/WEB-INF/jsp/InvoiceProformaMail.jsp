@@ -19,6 +19,7 @@
         <!--<link rel="stylesheet" href="css/tablegrid.css" />-->
         <!--<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>-->
         <script type="text/javascript" src="js/jspdf.debug.js"></script>
+        <script src="js/nicEdit.js" type="text/javascript"></script>
         <script type="text/javascript">
             function test_value() {
                 var junkVal = document.getElementById('amttotal').value;
@@ -170,14 +171,14 @@
                 // e.preventDefault();
                 //get customer email in the textbox of comment dialog
                 var customerEmail = $("#customeremail").val();
-                $("#emailList").val(customerEmail);
+                $("#emailList").val('${company_mail},'+customerEmail);
 
 
 //                    var invoicehistoryid = $(this).attr('href');
                 $("#dialogmailDetail").dialog({
                     modal: true,
                     effect: 'drop',
-                    width: 500,
+                    width: 925,
                     height: 300,
                     show: {
                         effect: "drop"
@@ -191,6 +192,8 @@
             }
             //called on ready
             $(document).ready(function () {
+
+                nicEditors.allTextAreas();
                 $("#comments").val("");
                 $("#dialogPaymentDetail").hide();
                 $("#dialogmailDetail").hide();
@@ -429,7 +432,7 @@
                                         <td width="24%" class="wn1" ><strong>Service Name</strong></td>
                                         <td width="29%" class="wn1" ><strong>Description</strong></td>
                                         <td width="11%" class="wn1" ><strong>&nbsp;</strong></td>
-                                        <td width="14%" class="wn1" align="center"><strong>Labour Rs.</strong></td>
+                                        <td width="14%" class="wn1" align="center"><strong>Price Rs.</strong></td>
                                         <!--<td width="16%"><strong>Total Amount</strong></td>-->
                                     </tr>
                                     <tr>
@@ -659,13 +662,13 @@
                 <tr>
                     <td><strong>Email</strong></td>
                     <td>
-                        <input type="text" name="emailList" id="emailList" value="" />
+                        <input type="text" name="emailList" style="width: 813px" id="emailList" value="" />
                     </td>
                 </tr>
                 <tr>
                     <td><strong>Comments</strong></td>
                     <td>
-                        <textarea name="" id="comments" rows="7" cols="50">
+                        <textarea name="area1" id="comments" cols="100">
                         </textarea>
                     </td>
                 </tr>

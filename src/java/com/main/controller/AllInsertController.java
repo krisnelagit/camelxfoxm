@@ -515,9 +515,7 @@ public class AllInsertController {
             customer.setId(maxCount);
             String uuid = UUID.randomUUID().toString();
             String genpassword = new String(uuid);
-            System.out.println("uuid = " + genpassword.substring(0, 4));
             String password = genpassword.substring(0, 4);
-            System.out.println("uuid password = " + password);
             customer.setPassword(password);
             insertService.insert(customer);
 
@@ -559,7 +557,22 @@ public class AllInsertController {
         String id = insertService.getmaxcount("customer", "id", 4);
         String maxCount = prefix + id;
         customer.setId(maxCount);
+        String uuid = UUID.randomUUID().toString();
+        String genpassword = new String(uuid);
+        String password = genpassword.substring(0, 4);
+        customer.setPassword(password);
         insertService.insert(customer);
+
+        //create customer ledger
+        Ledger ledger = new Ledger();
+        String prefixL = env.getProperty("ledger");
+        String id2 = prefixL + insertService.getmaxcount("ledger", "id", 4);
+        ledger.setId(id2);
+        ledger.setCustomerid(customer.getId());
+        ledger.setAccountname(customer.getName());
+        ledger.setLedger_type("income");
+        ledger.setLedgergroupid(env.getProperty("indirect_income"));
+        insertService.insert(ledger);
         return "redirect:create_service_checklist";
     }
 
@@ -960,7 +973,7 @@ public class AllInsertController {
                 e.setPartrs(aap.getPartrs()[i]);
                 e.setQuantity(aap.getQuantity()[i]);
                 e.setTotalpartrs(aap.getTotalpartrs()[i]);
-                if (aap.getDescription()[i] != null && !aap.getDescription()[i].isEmpty()) {
+                if (aap.getDescription().length > 0 && aap.getDescription()[i] != null && !aap.getDescription()[i].isEmpty()) {
                     e.setDescription(aap.getDescription()[i]);
                 } else {
                     e.setDescription("");
@@ -984,7 +997,7 @@ public class AllInsertController {
                 e.setPartrs("0");
                 e.setQuantity("0");
                 e.setTotalpartrs(labourArray.getServicetotal()[i]);
-                if (labourArray.getLabourdescription()[i] != null && !labourArray.getLabourdescription()[i].isEmpty()) {
+                if (labourArray.getLabourdescription().length > 0 && labourArray.getLabourdescription()[i] != null && !labourArray.getLabourdescription()[i].isEmpty()) {
                     e.setDescription(labourArray.getLabourdescription()[i]);
                 } else {
                     e.setDescription("");
@@ -996,7 +1009,7 @@ public class AllInsertController {
         }
         //insert into estimate details for service ends! here
 
-        updateService.updateanyhqlquery("update pointchecklist set isestimate='Yes',modifydate=now() where id='" + estimate.getPclid() + "'");
+        updateService.updateanyhqlquery("update pointchecklist set isestimate='Yes',enableDelete='No',modifydate=now() where id='" + estimate.getPclid() + "'");
 
         //code for inserting some new parts 
         return "redirect:estimate.html";
@@ -1072,7 +1085,7 @@ public class AllInsertController {
                 insertService.insert(jobsheetDetails);
             }
         }
-        updateService.updateanyhqlquery("update estimate set isjobsheetready='Yes',modifydate=now() where id='" + myestimateid + "'");
+        updateService.updateanyhqlquery("update estimate set isjobsheetready='Yes',enableDelete='No',modifydate=now() where id='" + myestimateid + "'");
 
         List<Map<String, Object>> taskrelated = viewService.getanyjdbcdatalist("SELECT jsd.id,jsd.workmanid,wm.name,sum(jsd.estimatetime) as totalestimatetime FROM jobsheetdetails jsd\n"
                 + "inner join workman wm on wm.id=jsd.workmanid\n"
@@ -1100,12 +1113,17 @@ public class AllInsertController {
     public String convertinInvoice(@ModelAttribute Invoice invoice,
             @ModelAttribute InventoryArray inventoryArray,
             @RequestParam(value = "loopvalue", required = false) int loopvalue,
+            @RequestParam(value = "finalcomments", required = false) String finalcomments,
             @RequestParam(value = "serviceAction", required = false) String[] serviceAction,
             @RequestParam(value = "myjsid") String myjsid,
             @RequestParam(value = "isapplicable") String isapplicable,
             @RequestParam(value = "date_time", required = false) String date_time,
             @RequestParam(value = "customer_id", required = false) String customer_id,
             @RequestParam(value = "message", required = false) String message) {
+        if (finalcomments !=null) {
+            updateService.updateanyhqlquery("update jobsheet set finalcomments='"+finalcomments+"' where id='"+myjsid+"'");
+        }
+        
         String prefix = env.getProperty("invoice");
         String id = insertService.getmaxcount("invoice", "id", 4);
         String maxCount = prefix + id;
@@ -1345,7 +1363,7 @@ public class AllInsertController {
         insertService.insert(feedback);
 
         //update jobsheet 
-        updateService.updateanyhqlquery("update jobsheet set isinvoiceconverted='Yes',modifydate=now() where id='" + myjsid + "'");
+        updateService.updateanyhqlquery("update jobsheet set isinvoiceconverted='Yes',enableDelete='No',modifydate=now() where id='" + myjsid + "'");
 
         return "redirect:invoiceMasterLink";
     }
