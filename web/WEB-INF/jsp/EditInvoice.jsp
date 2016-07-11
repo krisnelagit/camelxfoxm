@@ -161,7 +161,7 @@
 
                 mobilenumber = [
             <c:forEach var="obj" items="${customers}">
-                    {mobnumber: "${obj.mobilenumber}", customername: "${obj.name}", customerid: "${obj.id}"},
+                    {mobnumber: "${obj.mobilenumber}", customername: "${obj.name}", customerid: "${obj.id}", custEmail: "${obj.email}"},
             </c:forEach>
                 ];
                 var availableTags = []; // to show the user auto complete data
@@ -170,7 +170,7 @@
                 for (var i = 0; i < mobilenumber.length; ++i)
                 {
                     availableTags.push(mobilenumber[i].mobnumber);
-                    mapping[mobilenumber[i].mobnumber] = mobilenumber[i].customername + ',' + mobilenumber[i].customerid;
+                    mapping[mobilenumber[i].mobnumber] = mobilenumber[i].customername + ',' + mobilenumber[i].customerid+ ',' + mobilenumber[i].custEmail;
                 }
 
                 $("input:text[id^='mobilenumber']").live("focus.autocomplete", null, function () {
@@ -181,6 +181,7 @@
                             var splitcustomer = data.split(',');
                             $("#customer_name").val(splitcustomer[0]);
                             $("#customer_id").val(splitcustomer[1]);
+                            $("#transactionmail").val(splitcustomer[2]);
                             //code for ledgers begins! here
                             $("#ledgerid option").remove();
                             $.ajax({
@@ -883,7 +884,6 @@
 //                calculatebalance();
 
                 $("#claimcharges").keyup(function () {
-                    console.log("i m keyup ");
                     var companyinsurance = $("#companytotalalways").val();
 
                     //less from companyinsurance
@@ -1261,6 +1261,14 @@
                     </c:when>
                     <c:otherwise>
                         <tr>
+                            <td align="left" valign="top">Estimated delivery date</td>
+                            <td align="left" valign="top">
+                                <label for="textfield3">
+                                    ${deliverydate}   
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
                             <td align="left" valign="top">Final comments</td>
                             <td align="left" valign="top">
                                 <label for="textfield3">
@@ -1303,9 +1311,13 @@
                                     <option value="Depreciation" selected="">Depreciation</option>
                                     <option value="Full Payment">Full Payment</option>                                    
                                 </c:when>
+                                <c:when test="${invoiceDt.insurancetype=='Full Payment'}">
+                                    <option value="Depreciation">Depreciation</option>
+                                    <option value="Full Payment" selected="">Full Payment</option>                                    
+                                </c:when>
                                 <c:otherwise>
-                                    <option value="Full Payment" selected="">Full Payment</option>  
-                                    <option value="Depreciation">Depreciation</option>          
+                                    <option value="Depreciation">Depreciation</option>  
+                                    <option value="Full Payment">Full Payment</option>          
                                 </c:otherwise>
                             </c:choose>
                         </select>
@@ -1504,7 +1516,7 @@
                     </td>
                     <td align="left" valign="top">
                         <input name="companytotal" readonly="" value="${invoiceDt.companytotal}" type="number" id="companytotal" /> 
-                        <input name="companytotalalways" readonly="" value="0" type="hidden" id="companytotalalways" />
+                        <input name="companytotalalways" readonly="" value="${invoiceDt.companytotal}" type="hidden" id="companytotalalways" />
                         <input name="customertotal" readonly="" value="${invoiceDt.customertotal}" type="hidden" id="customertotal" />
                     </td>                
                 </tr>

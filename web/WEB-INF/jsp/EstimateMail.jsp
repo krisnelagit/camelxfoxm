@@ -16,150 +16,8 @@
             }  
         </style>
         <script src="js/jquery-ui.js"></script>
-        <!--<link rel="stylesheet" href="css/tablegrid.css" />-->
-        <!--<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>-->
         <script type="text/javascript" src="js/jspdf.debug.js"></script>
         <script src="js/nicEdit.js" type="text/javascript"></script>
-        <script type="text/javascript">
-//            bkLib.onDomLoaded(function () {
-//                nicEditors.allTextAreas();
-//            });
-        </script>
-        <script type="text/javascript">
-            function test_value() {
-                var junkVal = document.getElementById('amttotal').value;
-                junkVal = Math.floor(junkVal);
-                var obStr = new String(junkVal);
-                numReversed = obStr.split("");
-                actnumber = numReversed.reverse();
-                if (Number(junkVal) >= 0) {
-                    //do nothing
-                } else {
-                    alert('wrong Number cannot be converted');
-                    return false;
-                }
-                if (Number(junkVal) === 0) {
-                    document.getElementById('finalamtwords').innerHTML = obStr + '' + 'Rupees Zero Only';
-                    return false;
-                }
-                if (actnumber.length > 9) {
-                    alert('Oops!!!! the Number is too big to covertes');
-                    return false;
-                }
-                var iWords = ["Zero", " One", " Two", " Three", " Four", " Five", " Six", " Seven", " Eight", " Nine"];
-                var ePlace = ['Ten', ' Eleven', ' Twelve', ' Thirteen', ' Fourteen', ' Fifteen', ' Sixteen', ' Seventeen', ' Eighteen', 'Nineteen'];
-                var tensPlace = ['dummy', ' Ten', ' Twenty', ' Thirty', ' Forty', ' Fifty', ' Sixty', ' Seventy', ' Eighty', ' Ninety'];
-                var iWordsLength = numReversed.length;
-                var totalWords = "";
-                var inWords = new Array();
-                var finalWord = "";
-                j = 0;
-                for (i = 0; i < iWordsLength; i++) {
-                    switch (i)
-                    {
-                        case 0:
-                            if (actnumber[i] == 0 || actnumber[i + 1] == 1) {
-                                inWords[j] = '';
-                            } else {
-                                inWords[j] = iWords[actnumber[i]];
-                            }
-                            inWords[j] = inWords[j];
-                            break;
-                        case 1:
-                            tens_complication();
-                            break;
-                        case 2:
-                            if (actnumber[i] == 0) {
-                                inWords[j] = '';
-                            } else if (actnumber[i - 1] != 0 && actnumber[i - 2] != 0) {
-                                inWords[j] = iWords[actnumber[i]] + ' Hundred and';
-                            } else {
-                                inWords[j] = iWords[actnumber[i]] + ' Hundred';
-                            }
-                            break;
-                        case 3:
-                            if (actnumber[i] == 0 || actnumber[i + 1] == 1) {
-                                inWords[j] = '';
-                            } else {
-                                inWords[j] = iWords[actnumber[i]];
-                            }
-                            if (actnumber[i + 1] != 0 || actnumber[i] > 0) { //here
-                                inWords[j] = inWords[j] + " Thousand";
-                            }
-                            break;
-                        case 4:
-                            tens_complication();
-                            break;
-                        case 5:
-                            if (actnumber[i] == "0" || actnumber[i + 1] == 1) {
-                                inWords[j] = '';
-                            } else {
-                                inWords[j] = iWords[actnumber[i]];
-                            }
-                            if (actnumber[i + 1] != 0 || actnumber[i] > 0) {   //here 
-                                inWords[j] = inWords[j] + " Lakh";
-                            }
-                            break;
-                        case 6:
-                            tens_complication();
-                            break;
-                        case 7:
-                            if (actnumber[i] == "0" || actnumber[i + 1] == 1) {
-                                inWords[j] = '';
-                            } else {
-                                inWords[j] = iWords[actnumber[i]];
-                            }
-                            if (actnumber[i + 1] != 0 || actnumber[i] > 0) { // changed here
-                                inWords[j] = inWords[j] + " Crore";
-                            }
-                            break;
-                        case 8:
-                            tens_complication();
-                            break;
-                        default:
-                            break;
-                    }
-                    j++;
-                }
-                function tens_complication() {
-                    if (actnumber[i] == 0) {
-                        inWords[j] = '';
-                    } else if (actnumber[i] == 1) {
-                        inWords[j] = ePlace[actnumber[i - 1]];
-                    } else {
-                        inWords[j] = tensPlace[actnumber[i]];
-                    }
-                }
-                inWords.reverse();
-                for (i = 0; i < inWords.length; i++) {
-                    finalWord += inWords[i];
-                }
-                return finalWord;
-            }
-            function convert_amount_into_amttotal_paisa() {
-
-                var finalWord1 = test_value();
-                var finalWord2 = "";
-                var val = document.getElementById('amttotal').value;
-                var actual_val = document.getElementById('amttotal').value;
-                document.getElementById('amttotal').value = val;
-                if (val.indexOf('.') !== -1)
-                {
-                    val = val.substring(val.indexOf('.') + 1, val.length);
-                    if (val === '0' || val === '00') {
-                        finalWord2 = "zero paisa only";
-                    } else {
-                        document.getElementById('amttotal').value = val;
-                        finalWord2 = test_value() + " paisa only";
-                    }
-                    document.getElementById('finalamtwords').innerHTML = finalWord1 + " Rupees and " + finalWord2;
-                } else {
-                    //finalWord2 =  " Zero paisa only";
-                    document.getElementById('finalamtwords').innerHTML = finalWord1 + " Rupees Only";
-                }
-                document.getElementById('amttotal').value = actual_val;
-            }
-        </script>
         <script>
             //called on ready
             $(document).ready(function () {
@@ -209,7 +67,7 @@
                 //code for confirm estimate goes here
                 $(".confirmclick").click(function (e) {
                     var result = confirm("Are you sure to confirm");
-                    if (result == true) {
+                    if (result === true) {
                         var id = "${param.estid}";
                         $.ajax({
                             type: "post",
@@ -231,7 +89,7 @@
                 //code for unconfirm estimate goes here
                 $(".unconfirmclick").click(function (e) {
                     var result = confirm("Are you sure to un-confirm");
-                    if (result == true) {
+                    if (result === true) {
                         var id = "${param.estid}";
                         $.ajax({
                             type: "post",
@@ -241,7 +99,7 @@
                             success: function (data) {
                                 if (data === 'No') {
                                     $(".unconfirmclick").hide();
-                    $(".confirmclick").show();
+                                    $(".confirmclick").show();
                                 }
                             },
                             error: function () {
@@ -326,7 +184,7 @@
 
                 var prtContent = document.getElementById(strid);
                 var strOldOne = prtContent.innerHTML;
-                var WinPrint = window.open('', '', 'letf=0,top=0,width=1500,height=400,toolbar=0,scrollbars=0,sta­tus=0');
+                var WinPrint = window.open('', '', 'letf=0,top=0,width=1500,height=400,toolbar=0,scrollbars=0,status=0');
                 WinPrint.document.write('<link rel="stylesheet" href="css/tablegrid.css" />');
                 WinPrint.document.write(prtContent.innerHTML);
                 WinPrint.document.close();
@@ -386,68 +244,43 @@
                         alert("i m err");
                     }
                 });
-//                var pdf = new jsPDF('p', 'pt', 'a4');
-//                source = $('#testcase')[0];
-//                specialElementHandlers = {
-//                    // element with id of "bypass" - jQuery style selector
-//                    '#bypassme': function (element, renderer) {
-//                        // true = "handled elsewhere, bypass text extraction"
-//                        return true
-//                    }
-//                };
-//                margins = {
-//                    top: 80,
-//                    bottom: 60,
-//                    left: 40,
-//                    width: 522
-//                };
-//                pdf.fromHTML(
-//                        source, // HTML string or DOM elem ref.
-//                        margins.left, // x coord
-//                        margins.top, {// y coord
-//                            'width': margins.width, // max width of content on PDF
-//                            'elementHandlers': specialElementHandlers
-//                        },
-//                function (dispose) {
-//                    // dispose: object with X, Y of the last line add to the PDF 
-//                    //          this allow the insertion of new lines after html
-//                    // Making Data URI
-//                    var out = pdf.output('datauristring');
-//                    //ajax call to send mail begin here
-//                    var customerName = $("#customername").val();
-//                    var customerEmail = $("#customeremail").val();
-//                    var emailComments = $("#comments").val();
-//                    
-//                    //ajax call to send mail ends!! here
-//                }, margins);
             }
             //mod send mail function to test written on 06-11-2015 ends!! here
 
-            //mod code witten here is modification to show dialog and allow user to write cusotom mail message begin here
-            function showcommentsdialog() {
-                $("#dialogmailDetail").show();
-                //our add comment dialog
-                $("#dialogmailDetail").dialog({
-                    modal: true,
-                    effect: 'drop',
-                    width: 500,
-                    height: 200,
-                    show: {
-                        effect: "drop"
-                    },
-                    hide: {
-                        effect: "drop"
-                    }
-                });
+            //new code to print begins here
+            function PrintElem(elem)
+            {
+                Popup($(elem).html());
             }
-            //mod code witten here is modification to show dialog and allow user to write cusotom mail message ends! here
+
+            function Popup(data)
+            {
+                var mywindow = window.open('', 'Print Estimate', 'height=400,width=600');
+                mywindow.document.write('<html><head><title>Print Estimate</title>');
+                /*optional stylesheet*/ 
+//                mywindow.document.write('<link rel="stylesheet" href="css/tablegrid.css" type="text/css" />');
+                mywindow.document.write('</head><body >');
+                mywindow.document.write(data);
+                mywindow.document.write('</body></html>');
+
+                mywindow.document.close(); // necessary for IE >= 10
+                mywindow.focus(); // necessary for IE >= 10
+
+                mywindow.print();
+                mywindow.close();
+
+                return true;
+            }
+            //new code to print ends! here
+
+
 
         </script>
     </head>
     <body>
 
 
-        <a href="#" class="view button-001 unconfirmclick">Un-confirm</a>  <a href="#" class="view button-001 confirmclick">Confirm</a>  <a href="#" class="view button-001 mailclick">Send Mail</a>  <a href="estimate" class="view button-001">Back</a>
+        <a href="#" class="view button-001 unconfirmclick">Un-confirm</a>  <a href="#" class="view button-001 confirmclick">Confirm</a>  <a href="#" class="view button-001 mailclick">Send Mail</a>  <a href="estimate" class="view button-001">Back</a><a href="#" class="view button-001"  onclick="PrintElem('#printdivinside')">Print</a>
 
 
         <label id="send"><h2>Sending mail <img src="images/ajax-loader.gif" alt="loader View"></h2></label><label id="senturmail"><h2>Mail sent successfully <img src="images/MB__mail_icon.png" alt="loader View"></h2></label><label id="sendError"><h2>Please Check Your Connectivity</h2></label>
@@ -482,6 +315,14 @@
                         <input type="hidden" name="custdate" id="custdate" value="<fmt:formatDate pattern="yyyy-MM-dd" value="${estcustdtls.pcldate}" />" /><br />
                         <strong>Vehicle Make &nbsp;:</strong>${estcustdtls.make} &nbsp; ${estcustdtls.carmodel}<br />
                         <strong>Vehicle No. &nbsp;:</strong>${estcustdtls.vehiclenumber}<input type="hidden" name="custvehicle" id="custvehicle" value="${estcustdtls.vehiclenumber}" /><br />
+                        <strong>Kilometer (KM)</strong>&nbsp;:	<c:choose>
+                            <c:when test="${empty estcustdtls.km_in}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${estcustdtls.km_in}
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                     <br />
                     <br />

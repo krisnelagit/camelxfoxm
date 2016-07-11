@@ -1296,6 +1296,21 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align="left" valign="top">Estimated delivery date</td>
+                        <td align="left" valign="top">
+                            <label for="textfield3">
+                                <c:choose>
+                                    <c:when test="${empty custdtls.deliverydate}">
+                                        N/A
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${custdtls.deliverydate}                                        
+                                    </c:otherwise>
+                                </c:choose>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
                         <td align="left" valign="top">Final comments</td>
                         <td align="left" valign="top">
                             <label for="textfield3">
@@ -1322,8 +1337,8 @@
                         <td align="left" valign="top"><label for="textfield3"></label>
                             <select name="insurancetype" id="typeofinsurance" onchange="makefull(this);">
                                 <option value="" disabled selected style="display: none">--select--</option>
-                                <option>Full Payment</option>
                                 <option>Depreciation</option>
+                                <option>Full Payment</option>                                
                             </select>
                         </td>
                     </tr>
@@ -1541,7 +1556,7 @@
                             <strong>claim charges</strong>
                         </td>
                         <td align="left" valign="top">
-                            <input name="claimcharges" value="0" type="number" id="claimcharges" />
+                            <input name="claimcharges" value="0" step="0.01" type="number" id="claimcharges" />
                         </td>                
                     </tr>
                     <tr>

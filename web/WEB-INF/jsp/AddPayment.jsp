@@ -188,15 +188,16 @@
                     if (advanceAmount > balance) {
                         $("#payableinvoiceamount").val(0);
                     }
-                    if ((Number(balance) > Number(advanceAmount)) && (Number(balanceadvanceAmount) > 0)) {
+                    if ((Number(balance) > Number(advanceAmount)) && (Number(balanceadvanceAmount) > 0)) {                        
                         payable = Number(balance) - Number(advanceAmount) - Number(mytotal);
                         $("#payableinvoiceamount").val(payable.toFixed(2));
                     } else if ((Number(balance) > Number(advanceAmount)) && (Number(balanceadvanceAmount) === 0)) {
-
+                        console.log(" i m checked from advacne 2nd if");
                         var valamount = $("#amount").val();
                         payable = Number(balance) - Number(valamount);
                         $("#payableinvoiceamount").val(payable.toFixed(2));
                     } else {
+                        console.log(" i m checked from advacne 3rd if");
                         payable = Number(balance) - Number(advanceAmount);
                         $("#payableinvoiceamount").val(payable.toFixed(2));
                     }

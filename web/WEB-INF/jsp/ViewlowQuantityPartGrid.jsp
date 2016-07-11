@@ -100,6 +100,7 @@
                                         </c:choose>                                
                                     </td>
                                 </tr>
+                                <c:set value="${count+1}" var="count"></c:set>
                             </c:forEach>                
                         </tbody>
                     </table>

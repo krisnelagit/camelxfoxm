@@ -28,8 +28,7 @@
                 actnumber = numReversed.reverse();
                 if (Number(junkVal) >= 0) {
                     //do nothing
-                }
-                else {
+                } else {
                     alert('wrong Number cannot be converted');
                     return false;
                 }
@@ -55,8 +54,7 @@
                         case 0:
                             if (actnumber[i] == 0 || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             inWords[j] = inWords[j];
@@ -67,19 +65,16 @@
                         case 2:
                             if (actnumber[i] == 0) {
                                 inWords[j] = '';
-                            }
-                            else if (actnumber[i - 1] != 0 && actnumber[i - 2] != 0) {
+                            } else if (actnumber[i - 1] != 0 && actnumber[i - 2] != 0) {
                                 inWords[j] = iWords[actnumber[i]] + ' Hundred and';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]] + ' Hundred';
                             }
                             break;
                         case 3:
                             if (actnumber[i] == 0 || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) { //here
@@ -92,8 +87,7 @@
                         case 5:
                             if (actnumber[i] == "0" || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) {   //here 
@@ -106,8 +100,7 @@
                         case 7:
                             if (actnumber[i] == "0" || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) { // changed here
@@ -125,11 +118,9 @@
                 function tens_complication() {
                     if (actnumber[i] == 0) {
                         inWords[j] = '';
-                    }
-                    else if (actnumber[i] == 1) {
+                    } else if (actnumber[i] == 1) {
                         inWords[j] = ePlace[actnumber[i - 1]];
-                    }
-                    else {
+                    } else {
                         inWords[j] = tensPlace[actnumber[i]];
                     }
                 }
@@ -151,14 +142,12 @@
                     val = val.substring(val.indexOf('.') + 1, val.length);
                     if (val == '0' || val == '00') {
                         finalWord2 = "zero paisa only";
-                    }
-                    else {
+                    } else {
                         document.getElementById('amttotal').value = val;
                         finalWord2 = test_value() + " paisa only";
                     }
                     document.getElementById('finalamtwords').innerHTML = finalWord1 + " Rupees and " + finalWord2;
-                }
-                else {
+                } else {
                     //finalWord2 =  " Zero paisa only";
                     document.getElementById('finalamtwords').innerHTML = finalWord1 + " Rupees Only";
                 }
@@ -380,7 +369,7 @@
                 </c:when>
             </c:choose> 
         <input type="hidden" name="invoiceid" id="paymenthistory" value="${param.invoiceid}" />
-        <a href="#" onclick="showhistory()" class="view button-001"><img src="images/wallet33.png" width="15" height="13"/>&nbsp;History</a>  <a href="sendMailInvoice?invoiceid=${param.invoiceid}" class="view button-001">Goto Send Mail</a>  <a href="invoiceMasterLink" class="view button-001">Back</a><a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
+        <a href="#" onclick="showhistory()" class="view button-001"><img src="images/wallet33.png" width="15" height="13"/>&nbsp;History</a>  <a href="sendMailInvoice?invoiceid=${param.invoiceid}" class="view button-001">Goto Send Mail</a>  <a href="paidcustomerinvoice" class="view button-001">Back</a><a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
             <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
                 <c:choose>
                     <c:when test="${sessionScope.USERTYPE.equals('admin')}">
@@ -411,10 +400,10 @@
                                 <img src="https://goo.gl/KsVTbt" width="80" height="65" />
                             </div>
                         </div>
-                        <div align="center"><strong style="font-size:18px">CUSTOMER LIABILITY INVOICE</strong></div>                    
+                        <div align="center"><strong style="font-size:18px">TAX INVOICE</strong></div>                    
                     </div>
                     <div class="box1" align="left" style="display: inline-block;">
-                        <strong>${invoiceDt.customer_name}</strong><input type="hidden" id="customername" name="customername" value="${invoiceDt.customer_name}" />
+                        <strong>${customerinvoiceDt.customer_name}</strong><input type="hidden" id="customername" name="customername" value="${customerinvoiceDt.customer_name}" />
                         <input type="hidden" name="" id="jspdfdata" value="" /><br />
                         ${customerinvoiceDt.address}<br />
                         ${customerinvoiceDt.mobilenumber}<br />                    
@@ -519,7 +508,7 @@
                                         <td width="6%" class="wn1"><strong>Sr. No.</strong></td>
                                         <td width="24%" class="wn1" ><strong>Name</strong></td>
                                         <td width="11%" class="wn1" ><strong>QTY</strong></td>
-                                        <td width="14%" class="wn1" align="center"><strong>Customer Liability(Rs.)</strong></td>
+                                        <td width="14%" class="wn1" align="center"><strong>Price Rs.</strong></td>
                                         <!--<td width="16%"><strong>Total Amount</strong></td>-->
                                     </tr>
                                     <c:set value="1" var="count"></c:set>
@@ -528,7 +517,7 @@
                                             <td align="center" >${count}</td>
                                             <td>${ob.itemname}</td>
                                             <td align="right">${ob.quantity}</td>
-                                            <td align="right">${ob.insurancecustomeramount}</td>
+                                            <td align="right">${ob.total}</td>
                                             <!--<td align="right">120.00</td>-->
                                         </tr>
                                         <c:set value="${count+1}" var="count"></c:set>
@@ -539,7 +528,7 @@
                                         <td>&nbsp;</td>
                                         <td>&nbsp;</td>
                                         <td align="right"><strong>Spares total</strong></td>
-                                        <td align="right"><strong>${sparelab}</strong></td>
+                                        <td align="right"><strong>${invoiceDt.sparepartsfinal}</strong></td>
                                     </tr>
                                     <tr>
                                         <!--<td >&nbsp;</td>-->
@@ -555,7 +544,7 @@
                                             <td width="6%" class="wn1"><strong><c:if test="${not empty labourinventorydt}">Sr. No.</c:if>&nbsp;</strong></td>
                                             <td width="24%" class="wn1" ><strong><c:if test="${not empty labourinventorydt}">Service Name</c:if>&nbsp;</strong></td>
                                                 <td width="11%" class="wn1" ><strong>&nbsp;</strong></td>
-                                                <td width="14%" class="wn1" align="center"><strong><c:if test="${not empty labourinventorydt}">Customer Liability(Rs.)</c:if>&nbsp;</strong></td>
+                                                <td width="14%" class="wn1" align="center"><strong><c:if test="${not empty labourinventorydt}">Labour Rs.</c:if>&nbsp;</strong></td>
                                                 <!--<td width="16%"><strong>Total Amount</strong></td>-->
                                             </tr>
                                         <c:set value="1" var="count"></c:set>
@@ -564,7 +553,7 @@
                                                 <td align="center" >${count}</td>
                                                 <td>${ob.name}</td>
                                                 <td align="right">&nbsp;</td>
-                                                <td align="right">${ob.customerinsurance}</td>
+                                                <td align="right">${ob.total}</td>
                                                 <!--<td align="right">120.00</td>-->
                                             </tr>
                                             <c:set value="${count+1}" var="count"></c:set>
@@ -574,14 +563,14 @@
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
                                             <td align="right"><strong>Labour Charges total</strong></td>
-                                            <td align="right"><strong>${laborlab}</strong></td>
+                                            <td align="right"><strong>${invoiceDt.labourfinal}</strong></td>
                                         </tr>
                                         <tr>
                                             <!--<td >&nbsp;</td>-->
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
-                                            <td align="right"><strong>Claim charges</strong></td>
-                                            <td align="right"><strong>${invoiceDt.claimcharges}</strong></td>
+                                            <td align="right">&nbsp;</td>
+                                            <td align="right">&nbsp;</td>
                                         </tr>                                
                                     </c:if>
                                     <c:set value="1" var="count"></c:set>
@@ -591,37 +580,54 @@
                                             <td width="24%">&nbsp;</td>
                                             <c:choose>
                                                 <c:when test="${count==1}">
-                                                    <td width="11%" align="right"><strong>Add ${obva.name} @ ${obva.percent}%</strong></td>
-                                                    <td width="14%" align="right">
-                                                        <strong>
-                                                            <div id="${count}"> 
-                                                                <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${sparelab * obva.percent / 100}" />
-
-                                                            </div>
-                                                        </strong>
-                                                    </td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <td width="11%" align="right"><strong>Add ${obva.name} @ ${obva.percent}%</strong></td>
-                                                    <td width="14%" align="right">
-                                                        <strong>
-                                                            <div id="me2">
-                                                                <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${laborlab * obva.percent / 100}" />
-
-                                                            </div>
-                                                        </strong>
-                                                    </td>
-                                                </c:otherwise>
-                                            </c:choose>
+                                                    <td width="11%" align="right"><strong> ${obva.name} @ ${obva.percent}%</strong></td>
+                                                    <td width="14%" align="right"><strong><div id="${count}"> ${invoiceDt.taxAmount1}</div></strong></td>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                    <td width="11%" align="right"><strong> ${obva.name} @ ${obva.percent}%</strong></td>
+                                                    <td width="14%" align="right"><strong><div id="me2"> ${invoiceDt.taxAmount2}</div></strong></td>
+                                                            </c:otherwise>
+                                                        </c:choose>
                                         </tr>
                                         <c:set value="${count+1}" var="count"></c:set>
                                     </c:forEach>
+                                    <c:if test="${invoiceDt.discountamount gt '0'}">
+                                    <tr>
+                                        <!--<td >&nbsp;</td>-->
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td align="right"><strong> Discount</strong></td>
+                                        <td align="right"><strong>${invoiceDt.discountamount}</strong></td>
+                                    </tr>
+                                    </c:if>
                                     <tr>
                                         <td style="background-color:#f4f4f4">&nbsp;</td>
                                         <td style="background-color:#f4f4f4"><strong> <label id="finalamtwords"></label> </strong></td>
                                         <td align="right" style="background-color:#f4f4f4"><strong style="float:right">Grand Total</strong></td>
-                                        <td align="right" style="background-color:#f4f4f4"><strong>${totalliab - invoiceDt.claimcharges}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong></td>
+                                        <td align="right" style="background-color:#f4f4f4">
+                                        <strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong>                                          
+                                        </td>
                                     </tr>
+
+                                    
+                                    <%--
+                                    <c:choose>
+                                        <c:when test="${invoiceDt.isinsurance ne 'No'}">   
+    <!--                                        <tr>
+                                                <td style="background-color:#f4f4f4">&nbsp;</td>
+                                                <td style="background-color:#f4f4f4"><strong> <label id="nowords"></label> </strong></td>
+                                                <td align="right" style="background-color:#f4f4f4"><strong style="float:right">Customer Liability</strong></td>
+                                                <td align="right" style="background-color:#f4f4f4"><strong>$ {invoiceDt.customerinsuranceliability}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="background-color:#f4f4f4">&nbsp;</td>
+                                                <td style="background-color:#f4f4f4"><strong> <label id="nowords"></label> </strong></td>
+                                                <td align="right" style="background-color:#f4f4f4"><strong style="float:right">Company Liability</strong></td>
+                                                <td align="right" style="background-color:#f4f4f4"><strong>$ {invoiceDt.companytotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong></td>
+                                            </tr>-->
+                                        </c:when>
+                                    </c:choose>
+                                    --%>
                                 </table>
                                 <div style="padding: 7px 7px;">
                                     <div class="box3" align="left" style="display: inline-block;">

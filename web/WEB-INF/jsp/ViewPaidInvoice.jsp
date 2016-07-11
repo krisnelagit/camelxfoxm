@@ -125,7 +125,7 @@
                             </c:choose>
                         </td>
                         <td align="left">
-                            <a href="viewCustomerInvoice?invoiceid=${ob.id}" title="View Invoice"><img src="images/view.png" width="21" height="13" /></a>&nbsp;
+                            <a href="viewCustomerInsurancePaidInvoice?invoiceid=${ob.id}" title="View Invoice"><img src="images/view.png" width="21" height="13" /></a>&nbsp;
                             <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
                             <c:choose>
                                 <c:when test="${ob.ispaid=='No'}">

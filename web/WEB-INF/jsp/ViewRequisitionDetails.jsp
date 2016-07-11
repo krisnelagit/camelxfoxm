@@ -10,14 +10,32 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>View Requisition Details</title>
+        <title>Spares Requisition</title>
         <link href="css/csstable.css" rel="stylesheet" type="text/css" />
+        <script>
+            function printContent(el) {
+                var restorepage = document.body.innerHTML;
+                var printcontent = document.getElementById(el).innerHTML;
+                document.body.innerHTML = printcontent;
+                window.print();
+                document.body.innerHTML = restorepage;
+            }
+        </script>
+        <style type="text/css">
+            @media print{
+                #printdiv *
+                {
+                    font-size: 1px !important;
+                }
+            }  
+        </style>
     </head>
     <body>
-        <a href="viewSpareRequisitionGrid" class="view">Back</a>
+        <a href="viewSpareRequisitionGrid" class="view">Back</a>&nbsp;<a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
         <!--<a href="#" class="view" style="margin-right:10px;">Email</a>-->
         <h2>Spares Requisition</h2>
-        <br />
+        <div id="printdiv">
+            <br />
             <table width="100%" cellpadding="5">
                 <tr>
                     <td align="left" valign="top">Date</td>
@@ -38,7 +56,7 @@
                 </tr>
                 <tr>
                     <td>License Number</td>
-                    <td>${jsuserdtls.licensenumber}</td>
+                    <td>${jsuserdtls.vehiclenumber}</td>
                 </tr>
                 <tr>
                     <td>VIN No.</td>
@@ -97,6 +115,19 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Estimated delivery date</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${empty jsuserdtls.deliverydate}">
+                                N/A
+                            </c:when>
+                            <c:otherwise>
+                                ${jsuserdtls.deliverydate}                                  
+                            </c:otherwise>
+                        </c:choose>  
+                    </td>
+                </tr>
+                <tr>
                     <td>Comments</td>
                     <td>
                         <c:choose>
@@ -133,8 +164,9 @@
                     <c:set value="${count+1}" var="count"></c:set>
                 </c:forEach>
             </table>
-            <center>        
-                <a class="view2" href="editRequisitionPage?jsid=${jsuserdtls.jobno}">Edit</a>
-            </center>
-    </body>
+        </div>
+    <center>        
+        <a class="view2" href="editRequisitionPage?jsid=${jsuserdtls.jobno}">Edit</a>
+    </center>
+</body>
 </html>

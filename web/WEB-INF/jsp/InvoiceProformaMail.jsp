@@ -5,7 +5,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Proforma Invoice</title>
+        <title>Invoice</title>
         <link href="css/jquery-ui_1.css" rel="stylesheet" type="text/css" />
         <style type="text/css">
             @media print{
@@ -167,29 +167,6 @@
             }
         </script>
         <script>
-            function sendmailtest() {
-                // e.preventDefault();
-                //get customer email in the textbox of comment dialog
-                var customerEmail = $("#customeremail").val();
-                $("#emailList").val('${company_mail},'+customerEmail);
-
-
-//                    var invoicehistoryid = $(this).attr('href');
-                $("#dialogmailDetail").dialog({
-                    modal: true,
-                    effect: 'drop',
-                    width: 925,
-                    height: 300,
-                    show: {
-                        effect: "drop"
-                    },
-                    hide: {
-                        effect: "drop"
-                    }
-                });
-                $("#comments").val("");
-                $("#sendcomments").prop("disabled", false);
-            }
             //called on ready
             $(document).ready(function () {
 
@@ -203,7 +180,29 @@
                 convert_amount_into_amttotal_paisa();
 
                 //code written to display mail comment box begin here
+                $(".mailclick").click(function (e) {
+                    e.preventDefault();
+                    //get customer email in the textbox of comment dialog
+                    var customerEmail = $("#customeremail").val();
+                    $("#emailList").val('${company_mail},'+customerEmail);
+                    
 
+//                    var invoicehistoryid = $(this).attr('href');
+                    $("#dialogmailDetail").dialog({
+                        modal: true,
+                        effect: 'drop',
+                        width: 925,
+                        height: 300,
+                        show: {
+                            effect: "drop"
+                        },
+                        hide: {
+                            effect: "drop"
+                        }
+                    });
+                    $("#comments").val("");
+                    $("#sendcomments").prop("disabled", false);
+                });
                 //code written to display mail comment box ends! here
 
                 //code written here to show payment history begins here
@@ -281,11 +280,11 @@
                 //invoice name logic                
                 var customerdate = $("#custdate").val();
                 var customervehicle = $("#custvehicle").val();
-                var invoicename = customervehicle + " " + customerdate;
-
+                var invoicename=customervehicle+" "+customerdate;
+                
                 var customerName = $("#customername").val();
                 var customerEmail = $("#emailList").val();
-                var emailComments = $("#comments").val();
+                var emailComments = $('.nicEdit-main').html().substring(0, 20000);
                 var out = document.getElementById("printdiv").innerHTML;
 //                console.log(out);
 
@@ -297,7 +296,7 @@
                         customerEmail: customerEmail,
                         mypdfbase: out,
                         emailcomments: emailComments,
-                        name: "Invoice for " + invoicename
+                        name: "Invoice for "+invoicename
                     },
                     cache: false,
                     success: function (data) {
@@ -375,9 +374,8 @@
     <body>
 
 
-        <a href="#"  class="view button-001 mailclick" onclick="sendmailtest()">Send Mail</a>
-        <a href="invoiceMasterLink" class="view button-001">Back</a> <a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
-
+        <a href="#" class="view button-001 mailclick">Send Mail</a>  <a href="viewCustomerInsuranceInvoice?invoiceid=${param.invoiceid}" class="view button-001">Back</a>
+        
 
         <label id="send"><h2>Sending mail <img src="images/ajax-loader.gif" alt="loader View"></h2></label><label id="senturmail"><h2>Mail sent successfully <img src="images/MB__mail_icon.png" alt="loader View"></h2></label><label id="sendError"><h2>Please Check Your Connectivity</h2></label>
         <h2>Send Invoice</h2>
@@ -396,7 +394,7 @@
                                 <img src="https://goo.gl/KsVTbt" width="100" />
                             </div>
                         </div>
-                        <div align="center"><strong style="font-size:18px">PROFORMA INVOICE</strong></div>                    
+                        <div align="center"><strong style="font-size:18px">TAX INVOICE</strong></div>                    
                     </div>
                     <div class="box1" align="left" style="display: inline-block;">
                         <strong>${invoiceDt.customer_name}</strong><input type="hidden" id="customername" name="customername" value="${invoiceDt.customer_name}" />
@@ -539,8 +537,8 @@
                                         <tr >
                                             <td width="6%" class="wn1" ><strong><c:if test="${not empty labourinventorydt}">Sr. No.</c:if>&nbsp;</strong></td>
                                             <td width="24%" class="wn1"  ><strong><c:if test="${not empty labourinventorydt}">Service Name</c:if>&nbsp;</strong></td>
-                                                <td width="11%" class="wn1"  ><strong>&nbsp;</strong></td>
-                                                <td width="14%" class="wn1" align="center" ><strong><c:if test="${not empty labourinventorydt}">Labour Rs.</c:if>&nbsp;</strong></td>
+                                            <td width="11%" class="wn1"  ><strong>&nbsp;</strong></td>
+                                            <td width="14%" class="wn1" align="center" ><strong><c:if test="${not empty labourinventorydt}">Labour Rs.</c:if>&nbsp;</strong></td>
                                                 <!--<td width="16%"><strong>Total Amount</strong></td>-->
                                             </tr>
                                         <c:set value="1" var="count"></c:set>
@@ -587,11 +585,22 @@
                                         </tr>
                                         <c:set value="${count+1}" var="count"></c:set>
                                     </c:forEach>
+                                    <c:if test="${invoiceDt.discountamount gt '0'}">
+                                    <tr>
+                                        <!--<td >&nbsp;</td>-->
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td align="right"><strong> Discount</strong></td>
+                                        <td align="right"><strong>${invoiceDt.discountamount}</strong></td>
+                                    </tr>
+                                    </c:if>
                                     <tr>
                                         <td style="background-color:#f4f4f4">&nbsp;</td>
                                         <td style="background-color:#f4f4f4"><strong> <label id="finalamtwords"></label> </strong></td>
                                         <td align="right" style="background-color:#f4f4f4"><strong style="float:right">Grand Total</strong></td>
-                                        <td align="right" style="background-color:#f4f4f4"><strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong></td>
+                                        <td align="right" style="background-color:#f4f4f4">
+                                        <strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong>  
+                                        </td>
                                     </tr>
                                     <%--
                                     <c:choose>

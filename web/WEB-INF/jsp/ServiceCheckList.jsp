@@ -78,9 +78,10 @@
                         <td align="left"> 
                             <a href="viewServiceCheckList.html?id=${ob.id}&bdid=${ob.brandid}"><img src="images/view.png" width="21" height="13" title="View Service CheckList" />&nbsp;&nbsp;&nbsp;&nbsp;</a>
                                 <c:if test="${!sessionScope.USERTYPE.equals('spares')}">                                    
-                                <a href="180pointchecklist?id=${ob.cvdid}&branddetailid=${ob.branddetailid}&cvid=${ob.id}&isr=${ob.is180ready}"><img src="images/180_icon.png" width="16" height="14"  title="180 point Check List" />&nbsp;&nbsp;&nbsp;&nbsp;</a>&nbsp;&nbsp;
+                                <a href="180pointchecklist?id=${ob.cvdid}&branddetailid=${ob.branddetailid}&cvid=${ob.id}&isr=${ob.is180ready}"><img src="images/180_icon.png" width="16" height="14"  title="180 point Check List" />&nbsp;&nbsp;&nbsp;&nbsp;</a>
                                 </c:if> 
-                                <a onclick="confirmdelete('${ob.id}', this);" title="Delete" href=""><img src="images/delete.png" width="16" height="17" /></a>
+                                <a onclick="confirmdelete('${ob.id}', this);" title="Delete" href=""><img src="images/delete.png" width="16" height="17" />&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                                <a title="Edit checklist" href="EditServiceCheckList.html?id=${ob.id}&bdid=${ob.brandid}"><img src="images/edit.png" width="16" height="17" />&nbsp;&nbsp;&nbsp;&nbsp;</a>
                         </td>
                     </tr>  
                     <c:set value="${count+1}" var="count"></c:set>

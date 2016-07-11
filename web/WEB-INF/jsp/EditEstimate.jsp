@@ -52,6 +52,8 @@
 
             function deleteRow1(ob) {
                 $(ob).closest("tr").remove();
+                $(ob).closest('tr').find('.quantity').trigger("change");
+                laborcall();               
             }
 
             //car parts item name auto complete will come based on car model
@@ -175,6 +177,12 @@
                             var currentelement = $(this);
                             var val = $(this).val();
                             var exists = $.inArray(val, source);
+                            //code for newvalidation
+                            var serviceids = curr.closest('tr').find("#serviceid").val();
+                                if (serviceids == null || serviceids == "") {
+                                curr.closest('tr').find("#labour").val(""); // display the selected text
+                                return false;
+                            }
                             if (exists < 0) {
                                 
                                 return false;

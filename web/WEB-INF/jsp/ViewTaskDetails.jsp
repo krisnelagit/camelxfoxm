@@ -215,6 +215,19 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Estimated delivery date</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${empty jsuserdtls.deliverydate}">
+                                    N/A
+                                </c:when>
+                                <c:otherwise>
+                                    ${jsuserdtls.deliverydate}                                  
+                                </c:otherwise>
+                            </c:choose>  
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Comments</td>
                         <td>
                             <c:choose>

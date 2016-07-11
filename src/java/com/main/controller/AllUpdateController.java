@@ -187,6 +187,29 @@ public class AllUpdateController {
         }
     }
 
+    //code to hard delete invoice code goes here
+    @RequestMapping(value = "permanentDeleteJobsheet")
+    public String permanentDeleteJobsheet(@RequestParam(value = "id") String id,
+            @RequestParam(value = "password") String password,
+            HttpSession session) {
+        //check first if the username password is correct
+        if (password.equals(session.getAttribute("PASSWORD"))) {
+            List<Jobsheet> jslist=viewService.getanyhqldatalist("from jobsheet where id='" + id + "'");
+            //code to delete from invoice
+            String query = "delete from jobsheet where id='" + id + "'";
+            updateService.updateanyhqlquery(query);
+            //code to delete from invoice details
+            String queryforDetails = "delete from jobsheetdetails where jobsheetid='" + id + "'";
+            updateService.updateanyhqlquery(queryforDetails);
+            //code to update invoice
+            String estimatequery = "update estimate set isjobsheetready='No',approval='No' where id='"+jslist.get(0).getEstimateid()+"'";
+            updateService.updateanyhqlquery(estimatequery);
+            return "redirect:estimate";
+        } else {
+            return "redirect:viewJobsheetGridLink?isexist=Yes";
+        }
+    }
+
     //delete invoice record
     @RequestMapping(value = "deleteinvoicerecord", method = RequestMethod.POST)
     public @ResponseBody
@@ -502,9 +525,13 @@ public class AllUpdateController {
 
     //12:41 24/04/2015 
     @RequestMapping("update180pointchecklist")
-    public String update180pointchecklist(@ModelAttribute PointChecklistDetails pointChecklistDetails, @RequestParam("carpartvaultchecks") String[] carpartvaultchecks, @RequestParam("pointchecklistid") String pointCheckListid, @RequestParam(value = "date") String date180) {
+    public String update180pointchecklist(@ModelAttribute PointChecklistDetails pointChecklistDetails, 
+            @RequestParam("carpartvaultchecks") String[] carpartvaultchecks, 
+            @RequestParam("pointchecklistid") String pointCheckListid, 
+            @RequestParam("comments") String comments, 
+            @RequestParam(value = "date") String date180) {
         updateService.updateanyhqlquery("delete from pointchecklistdetails where pointchecklistid = '" + pointChecklistDetails.getPointchecklistid() + "' ");
-        updateService.updateanyhqlquery("update pointchecklist set date='" + date180 + "' where id='" + pointCheckListid + "'");
+        updateService.updateanyhqlquery("update pointchecklist set date='" + date180 + "',comments='"+comments+"' where id='" + pointCheckListid + "'");
         for (int i = 0; i < carpartvaultchecks.length; i++) {
             String prefix2 = env.getProperty("pointchecklistdetails");
             String id2 = prefix2 + insertService.getmaxcount("pointchecklistdetails", "id", 6);
@@ -798,10 +825,11 @@ public class AllUpdateController {
             @RequestParam(value = "workmen") String[] workmenids,
             @RequestParam(value = "jsdid") String[] jsdids,
             @RequestParam(value = "jobno") String jobno,
+            @RequestParam(value = "deliverydate") String deliverydate,
             @RequestParam(value = "jobsheetcomments") String jobsheetcomments) {
         //code to update jobsheet table goes here
         if (jobsheetcomments!=null) {
-            updateService.updateanyhqlquery("update jobsheet set jobsheetcomments='" + jobsheetcomments + "' where id='" + jobno + "'");
+            updateService.updateanyhqlquery("update jobsheet set jobsheetcomments='" + jobsheetcomments + "',deliverydate='"+deliverydate+"' where id='" + jobno + "'");
         }
         
         updateService.updateanyhqlquery("delete from taskboard where jobsheetid='" + jobno + "'");

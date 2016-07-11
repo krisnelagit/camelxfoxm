@@ -252,7 +252,7 @@
 
                 mobilenumber = [
             <c:forEach var="obj" items="${customers}">
-                    {mobnumber: "${obj.mobilenumber}", customername: "${obj.name}", customerid: "${obj.id}"},
+                    {mobnumber: "${obj.mobilenumber}", customername: "${obj.name}", customerid: "${obj.id}", custEmail: "${obj.email}"},
             </c:forEach>
                 ];
                 var availableTags = []; // to show the user auto complete data
@@ -261,7 +261,7 @@
                 for (var i = 0; i < mobilenumber.length; ++i)
                 {
                     availableTags.push(mobilenumber[i].mobnumber);
-                    mapping[mobilenumber[i].mobnumber] = mobilenumber[i].customername + ',' + mobilenumber[i].customerid;
+                    mapping[mobilenumber[i].mobnumber] = mobilenumber[i].customername + ',' + mobilenumber[i].customerid+ ',' + mobilenumber[i].custEmail;
                 }
 
                 $("input:text[id^='mobilenumber']").live("focus.autocomplete", null, function () {
@@ -272,6 +272,7 @@
                             var splitcustomer = data.split(',');
                             $("#customer_name").val(splitcustomer[0]);
                             $("#customer_id").val(splitcustomer[1]);
+                            $("#transactionmail").val(splitcustomer[2]);
                             //code for ledgers begins! here
                             $.ajax({
                                 url: "getLedgerdata",
@@ -1205,8 +1206,8 @@
                     <td align="left" valign="top"><label for="textfield3"></label>
                         <select required name="insurancetype" id="typeofinsurance" onchange="makefull(this);">
                             <option value="" disabled selected style="display: none">--select--</option>
-                            <option value="Full Payment">Full Payment</option>
                             <option value="Depreciation">Depreciation</option>
+                            <option value="Full Payment">Full Payment</option>                            
                         </select>
                     </td>
                 </tr>

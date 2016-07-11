@@ -69,25 +69,25 @@
                         <td align="left">${ob.approval}</td>
                         <td align="left">
                             <c:choose>
-                                <c:when test="${ob.isjobsheetready=='No'}">
+                                <c:when test="${ob.isjobsheetready=='No' && ob.approval=='Yes' && ob.confirm_estimate=='Yes'}">
                                     <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
                                         <a href="jobsheet-add?estid=${ob.estid}&jsre=${ob.isjobsheetready}"><img src="images/psjs.png" width="14" height="16" title="Create Job Sheet"/></a> &nbsp;&nbsp;
-                                        </c:if> 
 
+                                    </c:if> 
                                 </c:when>
                             </c:choose>
 
-                            <c:if test="${sessionScope.USERTYPE.equals('admin') || sessionScope.USERTYPE.equals('spares')}">
+                            <c:if test="${sessionScope.USERTYPE.equals('admin') || sessionScope.USERTYPE.equals('crm') || sessionScope.USERTYPE.equals('floor manager')}">
                                 <c:if test="${ob.approval=='No'}">
                                     <a href="estimategridlink?estimateid=${ob.estid}&jsre=${ob.isjobsheetready}"><img src="images/Accept_file_or_checklist_24.png" width="16" height="15" />&nbsp;&nbsp;</a>
-                                </c:if>   
+                                    </c:if>   
 
                             </c:if>
                             <c:if test="${sessionScope.USERTYPE.equals('admin') || sessionScope.USERTYPE.equals('spares') || sessionScope.USERTYPE.equals('crm')}">
-                                <c:if test="${ob.approval=='No'}">
+                                <c:if test="${ob.isjobsheetready=='No'}">
                                     <a href="editEstimatePage?estid=${ob.estid}"><img src="images/edit.png" width="16" height="15" />&nbsp;&nbsp;</a>
                                     </c:if>
-                                </c:if>
+                            </c:if>
                             <a href="estimate-view?estid=${ob.estid}"><img src="images/view.png" width="21" height="13" /></a>&nbsp;&nbsp; 
                             <a href="estimate-viewmail?estid=${ob.estid}"><img src="images/email.png" width="15" /></a>&nbsp;&nbsp; 
                             <!--code to delete estimate begins here-->

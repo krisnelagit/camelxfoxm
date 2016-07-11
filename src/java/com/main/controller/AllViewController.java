@@ -8,6 +8,7 @@ package com.main.controller;
 import com.google.gson.Gson;
 import com.main.mailer.CustomerSms;
 import com.main.mailer.EmailSessionBean;
+import com.main.mailer.KrisnelaSendMailAPI;
 import com.main.mailer.SendMail;
 import com.main.model.Branch;
 import com.main.model.Brand;
@@ -89,6 +90,18 @@ public class AllViewController {
                 + "inner join category cg on cg.id=cpv.categoryid\n"
                 + "where cpv.isdelete='No'"));
         return modelAndView;
+    }
+
+    //user requesto access and delete car part option thus the coding begin here
+    @RequestMapping(value = "testmail")
+    public String testmail() {
+        KrisnelaSendMailAPI aPI=new KrisnelaSendMailAPI();
+        String to="krisnelatest@gmail.com";
+        String from="krisnelatest@gmail.com";
+        String subject="test subject";
+        String body="There you go.. You got an email.. Let's understand details on how Spring MVC works -- By Krisnela Admin\"";
+        aPI.sendmailinfok(from, to, subject, body);
+        return "redirect:Login";
     }
 
 //    spareparts modification coding begin here nothing changes in logic just the page view is created again 
@@ -1190,6 +1203,81 @@ public class AllViewController {
         return modelAndView;
 
     }
+    
+    //redirects to  Customer Insurance invoice page
+    @RequestMapping("viewCustomerInsurancePaidInvoice")
+    public ModelAndView viewCustomerInsurancePaidInvoice(@RequestParam(value = "invoiceid") String invoiceId) {
+        ModelAndView modelAndView = new ModelAndView("ViewCustomerInsurancePaidInvoice");
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        Date date = new Date();
+        String month = dateFormat.format(date);
+        modelAndView.addObject("currentmonth", month);
+        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
+
+        //view invoice data required for getting data
+        List<Map<Object, String>> invoicemap = viewService.getanyjdbcdatalist("SELECT iv.*,bd.vehiclename,bdd.name as make, SUBSTRING(iv.savedate,1,7) as monthcheck\n"
+                + "FROM invoice iv\n"
+                + "left join branddetails bd on bd.id=iv.vehicleid\n"
+                + "left join brand bdd on bdd.id=bd.brandid\n"
+                + "where iv.id='" + invoiceId + "'");
+
+        modelAndView.addObject("invoiceDt", invoicemap.get(0));
+
+        if (invoicemap.get(0).get("isinsurance").equals("Yes")) {
+            if (invoicemap.get(0).get("insurancetype").equals("Full Payment")) {
+                modelAndView.addObject("insuranceinvoiceDt", viewService.getanyjdbcdatalist("SELECT iv.sparepartsfinal+iv.labourfinal as claimtotal,\n"
+                        + "iv.taxAmount1+iv.taxAmount2 as taxtotal,\n"
+                        + "iv.labourfinal+iv.sparepartsfinal+iv.taxAmount1+iv.taxAmount2-iv.discountamount as grandtotal\n"
+                        + "FROM invoice iv\n"
+                        + "where iv.id='" + invoiceId + "'").get(0));
+            }
+        }
+
+        Invoice invoicemobile = (Invoice) viewService.getspecifichqldata(Invoice.class, invoiceId);
+        String custnumber = invoicemobile.getCustomermobilenumber();
+
+        List<Map<String, Object>> customerlist = viewService.getanyjdbcdatalist("SELECT inv.*,cu.*,cv.km_in\n"
+                + "FROM invoice inv\n"
+                + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+                + "inner join customervehicles cv on cv.custid=cu.id\n"
+                + "where cu.mobilenumber='" + custnumber + "'\n"
+                + "group by cu.mobilenumber");
+
+        if (customerlist.size() > 0) {
+            modelAndView.addObject("customerinvoiceDt", viewService.getanyjdbcdatalist("SELECT inv.*,cu.*,cv.km_in\n"
+                    + "FROM invoice inv\n"
+                    + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+                    + "inner join customervehicles cv on cv.custid=cu.id\n"
+                    + "where cu.mobilenumber='" + custnumber + "' and inv.id='" + invoiceId + "'\n"
+                    + "group by cu.mobilenumber").get(0));
+        } else {
+            modelAndView.addObject("customerinvoiceDt", viewService.getanyjdbcdatalist("SELECT inv.*,cu.*\n"
+                    + "FROM invoice inv\n"
+                    + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+                    + "where cu.mobilenumber='" + custnumber + "' and inv.id='" + invoiceId + "'\n"
+                    + "group by cu.mobilenumber").get(0));
+        }
+
+//        modelAndView.addObject("customerinvoiceDt", viewService.getanyjdbcdatalist("SELECT inv.*,cu.*,cv.km_in\n"
+//                + "FROM invoice inv\n"
+//                + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+//                + "inner join customervehicles cv on cv.custid=cu.id\n"
+//                + "where cu.mobilenumber='" + custnumber + "'\n"
+//                + "group by cu.mobilenumber").get(0));
+        //normal inovice create ka view[carparts]
+        modelAndView.addObject("labourandpartdt", viewService.getanyjdbcdatalist("SELECT i.*,i.partname as itemname,mfg.name as mfgname \n"
+                + "FROM invoicedetails i \n"
+                + "left join  carpartinfo cpi on cpi.id=i.partid\n"
+                + "left join  carpartvault cpv on cpv.id=cpi.vaultid\n"
+                + "left join  manufacturer mfg on mfg.id=i.manufacturerid \n"
+                + "where i.invoiceid='" + invoiceId + "' and i.isdelete='No'"));
+        //convert ka labour info
+        modelAndView.addObject("labourinventorydt", viewService.getanyjdbcdatalist("SELECT *,servicename as name FROM labourinventory\n"
+                + "where invoiceid='" + invoiceId + "' and isdelete='No' and total>0"));
+        return modelAndView;
+
+    }
 
     //redirects to  Customer Insurance invoice page
     @RequestMapping("viewLiabilityInvoice")
@@ -1200,7 +1288,8 @@ public class AllViewController {
         Date date = new Date();
         String month = dateFormat.format(date);
         modelAndView.addObject("currentmonth", month);
-        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
+        List<Taxes> taxlist=viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')");
+        modelAndView.addObject("vatDetails", taxlist);
 
         //view invoice data required for getting data
         List<Map<Object, String>> invoicemap = viewService.getanyjdbcdatalist("SELECT iv.*,bd.vehiclename,bdd.name as make, SUBSTRING(iv.savedate,1,7) as monthcheck\n"
@@ -1258,11 +1347,12 @@ public class AllViewController {
                 + "left join  carpartinfo cpi on cpi.id=i.partid\n"
                 + "left join  carpartvault cpv on cpv.id=cpi.vaultid\n"
                 + "left join  manufacturer mfg on mfg.id=i.manufacturerid \n"
-                + "where i.invoiceid='" + invoiceId + "' and i.isdelete='No'"));
+                + "where i.invoiceid='" + invoiceId + "' and i.isdelete='No' and  i.total>0"));
         //convert ka labour info
         modelAndView.addObject("labourinventorydt", viewService.getanyjdbcdatalist("SELECT *,servicename as name FROM labourinventory\n"
                 + "where invoiceid='" + invoiceId + "' and isdelete='No' and total>0"));
         //calculate customerliability total code begins here (parts+ labor)
+        double vatpercent=0,servicepercent=0,total=0,claim=0;
         List<Map<String, Object>> sparecount = viewService.getanyjdbcdatalist("SELECT sum(insurancecustomeramount) partliability FROM invoicedetails where invoiceid='" + invoiceId + "'");
         double d = 0;
         if (sparecount.get(0).get("partliability") != null) {
@@ -1270,6 +1360,8 @@ public class AllViewController {
         } else {
             d = 0;
         }
+        double va = Double.parseDouble(taxlist.get(0).getPercent());
+        vatpercent=d*va/100;
         modelAndView.addObject("sparelab", d);
         List<Map<String, Object>> laborcount = viewService.getanyjdbcdatalist("SELECT Sum(customerinsurance) laborliability FROM labourinventory where invoiceid='" + invoiceId + "';");
         double e = 0;
@@ -1278,8 +1370,13 @@ public class AllViewController {
         } else {
             e = 0;
         }
+        double st = Double.parseDouble(taxlist.get(1).getPercent());
+        servicepercent=e*st/100;
         modelAndView.addObject("laborlab", e);
         //calculate customerliability total code ends! here
+        //code for final total goes here
+        total=servicepercent+vatpercent+d+e;
+        modelAndView.addObject("totalliab", total);
         return modelAndView;
 
     }
@@ -1700,6 +1797,7 @@ public class AllViewController {
             String jsid=invoicemap.get(0).get("jobno");
             List<Jobsheet> jobList=viewService.getanyhqldatalist("from jobsheet where id='"+jsid+"'");
             modelAndView.addObject("finalcomments", jobList.get(0).getFinalcomments());
+            modelAndView.addObject("deliverydate", jobList.get(0).getDeliverydate());
         }
         
 
@@ -1951,7 +2049,7 @@ public class AllViewController {
     //view estimate grid
     @RequestMapping(value = "estimate")
     public String estimate(Map<String, Object> map) {
-        map.put("estimatedtls", viewService.getanyjdbcdatalist("SELECT est.isjobsheetready, est.id as estid,est.approval,cu.name as custname,cv.carmodel,cv.vehiclenumber,est.savedate,est.enableDelete FROM estimate est\n"
+        map.put("estimatedtls", viewService.getanyjdbcdatalist("SELECT est.isjobsheetready, est.id as estid,est.approval,cu.name as custname,cv.carmodel,cv.vehiclenumber,est.savedate,est.enableDelete,est.confirm_estimate FROM estimate est\n"
                 + "inner join customervehicles cv on cv.id=est.cvid\n"
                 + "inner join customer cu on cu.id=cv.custid where cu.isdelete='No' and est.isdelete='No' and est.ishidden='No' order by length(est.id) desc,est.id desc"));
         return "Estimate";
@@ -2370,7 +2468,7 @@ public class AllViewController {
     public ModelAndView estimateViewMail(@RequestParam(value = "estid") String estid) {
         ModelAndView modelAndView = new ModelAndView("EstimateMail");
         modelAndView.addObject("company_mail", env.getProperty("company_mail"));
-        modelAndView.addObject("estcustdtls", viewService.getanyjdbcdatalist("SELECT est.id as estimateid,pcl.date as pcldate,pcl.id as pclid,cu.name as customername,cu.address,cu.mobilenumber,cv.transactionmail email,cv.carbrand as make,cv.carmodel as carmodel,cv.vehiclenumber as vehiclenumber,est.approval,est.confirm_estimate \n"
+        modelAndView.addObject("estcustdtls", viewService.getanyjdbcdatalist("SELECT est.id as estimateid,pcl.date as pcldate,pcl.id as pclid,cu.name as customername,cu.address,cu.mobilenumber,cv.transactionmail email,cv.carbrand as make,cv.carmodel as carmodel,cv.vehiclenumber as vehiclenumber,est.approval,est.confirm_estimate,cv.km_in \n"
                 + "FROM estimate est\n"
                 + "left join pointchecklist pcl on pcl.id=est.pclid\n"
                 + "left join customervehicles cv on cv.id=pcl.customervehiclesid\n"
@@ -2472,7 +2570,7 @@ public class AllViewController {
     @RequestMapping(value = "viewJobsheetGridLink")
     public ModelAndView viewJobsheetGridLink() {
         ModelAndView modelAndView = new ModelAndView("ViewJobsheetGrid");
-        modelAndView.addObject("jobdtls", viewService.getanyjdbcdatalist("SELECT js.id as jsid,cu.name as custname,cv.carmodel,cv.branddetailid,cv.vehiclenumber,js.isinvoiceconverted,js.istaskcompleted,js.enableDelete FROM jobsheet js\n"
+        modelAndView.addObject("jobdtls", viewService.getanyjdbcdatalist("SELECT js.id as jsid,cu.name as custname,cv.carmodel,cv.branddetailid,cv.vehiclenumber,js.isinvoiceconverted,js.istaskcompleted,js.enableDelete,js.isrequisitionready FROM jobsheet js\n"
                 + "inner join customervehicles cv on cv.id=js.cvid\n"
                 + "inner join customer cu on cu.id=cv.custid\n"
                 + "where cu.isdelete='No' and js.isdelete='No' and js.ishidden='No' order by length(js.id) desc,js.id desc"));
@@ -2494,7 +2592,7 @@ public class AllViewController {
     @RequestMapping(value = "editJobDetailsLink")
     public ModelAndView editJobDetailsLink(@RequestParam(value = "jsid") String jsid) {
         ModelAndView modelAndView = new ModelAndView("EditJobDetails");
-        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cv.vehiclenumber licensenumber,cv.vinnumber,cv.date as custdate,cvd.additionalwork,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments FROM jobsheet js\n"
+        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cv.vehiclenumber licensenumber,cv.vinnumber,cv.date as custdate,cvd.additionalwork,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments,js.deliverydate FROM jobsheet js\n"
                 + "inner join customervehicles cv on cv.id=js.cvid\n"
                 + "inner join customer cu on cu.id=cv.custid\n"
                 + "inner join customervehiclesdetails cvd on cvd.custvehicleid=js.cvid\n"
@@ -2520,7 +2618,7 @@ public class AllViewController {
     @RequestMapping(value = "viewTaskLink")
     public ModelAndView viewTaskLink(@RequestParam(value = "jsid") String jsid) {
         ModelAndView modelAndView = new ModelAndView("ViewTaskDetails");
-        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cvd.additionalwork,cv.vehiclenumber licensenumber,cv.vinnumber,cv.date as custdate,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments FROM jobsheet js\n"
+        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cvd.additionalwork,cv.vehiclenumber licensenumber,cv.vinnumber,cv.date as custdate,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments,js.deliverydate FROM jobsheet js\n"
                 + "inner join customervehicles cv on cv.id=js.cvid\n"
                 + "inner join customer cu on cu.id=cv.custid\n"
                 + "inner join customervehiclesdetails cvd on cvd.custvehicleid=js.cvid\n"
@@ -2601,7 +2699,7 @@ public class AllViewController {
     @RequestMapping(value = "editRequisitionPage")
     public ModelAndView editRequisitionPage(@RequestParam(value = "jsid") String jsid) {
         ModelAndView modelAndView = new ModelAndView("EditSpareRequisition");
-        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cv.vehiclenumber licensenumber,cv.vinnumber,cv.date as custdate,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments,cvd.additionalwork,js.spcomments spcomments FROM jobsheet js\n"
+        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cv.vehiclenumber licensenumber,cv.vinnumber,cv.date as custdate,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments,cvd.additionalwork,js.spcomments spcomments,js.deliverydate FROM jobsheet js\n"
                 + "inner join customervehicles cv on cv.id=js.cvid\n"
                 + "inner join customer cu on cu.id=cv.custid\n"
                 + "inner join customervehiclesdetails cvd on cvd.custvehicleid=js.cvid\n"
@@ -2688,7 +2786,7 @@ public class AllViewController {
     @RequestMapping(value = "addRequisitionPage")
     public ModelAndView addRequisitionPage(@RequestParam(value = "jsid") String jsid) {
         ModelAndView modelAndView = new ModelAndView("AddSpareRequisition");
-        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cv.vehiclenumber licensenumber,cv.vinnumber,cv.date as custdate,js.isinvoiceconverted,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments,cvd.additionalwork FROM jobsheet js\n"
+        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cv.vehiclenumber licensenumber,cv.vinnumber,cv.date as custdate,js.isinvoiceconverted,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments,cvd.additionalwork,js.deliverydate FROM jobsheet js\n"
                 + "inner join customervehicles cv on cv.id=js.cvid\n"
                 + "inner join customer cu on cu.id=cv.custid\n"
                 + "inner join customervehiclesdetails cvd on cvd.custvehicleid=js.cvid\n"
@@ -2780,7 +2878,7 @@ public class AllViewController {
             @RequestParam(value = "carbrandid") String carbrandid) {
         ModelAndView modelAndView = new ModelAndView("ConvertToCustomerInvoice");
 
-        List<Map<String, Object>> customerList = viewService.getanyjdbcdatalist("select cu.mobilenumber,cu.name as customername,cu.id as customerid,cv.transactionmail email,cv.carmodel,cv.vehiclenumber,cu.name as custname,cv.branddetailid,js.istaskcompleted,js.verified,js.cleaning,est.comments estcomments,pcl.comments pclcomments,js.jvcomments,js.spcomments,js.jobsheetcomments jscomments,cvd.additionalwork from jobsheet js\n"
+        List<Map<String, Object>> customerList = viewService.getanyjdbcdatalist("select cu.mobilenumber,cu.name as customername,cu.id as customerid,cv.transactionmail email,cv.carmodel,cv.vehiclenumber,cu.name as custname,cv.branddetailid,js.istaskcompleted,js.verified,js.cleaning,est.comments estcomments,pcl.comments pclcomments,js.jvcomments,js.spcomments,js.jobsheetcomments jscomments,cvd.additionalwork,js.deliverydate from jobsheet js\n"
                 + "left join customervehicles cv on cv.id=js.cvid\n"
                 + "left join customer cu on cu.id=cv.custid\n"
                 + "inner join customervehiclesdetails cvd on cvd.custvehicleid=js.cvid\n"
@@ -3530,7 +3628,7 @@ public class AllViewController {
                 + "inner join carpartvault cpv on cpv.id=cpi.vaultid\n"
                 + "where ed.estimateid='" + estid + "' and ed.isdelete='No' and ed.item_type='part'"));
 
-        modelAndView.addObject("estservicedtls", viewService.getanyjdbcdatalist("SELECT estd.id as estdid,estd.partlistid,estd.partlistname as servicename,estd.description,estd.labourrs\n"
+        modelAndView.addObject("estservicedtls", viewService.getanyjdbcdatalist("SELECT estd.id as estdid,estd.partlistid,estd.partlistname as servicename,estd.description,estd.labourrs,estd.approval\n"
                 + "FROM estimatedetails estd\n"
                 + "inner join labourservices ls on ls.id=estd.partlistid\n"
                 + "where estd.estimateid='" + estid + "' and estd.isdelete='No' and estd.item_type='service'\n"
@@ -3570,7 +3668,7 @@ public class AllViewController {
     @RequestMapping(value = "viewRequisitionDetailsLink")
     public ModelAndView viewRequisitionDetailsLink(@RequestParam(value = "jsid") String jsid) {
         ModelAndView modelAndView = new ModelAndView("ViewRequisitionDetails");
-        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cv.licensenumber,cv.vinnumber,cv.date as custdate,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments,cvd.additionalwork,js.spcomments spcomments FROM jobsheet js\n"
+        modelAndView.addObject("jsuserdtls", viewService.getanyjdbcdatalist("SELECT js.id as jobno,cu.name as custname,cv.carbrand,cv.vehiclenumber,cv.vinnumber,cv.date as custdate,est.comments estcomments,pcl.comments pclcomments,js.jobsheetcomments jscomments,cvd.additionalwork,js.spcomments spcomments,js.deliverydate FROM jobsheet js\n"
                 + "inner join customervehicles cv on cv.id=js.cvid\n"
                 + "inner join customer cu on cu.id=cv.custid\n"
                 + "inner join customervehiclesdetails cvd on cvd.custvehicleid=js.cvid\n"

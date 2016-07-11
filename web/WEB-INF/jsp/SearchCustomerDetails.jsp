@@ -37,7 +37,7 @@
                             if (data) {
                                 for (var i = 0; i < data.length; i++)
                                 {
-                                    $('.popupbody').append('<tr><td align="left">' + data[i].invoiceid + '</td><td align="left">' + data[i].vehiclenumber + '</td><td align="left">' + data[i].servicedate + '</td><td align="left"><a href="viewCustomerInvoice?invoiceid=' + data[i].invoiceid + '"><img src="images/view.png" width="16" height="15" /></a></tr>')
+                                    $('.popupbody').append('<tr><td align="left">' + data[i].invoiceid + '</td><td align="left">' + data[i].vehiclenumber + '</td><td align="left">' + data[i].servicedate + '</td><td align="left"><a href="viewCustomerInsuranceInvoice?invoiceid=' + data[i].invoiceid + '"><img src="images/view.png" width="16" height="15" /></a></tr>')
                                 }
                                 $('#table_id2').DataTable();
                                 //our view dialog

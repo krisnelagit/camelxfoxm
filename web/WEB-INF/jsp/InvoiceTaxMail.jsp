@@ -283,7 +283,7 @@
 
                 var customerName = $("#customername").val();
                 var customerEmail = $("#emailList").val();
-                var emailComments = $("#comments").val();
+                var emailComments = $('.nicEdit-main').html().substring(0, 20000);
                 var out = document.getElementById("printdiv").innerHTML;
 //                console.log(out);
 

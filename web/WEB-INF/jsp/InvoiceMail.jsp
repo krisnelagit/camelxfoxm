@@ -21,11 +21,6 @@
         <script type="text/javascript" src="js/jspdf.debug.js"></script>
         <script src="js/nicEdit.js" type="text/javascript"></script>
         <script type="text/javascript">
-            bkLib.onDomLoaded(function () {
-                nicEditors.allTextAreas();
-            });
-        </script>
-        <script type="text/javascript">
             function test_value() {
                 var junkVal = document.getElementById('amttotal').value;
                 junkVal = Math.floor(junkVal);
@@ -289,7 +284,7 @@
                 
                 var customerName = $("#customername").val();
                 var customerEmail = $("#emailList").val();
-                var emailComments = $("#comments").val();
+                var emailComments = $('.nicEdit-main').html().substring(0, 20000);
                 var out = document.getElementById("printdiv").innerHTML;
 //                console.log(out);
 
@@ -590,11 +585,22 @@
                                         </tr>
                                         <c:set value="${count+1}" var="count"></c:set>
                                     </c:forEach>
+                                    <c:if test="${invoiceDt.discountamount gt '0'}">
+                                    <tr>
+                                        <!--<td >&nbsp;</td>-->
+                                        <td>&nbsp;</td>
+                                        <td>&nbsp;</td>
+                                        <td align="right"><strong> Discount</strong></td>
+                                        <td align="right"><strong>${invoiceDt.discountamount}</strong></td>
+                                    </tr>
+                                    </c:if>
                                     <tr>
                                         <td style="background-color:#f4f4f4">&nbsp;</td>
                                         <td style="background-color:#f4f4f4"><strong> <label id="finalamtwords"></label> </strong></td>
                                         <td align="right" style="background-color:#f4f4f4"><strong style="float:right">Grand Total</strong></td>
-                                        <td align="right" style="background-color:#f4f4f4"><strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong></td>
+                                        <td align="right" style="background-color:#f4f4f4">
+                                        <strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong>  
+                                        </td>
                                     </tr>
                                     <%--
                                     <c:choose>

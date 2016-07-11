@@ -47,6 +47,7 @@
             <a href="createcustomerinvoice" class="view">Create</a>&nbsp;
         </c:if>
             <a href="paidcustomerinvoice" class="view">Paid invoice</a>&nbsp;
+            <a href="onlyInsuranceinvoice" class="view">Insurance</a>&nbsp;
         <a href="viewInvoiceReasonsLink" class="view">Reasons</a>&nbsp;
 
         <h2>Invoice</h2>

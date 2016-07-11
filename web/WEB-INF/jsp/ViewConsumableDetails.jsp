@@ -12,12 +12,30 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>View Requisition Details</title>
         <link href="css/csstable.css" rel="stylesheet" type="text/css" />
+        <script>
+            function printContent(el) {
+                var restorepage = document.body.innerHTML;
+                var printcontent = document.getElementById(el).innerHTML;
+                document.body.innerHTML = printcontent;
+                window.print();
+                document.body.innerHTML = restorepage;
+            }
+        </script>
+        <style type="text/css">
+            @media print{
+                #printdiv *
+                {
+                    font-size: 1px !important;
+                }
+            }  
+        </style>
     </head>
     <body>
-        <a href="viewSpareRequisitionGrid" class="view">Back</a>
+        <a href="viewSpareRequisitionGrid" class="view">Back</a>&nbsp;<a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
         <!--<a href="#" class="view" style="margin-right:10px;">Email</a>-->
         <h2>Paints</h2>
         <br />
+        <div id="printdiv">
         <table width="100%" cellpadding="5">
             <tr>
                 <td align="left" valign="top">Date</td>
@@ -68,6 +86,7 @@
                 <c:set value="${count+1}" var="count"></c:set>
             </c:forEach>
         </table>
+            </div>
         <c:if test="${!sessionScope.USERTYPE.equals('crm')}">                    
         <center>        
             <a class="view2" href="editConsumablePage?jsid=${jsuserdtls.jobno}">Edit</a>

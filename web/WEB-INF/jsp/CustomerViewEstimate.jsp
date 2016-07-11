@@ -134,7 +134,16 @@
                             <td align="center" valign="middle" class="peritem">${ob.partrs}</td>
                             <td align="center" valign="middle" class="labourcharges">${ob.labourrs}</td>
                             <td align="center" valign="middle" class="price">${ob.totalpartrs}</td>
-                            <td align="center" valign="middle"><input type="checkbox" class="selectthis" name="estimatedetails" value="${ob.edid}"></td>
+                            <td align="center" valign="middle">
+                                <c:choose>
+                                    <c:when test="${ob.approval=='Yes'}">
+                                        <input type="checkbox" checked="" class="selectthis" name="estimatedetails" value="${ob.edid}">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input type="checkbox" class="selectthis" name="estimatedetails" value="${ob.edid}">
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                         <c:set value="${count+1}" var="count"></c:set>
                     </c:forEach>
@@ -197,7 +206,16 @@
                                 <td align="left" valign="top" ><span class="category-spacing">${ob.servicename}</span></td>
                                 <td align="left" valign="top">${ob.description}</td>
                                 <td align="center" valign="middle" class="labourchargesservice">${ob.labourrs}</td>
-                                <td align="center" valign="middle"><input type="checkbox" class="selectthis" name="estimatedetails" value="${ob.estdid}"></td>
+                                <td align="center" valign="middle">
+                                    <c:choose>
+                                        <c:when test="${ob.approval=='Yes'}">
+                                            <input type="checkbox" checked="" class="selectthis" name="estimatedetails" value="${ob.estdid}">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input type="checkbox" class="selectthis" name="estimatedetails" value="${ob.estdid}">
+                                        </c:otherwise>
+                                    </c:choose>                 
+                                </td>
                             </tr>
                             <c:set value="${count+1}" var="count"></c:set>
                         </c:forEach>

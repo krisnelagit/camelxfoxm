@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>View Service CheckList</title>
+        <title>Service CheckList</title>
         <link href="css/csstable.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
         <link href="css/other_style.css" rel="stylesheet" type="text/css" />

@@ -275,7 +275,7 @@
 
                 var customerName = $("#customername").val();
                 var customerEmail = $("#emailList").val();
-                var emailComments = $("#comments").val();
+                var emailComments = $('.nicEdit-main').html().substring(0, 20000);
                 var out = document.getElementById("printdiv").innerHTML;
                 console.log(out);
 
@@ -604,8 +604,12 @@
                                         <td style="background-color:#f4f4f4">&nbsp;</td>
                                         <td style="background-color:#f4f4f4"><strong> <label id="finalamtwords"></label> </strong></td>
                                         <td align="right" style="background-color:#f4f4f4"><strong style="float:right">Grand Total</strong></td>
-                                        <td align="right" style="background-color:#f4f4f4"><strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong></td>
+                                        <td align="right" style="background-color:#f4f4f4">
+                                        <strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong>                                          
+                                        </td>
                                     </tr>
+
+                                    
                                     <%--
                                     <c:choose>
                                         <c:when test="${invoiceDt.isinsurance ne 'No'}">   

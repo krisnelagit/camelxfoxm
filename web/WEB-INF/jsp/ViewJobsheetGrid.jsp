@@ -11,6 +11,47 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>View Jobsheet Grid</title>
+        <link rel="stylesheet" type="text/css" href="css/jquery-ui_1.css">
+        <script src="js/jquery-ui.js"></script>
+        <script>
+            $(function () {
+                $("#dialognkEditDetail").hide();
+                $("#dialog").hide();
+
+                if ('${param.isexist}' === "Yes") {
+                    $("#dialog").show();
+                    $("#dialog").dialog({
+                        modal: true,
+                        effect: 'drop',
+                        show: {
+                            effect: "drop"
+                        },
+                        hide: {
+                            effect: "drop"
+                        }
+                    });
+                }
+                //on click of hard delete
+                $(".email_link3").click(function (e) {
+                    e.preventDefault();
+                    var fsid = $(this).attr('href');
+                    $("#brid").val('');
+                    $("#brandname").text('');
+                    $("#brid").val(fsid);
+                    $("#dialognkEditDetail").dialog({
+                        modal: true,
+                        effect: 'drop',
+                        show: {
+                            effect: "drop"
+                        },
+                        hide: {
+                            effect: "drop"
+                        }
+                    });
+
+                });
+            });//END FUNCTION
+        </script>
         <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
         <script src="js/jquery.dataTables.js"></script>
         <script>
@@ -80,7 +121,11 @@
                                         <a onclick="confirmdelete('${ob.jsid}', this);"><img src="images/delete.png" width="16" height="17" /></a>
                                         </c:when>
                                     </c:choose>
-
+                                    <c:choose>
+                                        <c:when test="${ob.isrequisitionready=='No'}">
+                                        <a href="${ob.jsid}" style="cursor: pointer" class="email_link3" title="Permanent Delete"><img src="images/pdelete.png" width="16" height="17" /></a>
+                                        </c:when>
+                                    </c:choose>
                             </c:if>
                         </td>
                     </tr>  
@@ -88,5 +133,33 @@
                 </c:forEach>                
             </tbody>
         </table>
+        <!--code for password dialog begin here-->
+        <div id="dialognkEditDetail" title="Enter password">
+            <form action="permanentDeleteJobsheet" method="POST">        
+                <table width="100%" cellpadding="5">
+                    <tr>
+                    <input type="hidden" name="id" id="brid" value="" />
+                    <td width="34%" align="left" valign="top">Password</td>
+                    <td width="66%" align="left" valign="top"><input type="password" maxlength="20" required name="password" id="brandname" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><input type="submit" value="Delete" class="view3" style="cursor: pointer" />&nbsp;&nbsp;&nbsp;</td>
+                    </tr>
+                    <tr>    
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+                <br>
+            </form>
+        </div>
+        <!--code for password dialog ends! here-->
+                
+        <div id="dialog" title="Message">
+            <br/>
+            <br/>
+            <center><b>Incorrect password!</b></center>                    
+        </div>
     </body>
 </html>

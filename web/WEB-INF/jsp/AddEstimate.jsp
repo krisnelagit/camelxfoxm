@@ -65,6 +65,8 @@
             table.deleteRow(i);
             rowCount--;
             i--;
+            $('.quantity').trigger("change");
+            laborcall();
             }
             }
             } catch (e) {
@@ -164,8 +166,6 @@
             $(this).autocomplete({
             source: source,
                     select: function (event, ui) {
-
-
                     curr.closest('tr').find("#serviceid").val(mapping[ui.item.value]); // display the selected text
                     curr.closest('tr').find('option').remove();
                     var labourid = curr.closest('tr').find("#serviceid").val();
@@ -193,10 +193,15 @@
                     });
                     },
                     change: function () {
-
                     var currentelement = $(this);
                     var val = $(this).val();
                     var exists = $.inArray(val, source);
+                    //code for newvalidation
+                    var serviceids = curr.closest('tr').find("#serviceid").val();
+                    if (serviceids == null || serviceids == "") {
+                    curr.closest('tr').find("#labour").val(""); // display the selected text
+                    return false;
+                    }
                     if (exists < 0) {
 
                     return false;
@@ -262,7 +267,7 @@
         <SCRIPT>
             //calculate total part price
             function calculatebalance(b) {
-            
+
             var qty = Number($(b).closest('tr').find('.quantity').val() || 0);
             var percost = Number($(b).closest('tr').find('.sellingprice').val() || 0);
             var totalprice = qty * percost;
@@ -271,7 +276,6 @@
             $('.itemtotal').each(function(){
             partTotal += parseFloat($(this).val() || 0); // Or this.innerHTML, this.innerText
             });
-//            var partTotal = Number(partSum) + Number(totalprice);
             //code for grand total and taxes begins! here
             var myVat = $(".taxpercent1").val();
             var vatamt = Number(partTotal) * Number(myVat / 100);
@@ -427,7 +431,7 @@
                                         <!--<td align="left" valign="top"><input name="labourrs" style="width: 60px" type="number" step="0.01" class="tabspecific" value="$ {ob.d}" id="textfield6" /></td>-->
                                     </c:otherwise>
                                 </c:choose>
-                                        <td align="left" valign="top"><input name="totalpartrs" readonly="" type="number" class="itemtotal" value="0" style="width: 100px"/></td>
+                                <td align="left" valign="top"><input name="totalpartrs" readonly="" type="number" class="itemtotal" value="0" style="width: 100px"/></td>
                             </tr>
                         </c:forEach>
                     </TABLE>

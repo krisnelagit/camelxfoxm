@@ -11,6 +11,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Add Jobsheet</title>
+        <link rel="stylesheet" href="css/jquery-ui_1.css" />
+        <script src="js/jquery-ui.js" type="text/javascript"></script>
         <link href="css/csstable.css" rel="stylesheet" type="text/css" />
         <script>
             $(document).ready(function () {
@@ -20,6 +22,13 @@
                     $(this).closest('tr').find('#estimate').removeClass();
                     $(this).closest('tr').find('#estimate').addClass(workman);
                     $(this).closest('tr').find('.allworkmanids').val(workman);
+                });                
+                
+                jQuery(function () {
+                    //THIS CODE SETS CURTRENT DATE AS DATE ON PAGE LOAD
+                    jQuery(".datepicker").datepicker({dateFormat: 'mm/dd/yy'});
+                    var currentDate = new Date();
+                    jQuery(".datepicker").datepicker("setDate", currentDate);
                 });
             });
 
@@ -121,6 +130,12 @@
                                         ${estuserdtls.estcomments}                                        
                                     </c:otherwise>
                                 </c:choose>  
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Estimated delivery date</td>
+                            <td>
+                                <input type="text" name="deliverydate" required="" id="textfield2" class="datepicker" />
                             </td>
                         </tr>
                         <tr>

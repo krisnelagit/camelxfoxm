@@ -5,25 +5,20 @@
  */
 package com.main.controller;
 
-import java.util.Scanner;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Iterator;
+import com.main.mailer.KrisnelaSendMailAPI;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Demo {
 
-    public static void main(int... args) throws Exception {
-        HashSet hs=new HashSet<Object>();
-        hs.add("Hey");
-        hs.add("Hello");
-        hs.add("world");
-        Iterator<HashSet> it = hs.iterator();
-        while (it.hasNext()) {
-             System.out.println(it.next());
-            
-        }
-       
+    public static void main(String[] args) throws Exception {
+        String configfile="dispatcher-servlet.xml";
+        ConfigurableApplicationContext context=new ClassPathXmlApplicationContext(configfile);
+        KrisnelaSendMailAPI aPI=(KrisnelaSendMailAPI)context.getBean("krisnelaEmail");
+        String to="krisnelatest@gmail.com";
+        String from="krisnelatest@gmail.com";
+        String subject="test subject";
+        String body="There you go.. You got an email.. Let's understand details on how Spring MVC works -- By Krisnela Admin\"";
+        aPI.sendmailinfok(from, to, subject, body);
     }
 }

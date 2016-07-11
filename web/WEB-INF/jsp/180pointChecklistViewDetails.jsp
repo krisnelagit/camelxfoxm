@@ -24,7 +24,13 @@
                 document.body.innerHTML = restorepage;
             }
         </script>
-        <style type="text/css">
+        
+    </head>
+    <body>
+        <a href="180pointchecklistgridlink" class="view">Back</a><a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
+        <h2>180 Point Check-List</h2>
+        <div id="printdiv">
+<style type="text/css">
             @media print{
                 #printdiv *
                 {
@@ -32,12 +38,6 @@
                 }
             }  
         </style>
-    </head>
-    <body>
-        <a href="180pointchecklistgridlink" class="view">Back</a><a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
-        <h2>180 Point Check-List</h2>
-        <div id="printdiv">
-
         <br />
 
         <table width="100%" cellpadding="5">

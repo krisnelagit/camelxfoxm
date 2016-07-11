@@ -67,6 +67,7 @@ import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -79,6 +80,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.UUID;
+import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -626,7 +628,8 @@ public class AllInsertController {
         } else {
             double spare = Double.parseDouble(invoice.getSparepartsfinal());
             double service = Double.parseDouble(invoice.getLabourfinal());
-            double result = spare + service;
+            double discount = Double.parseDouble(invoice.getDiscountamount());
+            double result = spare + service - discount;
             invoice.setTaxAmount1("0");
             invoice.setTaxAmount2("0");
             invoice.setAmountTotal("" + result);
@@ -654,6 +657,9 @@ public class AllInsertController {
             }
             insertService.insert(rc);
         }
+        List<Taxes> taxList = viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')");
+        double vattax = Double.parseDouble(taxList.get(0).getPercent().toString());
+        double servicetax = Double.parseDouble(taxList.get(1).getPercent().toString());
 
         for (int i = 0; i < inventoryArray.getPartid().length; i++) {
 
@@ -673,6 +679,11 @@ public class AllInsertController {
                 invoicedetails.setInsurancepercent(inventoryArray.getInsurancepercent()[i]);
                 invoicedetails.setInsurancecustomeramount(inventoryArray.getInsurancecustomeramount()[i]);
                 invoicedetails.setInsurancecompanyamount(inventoryArray.getInsurancecompanyamount()[i]);
+                double amount = Double.parseDouble(inventoryArray.getInsurancecompanyamount()[i].toString());
+                double taxes = amount * vattax / 100;
+                double total = amount + taxes;
+                invoicedetails.setBalance("" + total);
+                invoicedetails.setPaidamount("0");
             }
             invoicedetails.setTotal(inventoryArray.getItemtotal()[i]);
             insertService.insert(invoicedetails);
@@ -827,6 +838,11 @@ public class AllInsertController {
                     labourInventory.setServiceinsurancepercent(inventoryArray.getServiceinsurancepercent()[i]);
                     labourInventory.setCompanyinsurance(inventoryArray.getCompanyinsuranceservice()[i]);
                     labourInventory.setCustomerinsurance(inventoryArray.getCustinsuranceservice()[i]);
+                    double amount = Double.parseDouble(inventoryArray.getCompanyinsuranceservice()[i].toString());
+                    double taxes = amount * servicetax / 100;
+                    double total = amount + taxes;
+                    labourInventory.setBalance("" + total);
+                    labourInventory.setPaidamount("0");
                 }
                 labourInventory.setTotal(inventoryArray.getServicetotal()[i]);
                 insertService.insert(labourInventory);
@@ -955,7 +971,7 @@ public class AllInsertController {
 
     //insert into estimate
     @RequestMapping(value = "insertestimate", method = RequestMethod.POST)
-    public String inserestimate(@ModelAttribute AllArrayPojo aap, @ModelAttribute Estimate estimate, @ModelAttribute EstimateLabourArray labourArray) {
+    public String inserestimate(@ModelAttribute AllArrayPojo aap, @ModelAttribute Estimate estimate, @ModelAttribute EstimateLabourArray labourArray) throws MessagingException, UnsupportedEncodingException {
         String prefix = env.getProperty("estimate");
         String id = prefix + insertService.getmaxcount("estimate", "id", 3);
         estimate.setId(id);
@@ -1012,6 +1028,18 @@ public class AllInsertController {
         updateService.updateanyhqlquery("update pointchecklist set isestimate='Yes',enableDelete='No',modifydate=now() where id='" + estimate.getPclid() + "'");
 
         //code for inserting some new parts 
+        //code for sending email to spares goes here
+        List<Map<String, Object>> customerDetails = viewService.getanyjdbcdatalist("SELECT cv.*,cu.name customername FROM karworx.estimate est\n"
+                + "inner join customervehicles cv on cv.id=est.cvid\n"
+                + "inner join customer cu on cu.id=cv.custid\n"
+                + "where est.isdelete='No' and est.id='" + estimate.getId() + "'");
+        String sparesemail = env.getProperty("spares_mail");
+        String emailcomments = "Dear User, New Estimate has been created for customer name: "+customerDetails.get(0).get("customername")+" Model: "+customerDetails.get(0).get("carmodel")+" vehicle No: "+customerDetails.get(0).get("vehiclenumber")+" Regards:Team Karworx";
+        String mypdfbase = "";
+        String invoicename = "New Estimate Created - " + estimate.getId();
+        EmailSessionBean emailSessionBean = new EmailSessionBean();
+        emailSessionBean.sendCustomerPasswordMail(emailcomments, mypdfbase, sparesemail, "Karworx", invoicename);
+
         return "redirect:estimate.html";
     }
 
@@ -1080,7 +1108,7 @@ public class AllInsertController {
 //                float minutes = estimatedtime[i] * 60;
                 jobsheetDetails.setEstimatetime(estimatedtime[i]);
                 if (typeofpart[i].equals("service")) {
-                    jobsheetDetails.setPartstatus("");
+                    jobsheetDetails.setPartstatus("assigned");
                 }
                 insertService.insert(jobsheetDetails);
             }
@@ -1120,10 +1148,10 @@ public class AllInsertController {
             @RequestParam(value = "date_time", required = false) String date_time,
             @RequestParam(value = "customer_id", required = false) String customer_id,
             @RequestParam(value = "message", required = false) String message) {
-        if (finalcomments !=null) {
-            updateService.updateanyhqlquery("update jobsheet set finalcomments='"+finalcomments+"' where id='"+myjsid+"'");
+        if (finalcomments != null) {
+            updateService.updateanyhqlquery("update jobsheet set finalcomments='" + finalcomments + "' where id='" + myjsid + "'");
         }
-        
+
         String prefix = env.getProperty("invoice");
         String id = insertService.getmaxcount("invoice", "id", 4);
         String maxCount = prefix + id;
@@ -1168,7 +1196,9 @@ public class AllInsertController {
             }
             insertService.insert(rc);
         }
-
+        List<Taxes> taxList = viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')");
+        double vattax = Double.parseDouble(taxList.get(0).getPercent().toString());
+        double servicetax = Double.parseDouble(taxList.get(1).getPercent().toString());
         for (int i = 0; i < inventoryArray.getPartid().length; i++) {
 
             //insert in invoice details goes here begins!
@@ -1187,6 +1217,11 @@ public class AllInsertController {
                 invoicedetails.setInsurancepercent(inventoryArray.getInsurancepercent()[i]);
                 invoicedetails.setInsurancecustomeramount(inventoryArray.getInsurancecustomeramount()[i]);
                 invoicedetails.setInsurancecompanyamount(inventoryArray.getInsurancecompanyamount()[i]);
+                double amount = Double.parseDouble(inventoryArray.getInsurancecompanyamount()[i].toString());
+                double taxes = amount * vattax / 100;
+                double total = amount + taxes;
+                invoicedetails.setBalance("" + total);
+                invoicedetails.setPaidamount("0");
             }
             invoicedetails.setTotal(inventoryArray.getItemtotal()[i]);
             insertService.insert(invoicedetails);
@@ -1348,6 +1383,11 @@ public class AllInsertController {
                 labourInventory.setServiceinsurancepercent(inventoryArray.getServiceinsurancepercent()[i]);
                 labourInventory.setCompanyinsurance(inventoryArray.getCompanyinsuranceservice()[i]);
                 labourInventory.setCustomerinsurance(inventoryArray.getCustinsuranceservice()[i]);
+                double amount = Double.parseDouble(inventoryArray.getCompanyinsuranceservice()[i].toString());
+                double taxes = amount * servicetax / 100;
+                double total = amount + taxes;
+                labourInventory.setBalance("" + total);
+                labourInventory.setPaidamount("0");
             }
             labourInventory.setTotal(inventoryArray.getServicetotal()[i]);
             insertService.insert(labourInventory);
