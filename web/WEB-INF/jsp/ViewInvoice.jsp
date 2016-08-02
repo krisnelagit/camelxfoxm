@@ -88,7 +88,7 @@
                             </c:choose>
                         </td>
                         <td align="left">
-                            <c:if test="${!sessionScope.USERTYPE.equals('spares')}">
+                            <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
                                 <c:choose>
                                     <c:when test="${ob.ispaid=='No'}">
                                         <!--condition to edit invoice changes-->

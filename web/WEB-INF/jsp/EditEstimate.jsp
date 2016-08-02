@@ -219,6 +219,10 @@
 
             $(document).ready(function () {
             
+            $('form').submit(function(){
+                $("#iamsubmit").prop('disabled', true);
+            });
+            
             $(".tabspecific").each(function (i) { $(this).attr('tabindex', i + 1); });
 
                 //customer vehicle model auto complete
@@ -450,7 +454,7 @@
                     <!--code for tax and grand total ends here-->
 
             <center>
-                <input type="submit" value="Save" class="view3" style="cursor: pointer"/> 
+                <input type="submit" value="Save" class="view3" id="iamsubmit" style="cursor: pointer"/> 
             </center>
 
             <br />

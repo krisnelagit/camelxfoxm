@@ -19,7 +19,7 @@
             //add rows
             function addRow(tableID) {
             if (tableID === "dataTable") {
-            $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" class="test" name="chk"/><input type="hidden" name="part_type" value="part" /><input type="hidden" name="partlistid" id="partlistid" /></td><td align="left" valign="top"><input name="partname" type="text" id="partname" /></td><td align="left" valign="top"> <select name="fivePrice" class="fivePrice" style="width: 100px" onchange="iambatman(this)"><option selected="" disabled="">--select--</option></select></td><td align="left" valign="top"><textarea name="description" maxlength="1000" id="textfield2"></textarea></td><td align="left" valign="top"><input name="quantity" type="number" class="quantity" style="width: 60px" value="1" onchange="calculatebalance(this)" /></td><td align="left" valign="top"><input name="partrs" value="0" style="width: 60px" type="number" step="0.01" required="" class="sellingprice" onchange="calculatebalance(this)" /></td><td align="left" valign="top"><input name="labourrs" required="" class="charges" style="width: 60px" type="number" step="0.01" onchange="laborcall()" id="textfield6" /></td><td align="left" valign="top"><input name="totalpartrs" readonly="" value="0" type="number" class="itemtotal" style="width: 100px"/></td></tr>');
+            $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" class="test" name="chk"/><input type="hidden" name="part_type" value="part" /><input type="hidden" name="partlistid" id="partlistid" /></td><td align="left" valign="top"><input name="partname" type="text" id="partname" /></td><td align="left" valign="top"> <select name="fivePrice" class="fivePrice" style="width: 100px" onchange="iambatman(this)"><option selected="" disabled="">--select--</option></select></td><td align="left" valign="top"><textarea name="description" maxlength="1000" id="textfield2"></textarea></td><td align="left" valign="top"><input name="quantity" type="number" class="quantity" style="width: 60px" value="1" onchange="calculatebalance(this)" /></td><td align="left" valign="top"><input name="partrs" value="0" style="width: 60px" type="number" step="0.01" required="" class="sellingprice" onchange="calculatebalance(this)" /></td><td align="left" valign="top"><input name="labourrs" required="" class="charges" style="width: 60px" type="number" step="0.01" onchange="laborcall()" id="textfield6" value="0" /></td><td align="left" valign="top"><input name="totalpartrs" readonly="" value="0" type="number" class="itemtotal" style="width: 100px"/></td></tr>');
             } else {
             $('#' + tableID + '').append('<tr><td align="left" valign="top"><INPUT type="checkbox" name="chk"/><input type="hidden" name="labour_type" value="service" /><input type="hidden" name="serviceid" value="" id="serviceid"/><input type="hidden" name="serviceAction" class="serviceAction"/></td><td align="left" valign="top"><input name="servicename" type="text" id="labour" /></td><td align="left" valign="top"><textarea name="labourdescription" class="labourdescription" id="textfield2"></textarea></td><td align="left" valign="top"><input name="servicetotal" type="number" step="0.01" onchange="laborcall()" class="charges" /></td></tr>');
             }
@@ -236,6 +236,10 @@
             });
             });
             $(document).ready(function () {
+            
+            $('form').submit(function(){
+                $("#iamsubmit").prop('disabled', true);
+            });
 
             $(".tabspecific").each(function (i) { $(this).attr('tabindex', i + 1); });
             //customer vehicle model auto complete
@@ -491,7 +495,7 @@
 
                     <!--code for tax and grand total ends here-->
                     <center>
-                        <input type="submit" value="Save" class="view3" style="cursor: pointer"/>
+                        <input type="submit" value="Save" class="view3" id="iamsubmit" style="cursor: pointer"/>
                     </center>
 
                     <br />

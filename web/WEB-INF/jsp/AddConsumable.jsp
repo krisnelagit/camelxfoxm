@@ -39,7 +39,7 @@
                     for (var i = 0; i < rowCount; i++) {
                         var row = table.rows[i];
                         var chkbox = row.cells[0].childNodes[0];
-                        if (null != chkbox && true == chkbox.checked) {
+                        if (null !== chkbox && true === chkbox.checked) {
                             if (rowCount <= 1) {
                                 alert("Cannot delete all the rows.");
                                 break;
