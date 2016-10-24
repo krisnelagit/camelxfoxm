@@ -113,7 +113,6 @@
                                     <c:choose>
                                         <c:when test="${ob.isinvoiceconverted=='No'}">
                                         <a href="editJobDetailsLink?jsid=${ob.jsid}"><img src="images/edit.png" width="16" height="15"></a>&nbsp;&nbsp;
-
                                     </c:when>
                                 </c:choose>
                                 <c:choose>

@@ -52,7 +52,7 @@
         <table class="display tablestyle" id="table_id">
             <thead>
                 <tr>
-                    <td>Sr. No.</td>
+                    <!--<td>Sr. No.</td>-->
                     <td>Date</td>
                     <td>180 point id</td>
                     <td>Service Checklist No.</td>
@@ -66,7 +66,7 @@
                 <c:set value="1" var="count"></c:set>
                 <c:forEach var="ob" items="${pointchecklistdt}">
                     <tr>
-                        <td align="left">${count}</td>
+                        <!--<td align="left">${count}</td>-->
                         <td align="left">${ob.pcldate}</td>
                         <td align="left">${ob.id}</td>
                         <td align="left">${ob.customervehiclesid}</td>

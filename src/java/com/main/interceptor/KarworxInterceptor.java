@@ -19,7 +19,7 @@ public class KarworxInterceptor extends HandlerInterceptorAdapter{
         StringBuffer pageName=request.getRequestURL();
         String requestMapping=pageName.substring(pageName.lastIndexOf("/"));
         
-        if(requestMapping.equals("/login_style.css") || requestMapping.equals("/karlogo_login.jpg") || requestMapping.equals("/krisnela_logo.png") 
+        if(requestMapping.equals("/login_style.css") || requestMapping.equals("/karlogo_login.jpg") || requestMapping.equals("/logoclient.jpg") 
                 || requestMapping.equals("/") || requestMapping.endsWith("/Login") || requestMapping.endsWith("/verifylogin") ){
             return true;
         }else{

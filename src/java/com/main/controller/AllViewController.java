@@ -1718,8 +1718,8 @@ public class AllViewController {
         modelAndView.addObject("services", viewService.getanyhqldatalist("from labourservices where isdelete<>'Yes' and id like '" + env.getProperty("branch_prefix") + "%'"));
         modelAndView.addObject("allmfgdata", viewService.getanyhqldatalist("from manufacturer where isdelete<>'Yes'"));
         modelAndView.addObject("insuranceCompanyDetails", viewService.getanyhqldatalist("from insurance_company where isdelete<>'Yes'"));
-        List<Taxes> taxList = viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')");
-        modelAndView.addObject("vatDetails", taxList);
+//        List<Taxes> taxList = viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')");
+//        modelAndView.addObject("vatDetails", taxList);
 
         //invoice data required for getting data
         List<Invoice> invoicemapforInsurance = viewService.getanyhqldatalist("from invoice where id='" + invoiceId + "' and isdelete='No'");
@@ -1758,8 +1758,8 @@ public class AllViewController {
             }
 
 //            customer = Double.parseDouble(liabilityList.get(0).get("customer").toString());
-            vattax = Double.parseDouble(taxList.get(0).getPercent().toString());
-            servicetax = Double.parseDouble(taxList.get(1).getPercent().toString());
+            vattax = Double.parseDouble(invoicemap.get(0).get("taxpercent1").toString());
+            servicetax = Double.parseDouble(invoicemap.get(0).get("taxPercent2").toString());
 
             companyresult = company * vattax / 100;
             customerresult = customer * vattax / 100;
@@ -1822,8 +1822,7 @@ public class AllViewController {
             jsonlist.add(setjsonmap);
         }
 
-        modelAndView.addObject(
-                "carparts", jsonlist);
+        modelAndView.addObject("carparts", jsonlist);
 
         //normal create k time pe part value code here
         modelAndView.addObject(
@@ -2673,7 +2672,7 @@ public class AllViewController {
                 + "inner join estimatedetails ed on ed.estimateid=est.id\n"
                 + "inner join carpartinfo cpi on cpi.id=ed.partlistid\n"
                 + "inner join carpartvault cpv on cpv.id=cpi.vaultid\n"
-                + "where est.id='" + estid + "'  and ed.approval='Yes' and ed.item_type='part'"));
+                + "where est.id='" + estid + "'  and ed.approval='Yes' and ed.item_type='part' and ed.isdelete='No'"));
 
         modelAndView.addObject("approvedservicedtls", viewService.getanyjdbcdatalist("select ed.id as estdid,ed.*,ed.partlistname as servicename,ed.description,ed.item_type from estimate est\n"
                 + "inner join estimatedetails ed on ed.estimateid=est.id\n"

@@ -33,7 +33,7 @@
                         </div>
 
                         <center><font color="red">${errmsg}</font></center>
-                        <center><b>powered by</b><br/> <img src="images/krisnela_logo.png" class="logo2" style="width: 160px;height: 30px"></center>
+                        <center><b>powered by</b><br/> <img src="images/logoclient.jpg" class="logo2" style="width: 160px;height: 30px"></center>
 
                     </div>
 

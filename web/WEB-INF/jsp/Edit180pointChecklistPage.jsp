@@ -12,6 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Edit 180point Checklist</title>
+        <link rel="stylesheet" type="text/css" href="css/tablet-checkbox-button.css">
         <link href="css/other_style.css" rel="stylesheet" type="text/css" />
         <link href="css/jquery-ui_1.css" rel="stylesheet" type="text/css" />
         <link href="css/csstable.css" rel="stylesheet" type="text/css" />
@@ -96,41 +97,48 @@
                         <table width="100%" cellpadding="5">
                             <c:forEach var="nii" items="${ni.notmatchpartlist}" varStatus="loop">
                                 <c:if test="${not loop.first and loop.index % 2 == 0}">
-                                </tr><tr>
-                            </c:if>
-                            <td width="13%" align="left" valign="top">${nii.name} </td>
-                            <td width="26%" align="left" valign="top">
-                                <label for="textfield"></label>                        
-                                <input type="checkbox" class="modtabcheckbox" name="carpartvaultchecks" value="${nii.id}" />
-                            </td>
-                        </c:forEach>
-                        <c:forEach var="nii" items="${ni.matchpartlist}" varStatus="loop">
-                            <c:if test="${not loop.first and loop.index % 2 == 0}">
-                            </tr><tr>
-                            </c:if>
-                            <td width="13%" align="left" valign="top">${nii.name} </td>
-                            <td width="26%" align="left" valign="top">
-                                <label for="textfield"></label>                        
-                                <input type="checkbox" class="modtabcheckbox" checked="" name="carpartvaultchecks" value="${nii.id}" />
-                            </td>
-                        </c:forEach>
-                </table>
+                                    <tr>
+                                    </c:if>
+                                    <td width="26%" align="left" valign="top">
+                                        <label for="textfield"></label>  
+                                        <div id="ck-button">
+                                            <label>
+                                                <input type="checkbox" name="carpartvaultchecks" value="${nii.id}"><span>${nii.name}</span>
+                                            </label>
+                                        </div> 
+                                    </td>
+                                </c:forEach>
+                            </tr>
+                            <c:forEach var="nii" items="${ni.matchpartlist}" varStatus="loop">
+                                <c:if test="${not loop.first and loop.index % 2 == 0}">
+                                    <tr>
+                                    </c:if>
+                                    <td width="26%" align="left" valign="top">
+                                        <label for="textfield"></label>
+                                        <div id="ck-button">
+                                            <label>
+                                                <input type="checkbox" checked="" name="carpartvaultchecks" value="${nii.id}"><span>${nii.name}</span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </c:forEach>
+                        </table>
+                    </div>
+                </c:forEach>                     
             </div>
-        </c:forEach>                     
-    </div>
-    <br />
-    <center>
-        <input type="submit" value="Update" class="save_butn" />&nbsp;&nbsp;&nbsp;
-        <!--                <a href="60_point_checklist_grid.html"><INPUT type="button" value="Save" class="save_butn"/></a>&nbsp;&nbsp;&nbsp;
-                        <a href="60_point_checklist_grid.html"><INPUT type="button" value="Delete" class="save_butn"/></a>&nbsp;&nbsp;&nbsp;
-                        <a href="estimate-edit-service-checklist.html"><INPUT type="button" value="Save & Create Estimate" class="save_butn"/></a>-->
-    </center>  
-</form>
+            <br />
+            <center>
+                <input type="submit" value="Update" class="save_butn" />&nbsp;&nbsp;&nbsp;
+                <!--                <a href="60_point_checklist_grid.html"><INPUT type="button" value="Save" class="save_butn"/></a>&nbsp;&nbsp;&nbsp;
+                                <a href="60_point_checklist_grid.html"><INPUT type="button" value="Delete" class="save_butn"/></a>&nbsp;&nbsp;&nbsp;
+                                <a href="estimate-edit-service-checklist.html"><INPUT type="button" value="Save & Create Estimate" class="save_butn"/></a>-->
+            </center>  
+        </form>
 
-<br />
-<br />
-<br />
-</div>
+        <br />
+        <br />
+        <br />
+    </div>
 </div>
 
 

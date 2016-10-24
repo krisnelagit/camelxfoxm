@@ -146,9 +146,8 @@ public class UpdateInvoiceController {
         }
         //code to first maintain quantity of carpartino ends! here
 
-        List<Taxes> taxList = viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')");
-        double vattax = Double.parseDouble(taxList.get(0).getPercent().toString());
-        double servicetax = Double.parseDouble(taxList.get(1).getPercent().toString());
+        double vattax = Double.parseDouble(invoice.getTaxpercent1());
+        double servicetax = Double.parseDouble(invoice.getTaxpercent2());
         //4.this code updates old invoice part details as it is 
         for (int i = 0; inventoryArray.getPartid() != null && i < inventoryArray.getPartid().length; i++) {
             //code to update invoice details goes here

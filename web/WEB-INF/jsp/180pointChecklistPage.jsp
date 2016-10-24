@@ -10,7 +10,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>180point Checklist</title>
+        <title>180point Checklist</title>  
+        <link rel="stylesheet" type="text/css" href="css/tablet-checkbox-button.css">  
         <link href="css/other_style.css" rel="stylesheet" type="text/css" />
         <link href="css/jquery-ui_1.css" rel="stylesheet" type="text/css" />
         <link href="css/csstable.css" rel="stylesheet" type="text/css" />
@@ -128,10 +129,14 @@
                                         <c:if test="${not loop.first and loop.index % 2 == 0}">
                                         </tr><tr>
                                     </c:if>
-                                    <td width="13%" align="left" valign="top">${nii.categoryname[0].partname} </td>
                                     <td width="26%" align="left" valign="top">
-                                        <label for="textfield"></label>                        
-                                        <input type="checkbox" class="modtabcheckbox" name="carpartvaultchecks" value="${nii.categoryname[0].cpiid}" />
+                                        <label for="textfield"></label>            
+                                        <div id="ck-button">
+                                            <label>
+                                                <input type="checkbox" name="carpartvaultchecks" value="${nii.categoryname[0].cpiid}"><span>${nii.categoryname[0].partname}</span>
+                                            </label>
+                                        </div> 
+                                        <!--<input type="checkbox" class="modtabcheckbox" name="carpartvaultchecks" value="${nii.categoryname[0].cpiid}" />-->
                                     </td>
                                 </c:forEach>
                         </table>

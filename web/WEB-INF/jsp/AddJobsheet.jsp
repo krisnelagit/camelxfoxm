@@ -167,13 +167,12 @@
                                 <td align="left" valign="top">
                                     <input type="hidden" name="typeofpart" value="${ob.item_type}" />
                                     <select name="workmen" required="" class="workmanid">
-                                        <option value="">--select--</option>
                                         <c:forEach var="obb" items="${workmandt}">
                                             <option value="${obb.id}">${obb.name}</option>
                                         </c:forEach>
                                     </select> 
                                 </td>
-                                <td align="center" valign="middle" class="labourcharges"><input type="number" min="0" required="" id="estimate" onchange="iambatman(this)" name="estimatedtime" value="" /><input type="hidden" class="allworkmanids" name="" value="" /></td>
+                                <td align="center" valign="middle" class="labourcharges"><input type="number" min="0" required="" id="estimate" onchange="iambatman(this)" name="estimatedtime" value="0" /><input type="hidden" class="allworkmanids" name="" value="" /></td>
                             </tr>
                             <c:set value="${count+1}" var="count"></c:set>
                         </c:forEach>
@@ -201,13 +200,12 @@
                                     <td align="left" valign="top"> 
                                         <input type="hidden" name="typeofpart" value="${ob.item_type}" />
                                         <select name="workmen" required="" class="workmanid">
-                                            <option value="">--select--</option>
                                             <c:forEach var="obb" items="${workmandt}">
                                                 <option value="${obb.id}">${obb.name}</option>
                                             </c:forEach>
                                         </select> 
                                     </td>
-                                    <td align="center" valign="middle" class="labourcharges"><input type="number" min="0" id="estimate" onchange="iambatman(this)" name="estimatedtime" value="" /><input type="hidden" class="allworkmanids" name="" value="" /></td>
+                                    <td align="center" valign="middle" class="labourcharges"><input type="number" min="0" id="estimate" onchange="iambatman(this)" name="estimatedtime" value="0" /><input type="hidden" class="allworkmanids" name="" value="" /></td>
                                 </tr>
                                 <c:set value="${count+1}" var="count"></c:set>
                             </c:forEach>

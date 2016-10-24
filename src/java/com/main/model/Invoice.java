@@ -23,7 +23,7 @@ public class Invoice {
     private String id;
     @Column(insertable = false,updatable = false)
     private String savedate;
-    private String invoiceid,transactionmail,istax,customer_id,customermobilenumber,customer_name,jobno,discountamount,balanceamount,ledgerid,ispaid="No",isconvert="No",companytotal,customertotal,customerinsuranceliability,sundry_debitors,sparepartsfinal,labourfinal,vehicleid,vehiclenumber,isinsurance="No",insurancecompany,insurancetype,claimnumber,claimcharges,taxAmount1,taxAmount2,amountTotal,isdelete="No",modifydate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+    private String invoiceid,taxpercent1,taxpercent2,transactionmail,istax,customer_id,customermobilenumber,customer_name,jobno,discountamount,balanceamount,ledgerid,ispaid="No",isconvert="No",companytotal,customertotal,customerinsuranceliability,sundry_debitors,sparepartsfinal,labourfinal,vehicleid,vehiclenumber,isinsurance="No",insurancecompany,insurancetype,claimnumber,claimcharges,taxAmount1,taxAmount2,amountTotal,discount_part,discount_labour,isdelete="No",modifydate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
 
     public Invoice() {
     }
@@ -36,10 +36,12 @@ public class Invoice {
         this.savedate = savedate;
     }        
 
-    public Invoice(String id, String savedate, String invoiceid, String transactionmail, String istax, String customer_id, String customermobilenumber, String customer_name, String jobno, String discountamount, String balanceamount, String ledgerid, String companytotal, String customertotal, String customerinsuranceliability, String sundry_debitors, String sparepartsfinal, String labourfinal, String vehicleid, String vehiclenumber, String insurancecompany, String insurancetype, String claimnumber, String claimcharges, String taxAmount1, String taxAmount2, String amountTotal) {
+    public Invoice(String id, String savedate, String invoiceid, String taxpercent1, String taxpercent2, String transactionmail, String istax, String customer_id, String customermobilenumber, String customer_name, String jobno, String discountamount, String balanceamount, String ledgerid, String companytotal, String customertotal, String customerinsuranceliability, String sundry_debitors, String sparepartsfinal, String labourfinal, String vehicleid, String vehiclenumber, String insurancecompany, String insurancetype, String claimnumber, String claimcharges, String taxAmount1, String taxAmount2, String amountTotal, String discount_part, String discount_labour) {
         this.id = id;
         this.savedate = savedate;
         this.invoiceid = invoiceid;
+        this.taxpercent1 = taxpercent1;
+        this.taxpercent2 = taxpercent2;
         this.transactionmail = transactionmail;
         this.istax = istax;
         this.customer_id = customer_id;
@@ -64,8 +66,42 @@ public class Invoice {
         this.taxAmount1 = taxAmount1;
         this.taxAmount2 = taxAmount2;
         this.amountTotal = amountTotal;
+        this.discount_part = discount_part;
+        this.discount_labour = discount_labour;
     }
 
+    public String getDiscount_part() {
+        return discount_part;
+    }
+
+    public void setDiscount_part(String discount_part) {
+        this.discount_part = discount_part;
+    }
+
+    public String getDiscount_labour() {
+        return discount_labour;
+    }
+
+    public void setDiscount_labour(String discount_labour) {
+        this.discount_labour = discount_labour;
+    }
+    
+    public String getTaxpercent1() {
+        return taxpercent1;
+    }
+
+    public void setTaxpercent1(String taxpercent1) {
+        this.taxpercent1 = taxpercent1;
+    }
+
+    public String getTaxpercent2() {
+        return taxpercent2;
+    }
+
+    public void setTaxpercent2(String taxpercent2) {
+        this.taxpercent2 = taxpercent2;
+    }
+    
     public String getTransactionmail() {
         return transactionmail;
     }

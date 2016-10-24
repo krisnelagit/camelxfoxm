@@ -31,15 +31,15 @@
                 $(".calendar_view").hide();
                 $('#table_id').DataTable();
                 $("#Appointmentgrid").hide();
-                var fullDate = new Date()
+                var fullDate = new Date();
                 var twoDigitMonth = ((fullDate.getMonth().length + 1) === 1) ? (fullDate.getMonth() + 1) : '0' + (fullDate.getMonth() + 1);
                 var dd = fullDate.getDate();
                 var todaydate;
                 var currentDate;
                 if (dd < 10) {
-                    todaydate = '0' + dd
+                    todaydate = '0' + dd;
                     currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + todaydate;
-                }else{
+                } else {
                     currentDate = fullDate.getFullYear() + "-" + twoDigitMonth + "-" + dd;
                 }
 
@@ -51,7 +51,7 @@
                     },
                     eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
                         var moddate = event.start.format();
-                        var urlandidanddatetime = event.url;
+                        var urlandidanddatetime = event.urlas;
                         var onlyapointmentid = urlandidanddatetime.substring(urlandidanddatetime.indexOf('=') + 1, urlandidanddatetime.indexOf('&') + 0);
                         moddate += ' ' + urlandidanddatetime.substring(urlandidanddatetime.lastIndexOf("-") + 4);
 
@@ -95,7 +95,7 @@
             <c:forEach var="oba" items="${calendardt}">
                         {
                             title: '${oba.subject}',
-                            url: 'appointmentid=${oba.id}&datetime=${oba.datetime}',
+                            urlas: 'appointmentid=${oba.id}&datetime=${oba.datetime}',
                             start: '${oba.date}',
                             datetime: '${oba.datetime}',
                             customername: '${oba.title}',
@@ -122,7 +122,7 @@
                 var year = date.getFullYear();
                 var hours = date.getHours();
                 var min = date.getMinutes();
-                $('#apdatetimepicker').val(year+ "-" + monthNames[monthIndex] + "-" + day + "  " + hours + ":" + min);
+                $('#apdatetimepicker').val(year + "-" + monthNames[monthIndex] + "-" + day + "  " + hours + ":" + min);
                 //end of setting date time for appointment
             });
 
