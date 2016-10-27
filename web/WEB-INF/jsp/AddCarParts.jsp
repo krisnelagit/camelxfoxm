@@ -69,6 +69,17 @@
                     </td>
                 </tr>
                 <tr>
+                    <td align="left" valign="top">Show in 180: </td>
+                    <td align="left" valign="top">
+                        <select required="" name="showIn180">
+                            <option value="">--Select--</option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                        <input type="hidden" name="isOld" value="No" />
+                    </td>
+                </tr>
+                <tr>
                     <td>&nbsp;</td>
                     <td><input type="submit" value="Save" class="view3" /> &nbsp;&nbsp;&nbsp;<input type="reset" value="Reset" class="view3" /></td>
                 </tr>

@@ -118,6 +118,40 @@
                     </td>
                 </tr>
                 <tr>
+                    <td align="left" valign="top">Show in 180: </td>
+                    <td align="left" valign="top">
+                        <select required="" name="showIn180">
+                            <c:choose>
+                                <c:when test="${getparts.showin180=='Yes'}">
+                                    <option selected="">Yes</option>
+                                    <option>No</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option>Yes</option>
+                                    <option selected="">No</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="left" valign="top">Old part: </td>
+                    <td align="left" valign="top">
+                        <select required="" name="isOld">
+                            <c:choose>
+                                <c:when test="${getparts.isOld=='Yes'}">
+                                    <option selected="">Yes</option>
+                                    <option>No</option>
+                                </c:when>
+                                <c:otherwise>
+                                    <option>Yes</option>
+                                    <option selected="">No</option>
+                                </c:otherwise>
+                            </c:choose>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td>&nbsp;</td>
                     <td> <input type="submit" value="Update" class="view3" /> &nbsp;&nbsp;&nbsp;<input type="reset" value="Reset" class="view3" /></td>
                 </tr>

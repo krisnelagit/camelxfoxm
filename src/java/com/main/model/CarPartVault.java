@@ -20,10 +20,12 @@ import javax.persistence.Table;
 public class CarPartVault {
     @Id
     private String id;
-    private String categoryid,oempartnumber="",partlocation="",a,b,c,d,itemtype,name,isdelete="No",modifydate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());  
+    private String showIn180,isOld,categoryid,oempartnumber="",partlocation="",a,b,c,d,itemtype,name,isdelete="No",modifydate=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());  
 
-    public CarPartVault(String id, String categoryid, String a, String b, String c, String d, String itemtype, String name) {
+    public CarPartVault(String id, String showIn180, String isOld, String categoryid, String a, String b, String c, String d, String itemtype, String name) {
         this.id = id;
+        this.showIn180 = showIn180;
+        this.isOld = isOld;
         this.categoryid = categoryid;
         this.a = a;
         this.b = b;
@@ -32,7 +34,23 @@ public class CarPartVault {
         this.itemtype = itemtype;
         this.name = name;
     }
-    
+
+    public String getShowIn180() {
+        return showIn180;
+    }
+
+    public void setShowIn180(String showIn180) {
+        this.showIn180 = showIn180;
+    }
+
+    public String getIsOld() {
+        return isOld;
+    }
+
+    public void setIsOld(String isOld) {
+        this.isOld = isOld;
+    }
+        
     public String getOempartnumber() {
         return oempartnumber;
     }

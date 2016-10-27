@@ -388,7 +388,7 @@
                     <td width="66%" align="left" valign="top">
                         <input type="number" step="0.01" name="total" id="amount" onchange="calculateBalancePayable(this);" />
                         <input type="hidden" readonly="" name="amount" id="total" value="" />
-                        <input type="hidden" name="taxdetails" id="taxdetails" value="${taxdtls.id},${taxdtls.percent}" />
+                        <input type="hidden" name="taxdetails" id="taxdetails" value="${taxdtlsID},${taxdtlsPercent}" />
                         <input type="hidden" name="taxid" id="taxpk" value="" />
                         <input type="hidden" name="tax" id="taxpercent" value="" /> 
                         <input type="hidden" readonly="" name="tax_amount" id="taxamount" value="" />
@@ -418,10 +418,11 @@
                     </c:when>
                 </c:choose>
                 <tr>
-                    <td width="34%" align="left" valign="top">Payable amt.(Rs.)</td>
+                    <td width="34%" align="left" valign="top">Balance Payable amt.(Rs.)</td>
                     <td width="66%" align="left" valign="top">
                         <input type="text" name="payableinvoiceamount" id="payableinvoiceamount" readonly="" />
                         <input type="hidden" name="negativepayableinvoiceamount" id="negativepayableinvoiceamount" />
+                        <input type="checkbox" name="writeoff" value="ON" />(Discount/Writeoff)
                     </td>
                 </tr>
             </table>

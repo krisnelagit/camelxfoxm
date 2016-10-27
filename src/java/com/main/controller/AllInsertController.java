@@ -1895,7 +1895,8 @@ public class AllInsertController {
             @RequestParam(value = "tax_amount", required = false) String tax_amount,
             @RequestParam(value = "jobno", required = false) String jobno,
             @RequestParam(value = "vattax", required = false) String vattax,
-            @RequestParam(value = "servicetax", required = false) String servicetax
+            @RequestParam(value = "servicetax", required = false) String servicetax,
+            @RequestParam(value = "writeoff", required = false) String writeoff
     ) {
 
         //inserts to payment table
@@ -1970,6 +1971,11 @@ public class AllInsertController {
         if (balanceadvanceamount != null) {
             updateService.updateanyhqlquery("update customer set advance_amount='" + balanceadvanceamount + "',modifydate=now() where id='" + payment.getCustomerid() + "'");
         }
+        
+        //code for writeoff goes here
+        if (writeoff.equals("ON")) {
+            updateService.updateanyhqlquery("update invoice set balanceamount='0', writeoff='"+payableinvoiceamount+"',modifydate=now() where id='" + payment.getInvoiceid() + "'");
+        } 
         return "redirect:invoiceMasterLink";
     }
 
