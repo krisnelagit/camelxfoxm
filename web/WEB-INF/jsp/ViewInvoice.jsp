@@ -58,10 +58,10 @@
                 <tr>
                     <td>Date</td>
                     <td>Id.</td>
-                    <td>Customer name</td>
-                    <td>Mobile no.</td>
-                    <td>Vehicle Number</td>
-                    <td>Balance Outstanding</td>
+                    <td>Cust. name</td>
+                    <td>Mob..</td>
+                    <td>Vehicle</td>
+                    <td>Outstanding</td>
                     <td>Total</td>
                     <td>Payment</td>
                     <td>&nbsp;</td>

@@ -66,7 +66,7 @@
                             source: sourced,
                             select: function (event, ui) {
                                 var customerid = mappingd[ui.item.value];
-                                location.href = "/Karworx/viewCustomerSearchLink?customerid=" + customerid;
+                                location.href = "/Karworx1/viewCustomerSearchLink?customerid=" + customerid;
                             },
                             change: function () {
                                 var val = $(this).val();
@@ -121,7 +121,7 @@
                                     data: {
                                         mobileno: customermobilenumber
                                     }, success: function (data) {
-                                        location.href = "/Karworx/viewCustomerSearchLink?customerid=" + data[0].id;
+                                        location.href = "/Karworx1/viewCustomerSearchLink?customerid=" + data[0].id;
                                     },
                                     error: function () {
 
@@ -175,7 +175,7 @@
                             source: sourced,
                             select: function (event, ui) {
                                 var id = mappingd[ui.item.value];
-                                location.href = "/Karworx/viewCustomerSearchLink?customerid="+id;
+                                location.href = "/Karworx1/viewCustomerSearchLink?customerid="+id;
 
                             },
                             change: function () {

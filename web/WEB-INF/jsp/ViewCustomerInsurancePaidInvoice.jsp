@@ -573,24 +573,18 @@
                                             <td align="right">&nbsp;</td>
                                         </tr>                                
                                     </c:if>
-                                    <c:set value="1" var="count"></c:set>
-                                    <c:forEach var="obva" items="${vatDetails}">
-                                        <tr>
-                                            <td width="6%">&nbsp;</td>
-                                            <td width="24%">&nbsp;</td>
-                                            <c:choose>
-                                                <c:when test="${count==1}">
-                                                    <td width="11%" align="right"><strong> ${obva.name} @ ${obva.percent}%</strong></td>
-                                                    <td width="14%" align="right"><strong><div id="${count}"> ${invoiceDt.taxAmount1}</div></strong></td>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                    <td width="11%" align="right"><strong> ${obva.name} @ ${obva.percent}%</strong></td>
-                                                    <td width="14%" align="right"><strong><div id="me2"> ${invoiceDt.taxAmount2}</div></strong></td>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                        </tr>
-                                        <c:set value="${count+1}" var="count"></c:set>
-                                    </c:forEach>
+                                    <tr>
+                                        <td width="6%">&nbsp;</td>
+                                        <td width="24%">&nbsp;</td>
+                                        <td width="11%" align="right"><strong> VAT @ ${invoiceDt.taxpercent1}%</strong></td>
+                                        <td width="14%" align="right"><strong><div id="1"> ${invoiceDt.taxAmount1}</div></strong></td>                                                            
+                                    </tr>
+                                    <tr>
+                                        <td width="6%">&nbsp;</td>
+                                        <td width="24%">&nbsp;</td>
+                                        <td width="11%" align="right"><strong> SERVICE TAX @ ${invoiceDt.taxpercent2}%</strong></td>
+                                        <td width="14%" align="right"><strong><div id="me2"> ${invoiceDt.taxAmount2}</div></strong></td>
+                                    </tr>
                                     <c:if test="${invoiceDt.discountamount gt '0'}">
                                     <tr>
                                         <!--<td >&nbsp;</td>-->

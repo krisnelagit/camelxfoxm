@@ -1213,7 +1213,7 @@ public class AllViewController {
         Date date = new Date();
         String month = dateFormat.format(date);
         modelAndView.addObject("currentmonth", month);
-        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
+//        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
 
         //view invoice data required for getting data
         List<Map<Object, String>> invoicemap = viewService.getanyjdbcdatalist("SELECT iv.*,bd.vehiclename,bdd.name as make, SUBSTRING(iv.savedate,1,7) as monthcheck\n"
@@ -1288,8 +1288,8 @@ public class AllViewController {
         Date date = new Date();
         String month = dateFormat.format(date);
         modelAndView.addObject("currentmonth", month);
-        List<Taxes> taxlist=viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')");
-        modelAndView.addObject("vatDetails", taxlist);
+//        List<Taxes> taxlist=viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')");
+//        modelAndView.addObject("vatDetails", taxlist);
 
         //view invoice data required for getting data
         List<Map<Object, String>> invoicemap = viewService.getanyjdbcdatalist("SELECT iv.*,bd.vehiclename,bdd.name as make, SUBSTRING(iv.savedate,1,7) as monthcheck\n"
@@ -1360,7 +1360,7 @@ public class AllViewController {
         } else {
             d = 0;
         }
-        double va = Double.parseDouble(taxlist.get(0).getPercent());
+        double va = Double.parseDouble(invoicemap.get(0).get("taxpercent1").toString());
         vatpercent=d*va/100;
         modelAndView.addObject("sparelab", d);
         List<Map<String, Object>> laborcount = viewService.getanyjdbcdatalist("SELECT Sum(customerinsurance) laborliability FROM labourinventory where invoiceid='" + invoiceId + "';");
@@ -1370,7 +1370,7 @@ public class AllViewController {
         } else {
             e = 0;
         }
-        double st = Double.parseDouble(taxlist.get(1).getPercent());
+        double st = Double.parseDouble(invoicemap.get(0).get("taxPercent2").toString());
         servicepercent=e*st/100;
         modelAndView.addObject("laborlab", e);
         //calculate customerliability total code ends! here
@@ -1456,7 +1456,7 @@ public class AllViewController {
     public ModelAndView sendMailInvoice(@RequestParam(value = "invoiceid") String invoiceId) {
         ModelAndView modelAndView = new ModelAndView("InvoiceMail");
         modelAndView.addObject("company_mail", env.getProperty("company_mail"));
-        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
+//        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
 
         //view invoice data required for getting data
         List<Map<Object, String>> invoicemap = viewService.getanyjdbcdatalist("SELECT iv.*,bd.vehiclename,bdd.name as make\n"
@@ -1527,7 +1527,7 @@ public class AllViewController {
     public ModelAndView viewProformaInvoice(@RequestParam(value = "invoiceid") String invoiceId) {
         ModelAndView modelAndView = new ModelAndView("InvoiceProformaMail");
         modelAndView.addObject("company_mail", env.getProperty("company_mail"));
-        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
+//        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
 
         //view invoice data required for getting data
         List<Map<Object, String>> invoicemap = viewService.getanyjdbcdatalist("SELECT iv.*,bd.vehiclename,bdd.name as make\n"

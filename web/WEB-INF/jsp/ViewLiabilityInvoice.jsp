@@ -28,8 +28,7 @@
                 actnumber = numReversed.reverse();
                 if (Number(junkVal) >= 0) {
                     //do nothing
-                }
-                else {
+                } else {
                     alert('wrong Number cannot be converted');
                     return false;
                 }
@@ -55,8 +54,7 @@
                         case 0:
                             if (actnumber[i] == 0 || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             inWords[j] = inWords[j];
@@ -67,19 +65,16 @@
                         case 2:
                             if (actnumber[i] == 0) {
                                 inWords[j] = '';
-                            }
-                            else if (actnumber[i - 1] != 0 && actnumber[i - 2] != 0) {
+                            } else if (actnumber[i - 1] != 0 && actnumber[i - 2] != 0) {
                                 inWords[j] = iWords[actnumber[i]] + ' Hundred and';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]] + ' Hundred';
                             }
                             break;
                         case 3:
                             if (actnumber[i] == 0 || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) { //here
@@ -92,8 +87,7 @@
                         case 5:
                             if (actnumber[i] == "0" || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) {   //here 
@@ -106,8 +100,7 @@
                         case 7:
                             if (actnumber[i] == "0" || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) { // changed here
@@ -125,11 +118,9 @@
                 function tens_complication() {
                     if (actnumber[i] == 0) {
                         inWords[j] = '';
-                    }
-                    else if (actnumber[i] == 1) {
+                    } else if (actnumber[i] == 1) {
                         inWords[j] = ePlace[actnumber[i - 1]];
-                    }
-                    else {
+                    } else {
                         inWords[j] = tensPlace[actnumber[i]];
                     }
                 }
@@ -151,14 +142,12 @@
                     val = val.substring(val.indexOf('.') + 1, val.length);
                     if (val == '0' || val == '00') {
                         finalWord2 = "zero paisa only";
-                    }
-                    else {
+                    } else {
                         document.getElementById('amttotal').value = val;
                         finalWord2 = test_value() + " paisa only";
                     }
                     document.getElementById('finalamtwords').innerHTML = finalWord1 + " Rupees and " + finalWord2;
-                }
-                else {
+                } else {
                     //finalWord2 =  " Zero paisa only";
                     document.getElementById('finalamtwords').innerHTML = finalWord1 + " Rupees Only";
                 }
@@ -584,38 +573,31 @@
                                             <td align="right"><strong>${invoiceDt.claimcharges}</strong></td>
                                         </tr>                                
                                     </c:if>
-                                    <c:set value="1" var="count"></c:set>
-                                    <c:forEach var="obva" items="${vatDetails}">
-                                        <tr>
-                                            <td width="6%">&nbsp;</td>
-                                            <td width="24%">&nbsp;</td>
-                                            <c:choose>
-                                                <c:when test="${count==1}">
-                                                    <td width="11%" align="right"><strong>Add ${obva.name} @ ${obva.percent}%</strong></td>
-                                                    <td width="14%" align="right">
-                                                        <strong>
-                                                            <div id="${count}"> 
-                                                                <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${sparelab * obva.percent / 100}" />
+                                    <tr>
+                                        <td width="6%">&nbsp;</td>
+                                        <td width="24%">&nbsp;</td>
+                                        <td width="11%" align="right"><strong>Add VAT @ ${invoiceDt.taxpercent1}%</strong></td>
+                                        <td width="14%" align="right">
+                                            <strong>
+                                                <div id="1"> 
+                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${sparelab * invoiceDt.taxpercent1 / 100}" />
 
-                                                            </div>
-                                                        </strong>
-                                                    </td>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <td width="11%" align="right"><strong>Add ${obva.name} @ ${obva.percent}%</strong></td>
-                                                    <td width="14%" align="right">
-                                                        <strong>
-                                                            <div id="me2">
-                                                                <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${laborlab * obva.percent / 100}" />
-
-                                                            </div>
-                                                        </strong>
-                                                    </td>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </tr>
-                                        <c:set value="${count+1}" var="count"></c:set>
-                                    </c:forEach>
+                                                </div>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="6%">&nbsp;</td>
+                                        <td width="24%">&nbsp;</td>
+                                        <td width="11%" align="right"><strong>Add SERVICE TAX @ ${invoiceDt.taxpercent2}%</strong></td>
+                                        <td width="14%" align="right">
+                                            <strong>
+                                                <div id="2"> 
+                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${laborlab * invoiceDt.taxpercent2 / 100}" />
+                                                </div>
+                                            </strong>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td style="background-color:#f4f4f4">&nbsp;</td>
                                         <td style="background-color:#f4f4f4"><strong> <label id="finalamtwords"></label> </strong></td>

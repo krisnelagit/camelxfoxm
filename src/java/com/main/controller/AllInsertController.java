@@ -1974,7 +1974,7 @@ public class AllInsertController {
         
         //code for writeoff goes here
         if (writeoff.equals("ON")) {
-            updateService.updateanyhqlquery("update invoice set balanceamount='0', writeoff='"+payableinvoiceamount+"',modifydate=now() where id='" + payment.getInvoiceid() + "'");
+            updateService.updateanyhqlquery("update invoice set balanceamount='0', ispaid='Yes', writeoff='"+payableinvoiceamount+"',modifydate=now() where id='" + payment.getInvoiceid() + "'");
         } 
         return "redirect:invoiceMasterLink";
     }

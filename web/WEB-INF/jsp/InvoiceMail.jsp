@@ -29,8 +29,7 @@
                 actnumber = numReversed.reverse();
                 if (Number(junkVal) >= 0) {
                     //do nothing
-                }
-                else {
+                } else {
                     alert('wrong Number cannot be converted');
                     return false;
                 }
@@ -56,8 +55,7 @@
                         case 0:
                             if (actnumber[i] == 0 || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             inWords[j] = inWords[j];
@@ -68,19 +66,16 @@
                         case 2:
                             if (actnumber[i] == 0) {
                                 inWords[j] = '';
-                            }
-                            else if (actnumber[i - 1] != 0 && actnumber[i - 2] != 0) {
+                            } else if (actnumber[i - 1] != 0 && actnumber[i - 2] != 0) {
                                 inWords[j] = iWords[actnumber[i]] + ' Hundred and';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]] + ' Hundred';
                             }
                             break;
                         case 3:
                             if (actnumber[i] == 0 || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) { //here
@@ -93,8 +88,7 @@
                         case 5:
                             if (actnumber[i] == "0" || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) {   //here 
@@ -107,8 +101,7 @@
                         case 7:
                             if (actnumber[i] == "0" || actnumber[i + 1] == 1) {
                                 inWords[j] = '';
-                            }
-                            else {
+                            } else {
                                 inWords[j] = iWords[actnumber[i]];
                             }
                             if (actnumber[i + 1] != 0 || actnumber[i] > 0) { // changed here
@@ -126,11 +119,9 @@
                 function tens_complication() {
                     if (actnumber[i] == 0) {
                         inWords[j] = '';
-                    }
-                    else if (actnumber[i] == 1) {
+                    } else if (actnumber[i] == 1) {
                         inWords[j] = ePlace[actnumber[i - 1]];
-                    }
-                    else {
+                    } else {
                         inWords[j] = tensPlace[actnumber[i]];
                     }
                 }
@@ -152,14 +143,12 @@
                     val = val.substring(val.indexOf('.') + 1, val.length);
                     if (val == '0' || val == '00') {
                         finalWord2 = "zero paisa only";
-                    }
-                    else {
+                    } else {
                         document.getElementById('amttotal').value = val;
                         finalWord2 = test_value() + " paisa only";
                     }
                     document.getElementById('finalamtwords').innerHTML = finalWord1 + " Rupees and " + finalWord2;
-                }
-                else {
+                } else {
                     //finalWord2 =  " Zero paisa only";
                     document.getElementById('finalamtwords').innerHTML = finalWord1 + " Rupees Only";
                 }
@@ -184,8 +173,8 @@
                     e.preventDefault();
                     //get customer email in the textbox of comment dialog
                     var customerEmail = $("#customeremail").val();
-                    $("#emailList").val('${company_mail},'+customerEmail);
-                    
+                    $("#emailList").val('${company_mail},' + customerEmail);
+
 
 //                    var invoicehistoryid = $(this).attr('href');
                     $("#dialogmailDetail").dialog({
@@ -280,8 +269,8 @@
                 //invoice name logic                
                 var customerdate = $("#custdate").val();
                 var customervehicle = $("#custvehicle").val();
-                var invoicename=customervehicle+" "+customerdate;
-                
+                var invoicename = customervehicle + " " + customerdate;
+
                 var customerName = $("#customername").val();
                 var customerEmail = $("#emailList").val();
                 var emailComments = $('.nicEdit-main').html().substring(0, 20000);
@@ -296,7 +285,7 @@
                         customerEmail: customerEmail,
                         mypdfbase: out,
                         emailcomments: emailComments,
-                        name: "Invoice for "+invoicename
+                        name: "Invoice for " + invoicename
                     },
                     cache: false,
                     success: function (data) {
@@ -375,7 +364,7 @@
 
 
         <a href="#" class="view button-001 mailclick">Send Mail</a>  <a href="viewCustomerInsuranceInvoice?invoiceid=${param.invoiceid}" class="view button-001">Back</a>
-        
+
 
         <label id="send"><h2>Sending mail <img src="images/ajax-loader.gif" alt="loader View"></h2></label><label id="senturmail"><h2>Mail sent successfully <img src="images/MB__mail_icon.png" alt="loader View"></h2></label><label id="sendError"><h2>Please Check Your Connectivity</h2></label>
         <h2>Send Invoice</h2>
@@ -537,8 +526,8 @@
                                         <tr >
                                             <td width="6%" class="wn1" ><strong><c:if test="${not empty labourinventorydt}">Sr. No.</c:if>&nbsp;</strong></td>
                                             <td width="24%" class="wn1"  ><strong><c:if test="${not empty labourinventorydt}">Service Name</c:if>&nbsp;</strong></td>
-                                            <td width="11%" class="wn1"  ><strong>&nbsp;</strong></td>
-                                            <td width="14%" class="wn1" align="center" ><strong><c:if test="${not empty labourinventorydt}">Labour Rs.</c:if>&nbsp;</strong></td>
+                                                <td width="11%" class="wn1"  ><strong>&nbsp;</strong></td>
+                                                <td width="14%" class="wn1" align="center" ><strong><c:if test="${not empty labourinventorydt}">Labour Rs.</c:if>&nbsp;</strong></td>
                                                 <!--<td width="16%"><strong>Total Amount</strong></td>-->
                                             </tr>
                                         <c:set value="1" var="count"></c:set>
@@ -567,6 +556,18 @@
                                             <td  align="right">&nbsp;</td>
                                         </tr>                                
                                     </c:if>
+                                    <tr>
+                                        <td width="6%">&nbsp;</td>
+                                        <td width="24%">&nbsp;</td>
+                                        <td width="11%" align="right"><strong>Add VAT @ ${invoiceDt.taxpercent1}%</strong></td>
+                                        <td width="14%" align="right"><strong><div id="1"> ${invoiceDt.taxAmount1}</div></strong></td>                                                            
+                                    </tr>
+                                    <tr>
+                                        <td width="6%">&nbsp;</td>
+                                        <td width="24%">&nbsp;</td>
+                                        <td width="11%" align="right"><strong>Add SERVICE TAX @ ${invoiceDt.taxpercent2}%</strong></td>
+                                        <td width="14%" align="right"><strong><div id="me2"> ${invoiceDt.taxAmount2}</div></strong></td>
+                                    </tr>
                                     <c:set value="1" var="count"></c:set>
                                     <c:forEach var="obva" items="${vatDetails}">
                                         <tr>
@@ -586,20 +587,20 @@
                                         <c:set value="${count+1}" var="count"></c:set>
                                     </c:forEach>
                                     <c:if test="${invoiceDt.discountamount gt '0'}">
-                                    <tr>
-                                        <!--<td >&nbsp;</td>-->
-                                        <td>&nbsp;</td>
-                                        <td>&nbsp;</td>
-                                        <td align="right"><strong> Discount</strong></td>
-                                        <td align="right"><strong>${invoiceDt.discountamount}</strong></td>
-                                    </tr>
+                                        <tr>
+                                            <!--<td >&nbsp;</td>-->
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                            <td align="right"><strong> Discount</strong></td>
+                                            <td align="right"><strong>${invoiceDt.discountamount}</strong></td>
+                                        </tr>
                                     </c:if>
                                     <tr>
                                         <td style="background-color:#f4f4f4">&nbsp;</td>
                                         <td style="background-color:#f4f4f4"><strong> <label id="finalamtwords"></label> </strong></td>
                                         <td align="right" style="background-color:#f4f4f4"><strong style="float:right">Grand Total</strong></td>
                                         <td align="right" style="background-color:#f4f4f4">
-                                        <strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong>  
+                                            <strong>${invoiceDt.amountTotal}<input type="hidden" name="amttotal" id="amttotal" value="${invoiceDt.amountTotal}" /></strong>  
                                         </td>
                                     </tr>
                                     <%--
