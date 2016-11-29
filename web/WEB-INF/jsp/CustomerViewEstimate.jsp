@@ -120,7 +120,7 @@
                         <td align="left" width="37%"><strong>Description</strong></td>
                         <td align="left" width="37%"><strong>Qty.</strong></td>
                         <td align="center" width="14%"><strong>per item</strong></td>
-                        <td align="center" width="12%"><strong>Labour Rs.</strong></td>z
+                        <td align="center" width="12%"><strong>Labour Rs.</strong></td>
                         <td align="center" width="14%"><strong>Parts Rs.</strong></td>
                         <td align="center" width="12%"><strong>&nbsp;</strong></td>
                     </tr>

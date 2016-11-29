@@ -369,7 +369,7 @@
                 </c:when>
             </c:choose> 
         <input type="hidden" name="invoiceid" id="paymenthistory" value="${param.invoiceid}" />
-        <a href="#" onclick="showhistory()" class="view button-001"><img src="images/wallet33.png" width="15" height="13"/>&nbsp;History</a>  <a href="sendMailInvoice?invoiceid=${param.invoiceid}" class="view button-001">Goto Send Mail</a>  <a href="invoiceMasterLink" class="view button-001">Back</a><a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
+        <a href="#" onclick="showhistory()" class="view button-001"><img src="images/wallet33.png" width="15" height="13"/>&nbsp;History</a>  <a href="sendMailLiabilityInvoice?invoiceid=${param.invoiceid}" class="view button-001">Goto Send Mail</a>  <a href="invoiceMasterLink" class="view button-001">Back</a><a href="#" class="view button-001" onclick="printContent('printdiv')">Print</a>
             <c:if test="${!sessionScope.USERTYPE.equals('spares') && !sessionScope.USERTYPE.equals('crm')}">
                 <c:choose>
                     <c:when test="${sessionScope.USERTYPE.equals('admin')}">

@@ -1523,6 +1523,77 @@ public class AllViewController {
     }
 
     //redirects to  Customer Insurance invoice page
+    @RequestMapping("sendMailLiabilityInvoice")
+    public ModelAndView sendMailLiabilityInvoice(@RequestParam(value = "invoiceid") String invoiceId) {
+        ModelAndView modelAndView = new ModelAndView("LiabilityInvoiceMail");
+        modelAndView.addObject("company_mail", env.getProperty("company_mail"));
+//        modelAndView.addObject("vatDetails", viewService.getanyhqldatalist("from taxes where isdelete<>'Yes' and id in('LTX1','LTX2')"));
+
+        //view invoice data required for getting data
+        List<Map<Object, String>> invoicemap = viewService.getanyjdbcdatalist("SELECT iv.*,bd.vehiclename,bdd.name as make\n"
+                + "FROM invoice iv\n"
+                + "left join branddetails bd on bd.id=iv.vehicleid\n"
+                + "left join brand bdd on bdd.id=bd.brandid\n"
+                + "where iv.id='" + invoiceId + "'");
+
+        modelAndView.addObject("invoiceDt", invoicemap.get(0));
+
+        if (invoicemap.get(0).get("isinsurance").equals("Yes")) {
+            if (invoicemap.get(0).get("insurancetype").equals("Full Payment")) {
+                modelAndView.addObject("insuranceinvoiceDt", viewService.getanyjdbcdatalist("SELECT CAST(iv.sparepartsfinal AS UNSIGNED)+ CAST(iv.labourfinal AS UNSIGNED) as claimtotal,\n"
+                        + "CAST(iv.taxAmount1 AS UNSIGNED)+ CAST(iv.taxAmount2 AS UNSIGNED) as taxtotal,\n"
+                        + "CAST(iv.labourfinal AS UNSIGNED)+CAST(iv.sparepartsfinal AS UNSIGNED)+CAST(iv.taxAmount1 AS UNSIGNED)+ CAST(iv.taxAmount2 AS UNSIGNED) as grandtotal\n"
+                        + "FROM invoice iv\n"
+                        + "where iv.id='" + invoiceId + "'").get(0));
+            }
+        }
+
+        Invoice invoicemobile = (Invoice) viewService.getspecifichqldata(Invoice.class, invoiceId);
+        String custnumber = invoicemobile.getCustomermobilenumber();
+
+        List<Map<String, Object>> customerlist = viewService.getanyjdbcdatalist("SELECT inv.*,cu.*,cv.km_in\n"
+                + "FROM invoice inv\n"
+                + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+                + "inner join customervehicles cv on cv.custid=cu.id\n"
+                + "where cu.mobilenumber='" + custnumber + "'\n"
+                + "group by cu.mobilenumber");
+
+        if (customerlist.size() > 0) {
+            modelAndView.addObject("customerinvoiceDt", viewService.getanyjdbcdatalist("SELECT inv.*,cu.*,cv.km_in\n"
+                    + "FROM invoice inv\n"
+                    + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+                    + "inner join customervehicles cv on cv.custid=cu.id\n"
+                    + "where cu.mobilenumber='" + custnumber + "'\n"
+                    + "group by cu.mobilenumber").get(0));
+        } else {
+            modelAndView.addObject("customerinvoiceDt", viewService.getanyjdbcdatalist("SELECT inv.*,cu.*\n"
+                    + "FROM invoice inv\n"
+                    + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+                    + "where cu.mobilenumber='" + custnumber + "'\n"
+                    + "group by cu.mobilenumber").get(0));
+        }
+
+//        modelAndView.addObject("customerinvoiceDt", viewService.getanyjdbcdatalist("SELECT inv.*,cu.*,cv.km_in\n"
+//                + "FROM invoice inv\n"
+//                + "inner join customer cu on cu.mobilenumber=inv.customermobilenumber\n"
+//                + "inner join customervehicles cv on cv.custid=cu.id\n"
+//                + "where cu.mobilenumber='" + custnumber + "'\n"
+//                + "group by cu.mobilenumber").get(0));
+        //normal inovice create ka view[carparts]
+        modelAndView.addObject("labourandpartdt", viewService.getanyjdbcdatalist("SELECT i.*,i.partname as itemname,mfg.name as mfgname \n"
+                + "FROM invoicedetails i \n"
+                + "left join  carpartinfo cpi on cpi.id=i.partid\n"
+                + "left join  carpartvault cpv on cpv.id=cpi.vaultid\n"
+                + "left join  manufacturer mfg on mfg.id=i.manufacturerid \n"
+                + "where i.invoiceid='" + invoiceId + "' and i.isdelete='No'"));
+        //convert ka labour info
+        modelAndView.addObject("labourinventorydt", viewService.getanyjdbcdatalist("SELECT *,servicename as name FROM labourinventory\n"
+                + "where invoiceid='" + invoiceId + "' and isdelete='No' and total>0"));
+        return modelAndView;
+
+    }
+
+    //redirects to  Customer Insurance invoice page
     @RequestMapping("viewProformaInvoice")
     public ModelAndView viewProformaInvoice(@RequestParam(value = "invoiceid") String invoiceId) {
         ModelAndView modelAndView = new ModelAndView("InvoiceProformaMail");

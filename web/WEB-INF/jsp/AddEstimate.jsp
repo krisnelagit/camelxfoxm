@@ -316,6 +316,133 @@
             //code for taxes and grandtotal ends! here
             }
         </SCRIPT>
+        <style>
+            /*@charset "utf-8";*/
+
+            /* CSS Document */
+            .cf:before, .cf:after {
+                content:"";
+                display:table;
+            }
+            .cf:after {
+                clear:both;
+            }
+            /* Normal styles for the modal */
+            #modal {
+                left:70%;
+                margin:-250px 0 0 -40%;
+                opacity: 0;
+                position:fixed;
+                top:0%;
+                visibility: hidden;
+                width:40%;
+                box-shadow:0 3px 7px rgba(0, 0, 0, .25);
+                box-sizing:border-box;
+                transition: all 0.4s ease-in-out;
+                -moz-transition: all 0.4s ease-in-out;
+                -webkit-transition: all 0.4s ease-in-out;
+                z-index: 800;
+            }
+            /* Make the modal appear when targeted */
+            #modal:target {
+                opacity: 1;
+                top:60%;
+                visibility: visible;
+            }
+            #modal .header, #modal .footer {
+                border-bottom: 1px solid #e7e7e7;
+                border-radius: 5px 5px 0 0;
+            }
+            #modal .footer {
+                border:none;
+                border-top: 1px solid #e7e7e7;
+                border-radius: 0 0 5px 5px;
+            }
+            #modal h2 {
+                margin:0;
+            }
+            #modal .btn {
+                float:right;
+            }
+            #modal .copy, #modal .header, #modal .footer {
+                padding:15px;
+            }
+            .modal-content {
+                background: #f7f7f7;
+                position: relative;
+                z-index: 20;
+                border-radius:5px;
+            }
+            #modal .copy {
+                background: #fff;
+            }
+            #modal .overlay {
+                background-color: #000;
+                background: rgba(0, 0, 0, .5);
+                height: 100%;
+                left: 0;
+                position: fixed;
+                top: 0;
+                width: 100%;
+            }
+            #modal1 {
+                left:70%;
+                margin:-250px 0 0 -40%;
+                opacity: 0;
+                position:fixed;
+                top:0%;
+                visibility: hidden;
+                width:40%;
+                box-shadow:0 3px 7px rgba(0, 0, 0, .25);
+                box-sizing:border-box;
+                transition: all 0.4s ease-in-out;
+                -moz-transition: all 0.4s ease-in-out;
+                -webkit-transition: all 0.4s ease-in-out;
+            }
+            /* Make the modal appear when targeted */
+            #modal1:target {
+                opacity: 1;
+                top:60%;
+                visibility: visible;
+            }
+            #modal1 .header, #modal .footer {
+                border-bottom: 1px solid #e7e7e7;
+                border-radius: 5px 5px 0 0;
+            }
+            #modal1 .footer {
+                border:none;
+                border-top: 1px solid #e7e7e7;
+                border-radius: 0 0 5px 5px;
+            }
+            #modal1 h2 {
+                margin:0;
+            }
+            #modal1 .btn {
+                float:right;
+            }
+            #modal1 .copy, #modal1 .header, #modal1 .footer {
+                padding:15px;
+            }
+            .modal1-content {
+                background: #f7f7f7;
+                position: relative;
+                z-index: 20;
+                border-radius:5px;
+            }
+            #modal1 .copy {
+                background: #fff;
+            }
+            #modal1 .overlay {
+                background-color: #000;
+                background: rgba(0, 0, 0, .5);
+                height: 100%;
+                left: 0;
+                position: fixed;
+                top: 0;
+                width: 100%;
+            }
+
+        </style>    
     </head>
     <body>
         <input type="hidden" name="estimatestatus" id="estimatestatus" value="${param.ises}" />
@@ -324,6 +451,40 @@
                 <h2>Estimate already!! created for this 180 point.</h2>
             </c:when>
             <c:otherwise>
+                <!--reason box begins here-->
+            <div id="modal">
+                <div class="modal-content">
+                    <div class="header">
+                        <h2>Add reason</h2>
+                        <a href="#" class="btn"><img style="margin-top: -20px; width: 20px;height: 20px" src="images/cancel.png" ></a>
+
+                    </div>
+                    <div class="copy">
+                        <table cellpadding="5" width="100%">
+                            <tbody>
+                                <tr>
+                                    <td align="left" valign="top">Deliver date</td>
+                                    <td align="left" valign="top">
+                                        
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left" valign="top">&nbsp;</td>
+                                    <td align="left" valign="top">
+                                        <!--<input type="submit" value="Save" class="view3" id="iamsubmit" style="cursor: pointer"/>-->
+                                        <!--<input type="submit" name="submitButton" value="Update" class="view3"/>-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="cf footer">	
+                    </div>
+                </div>
+                <div class="overlay"></div>
+            </div>
+            <!--reason box ends here-->
 
                 <form action="insertestimate" method="post">
                     <input type="hidden" name="cvid" value="${pcldtncustdt.cvid}" />
@@ -497,6 +658,11 @@
                     <center>
                         <input type="submit" value="Save" class="view3" id="iamsubmit" style="cursor: pointer"/>
                     </center>
+                    
+<!--                    <center> 
+                <a href="#modal" class="btn go invoiceview">Next</a>
+
+            </center>-->
 
                     <br />
                 </form>
