@@ -81,7 +81,7 @@
 
                             <c:if test="${sessionScope.USERTYPE.equals('admin') || sessionScope.USERTYPE.equals('crm') || sessionScope.USERTYPE.equals('floor manager')}">
                                 <c:if test="${ob.approval=='No'}">
-                                    <a href="estimategridlink?estimateid=${ob.estid}&jsre=${ob.isjobsheetready}"><img src="images/Accept_file_or_checklist_24.png" width="16" height="15" />&nbsp;</a>
+                                    <a href="estimategridlink?estimateid=${ob.estid}&jsre=${ob.isjobsheetready}" title="Approve Estimate"><img src="images/Accept_file_or_checklist_24.png" width="16" height="15" />&nbsp;</a>
                                     </c:if>   
 
                             </c:if>

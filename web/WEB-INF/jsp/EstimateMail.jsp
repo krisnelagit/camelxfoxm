@@ -280,7 +280,7 @@
     <body>
 
 
-        <a href="#" class="view button-001 unconfirmclick">Un-confirm</a>  <a href="#" class="view button-001 confirmclick">Confirm</a>  <a href="#" class="view button-001 mailclick">Send Mail</a>  <a href="estimate" class="view button-001">Back</a><a href="#" class="view button-001"  onclick="PrintElem('#printdivinside')">Print</a>
+        <a href="#" class="view button-001 unconfirmclick">Un-confirm</a>  <a href="#" class="view button-001 confirmclick" title="Confirm Estimate">Confirm</a>  <a href="#" class="view button-001 mailclick">Send Mail</a>  <a href="estimate" class="view button-001">Back</a><a href="#" class="view button-001"  onclick="PrintElem('#printdivinside')">Print</a>
 
 
         <label id="send"><h2>Sending mail <img src="images/ajax-loader.gif" alt="loader View"></h2></label><label id="senturmail"><h2>Mail sent successfully <img src="images/MB__mail_icon.png" alt="loader View"></h2></label><label id="sendError"><h2>Please Check Your Connectivity</h2></label>
