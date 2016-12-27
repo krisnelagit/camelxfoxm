@@ -95,11 +95,11 @@ public class AllViewController {
     //user requesto access and delete car part option thus the coding begin here
     @RequestMapping(value = "testmail")
     public String testmail() {
-        KrisnelaSendMailAPI aPI=new KrisnelaSendMailAPI();
-        String to="krisnelatest@gmail.com";
-        String from="krisnelatest@gmail.com";
-        String subject="test subject";
-        String body="There you go.. You got an email.. Let's understand details on how Spring MVC works -- By Krisnela Admin\"";
+        KrisnelaSendMailAPI aPI = new KrisnelaSendMailAPI();
+        String to = "krisnelatest@gmail.com";
+        String from = "krisnelatest@gmail.com";
+        String subject = "test subject";
+        String body = "There you go.. You got an email.. Let's understand details on how Spring MVC works -- By Krisnela Admin\"";
         aPI.sendmailinfok(from, to, subject, body);
         return "redirect:Login";
     }
@@ -1203,7 +1203,7 @@ public class AllViewController {
         return modelAndView;
 
     }
-    
+
     //redirects to  Customer Insurance invoice page
     @RequestMapping("viewCustomerInsurancePaidInvoice")
     public ModelAndView viewCustomerInsurancePaidInvoice(@RequestParam(value = "invoiceid") String invoiceId) {
@@ -1352,7 +1352,7 @@ public class AllViewController {
         modelAndView.addObject("labourinventorydt", viewService.getanyjdbcdatalist("SELECT *,servicename as name FROM labourinventory\n"
                 + "where invoiceid='" + invoiceId + "' and isdelete='No' and total>0"));
         //calculate customerliability total code begins here (parts+ labor)
-        double vatpercent=0,servicepercent=0,total=0,claim=0;
+        double vatpercent = 0, servicepercent = 0, total = 0, claim = 0;
         List<Map<String, Object>> sparecount = viewService.getanyjdbcdatalist("SELECT sum(insurancecustomeramount) partliability FROM invoicedetails where invoiceid='" + invoiceId + "'");
         double d = 0;
         if (sparecount.get(0).get("partliability") != null) {
@@ -1361,7 +1361,7 @@ public class AllViewController {
             d = 0;
         }
         double va = Double.parseDouble(invoicemap.get(0).get("taxpercent1").toString());
-        vatpercent=d*va/100;
+        vatpercent = d * va / 100;
         modelAndView.addObject("sparelab", d);
         List<Map<String, Object>> laborcount = viewService.getanyjdbcdatalist("SELECT Sum(customerinsurance) laborliability FROM labourinventory where invoiceid='" + invoiceId + "';");
         double e = 0;
@@ -1371,11 +1371,11 @@ public class AllViewController {
             e = 0;
         }
         double st = Double.parseDouble(invoicemap.get(0).get("taxPercent2").toString());
-        servicepercent=e*st/100;
+        servicepercent = e * st / 100;
         modelAndView.addObject("laborlab", e);
         //calculate customerliability total code ends! here
         //code for final total goes here
-        total=servicepercent+vatpercent+d+e;
+        total = servicepercent + vatpercent + d + e;
         modelAndView.addObject("totalliab", total);
         return modelAndView;
 
@@ -1862,15 +1862,14 @@ public class AllViewController {
         }
 
         modelAndView.addObject("invoiceDt", invoicemap.get(0));
-        
+
         //code for final comments here
-        if (invoicemap.get(0).get("jobno") !=null && !invoicemap.get(0).get("jobno").isEmpty()) {
-            String jsid=invoicemap.get(0).get("jobno");
-            List<Jobsheet> jobList=viewService.getanyhqldatalist("from jobsheet where id='"+jsid+"'");
+        if (invoicemap.get(0).get("jobno") != null && !invoicemap.get(0).get("jobno").isEmpty()) {
+            String jsid = invoicemap.get(0).get("jobno");
+            List<Jobsheet> jobList = viewService.getanyhqldatalist("from jobsheet where id='" + jsid + "'");
             modelAndView.addObject("finalcomments", jobList.get(0).getFinalcomments());
             modelAndView.addObject("deliverydate", jobList.get(0).getDeliverydate());
         }
-        
 
         //code for ledger begins here 
         modelAndView.addObject("ledgerdt", viewService.getanyhqldatalist("from ledger where isdelete='No' and customerid='" + invoicemap.get(0).get("customer_id") + "' and ledger_type='income'"));
@@ -2288,6 +2287,7 @@ public class AllViewController {
     //redirect to edit 180_point_checklist_page with data
     @RequestMapping(value = "edit180pointchecklist")
     public ModelAndView edit180pointchecklist(@RequestParam(value = "id") String pclid, @RequestParam(value = "brandid") String brandid) {
+        long startTime = System.currentTimeMillis();
         ModelAndView modelAndView = new ModelAndView("Edit180pointChecklistPage");
         modelAndView.addObject("pcldt", viewService.getanyjdbcdatalist("SELECT pcl.date as pcldate,pcl.id,pcl.customervehiclesid ,cv.vehiclenumber,cv.carmodel,cv.km_in,cvd.fuellevel,cvd.additionalwork,pcl.comments FROM pointchecklist pcl\n"
                 + "inner join customervehicles cv on cv.id=pcl.customervehiclesid \n"
@@ -2315,6 +2315,10 @@ public class AllViewController {
             listofcheckList.add(getmap);
         }
         modelAndView.addObject("allpartdetails", listofcheckList);
+        long endTime = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.println("Shaktimaaan");
+        System.out.println(totalTime);
         return modelAndView;
     }
 
@@ -3945,27 +3949,27 @@ public class AllViewController {
         //new change to add it in the appropriate customer eldger
 
         List<Invoice> invoicelist = viewService.getanyhqldatalist("from invoice where id='" + invoiceid + "'");
-        int percent=0,tax1=0,tax2=0;
+        int percent = 0, tax1 = 0, tax2 = 0;
 
         if (!invoicelist.get(0).getTaxAmount1().equals("0") && !invoicelist.get(0).getTaxAmount2().equals("0")) {
             //check if it is service + vat
-            tax1=Integer.parseInt(invoicelist.get(0).getTaxpercent1());
-            tax2=Integer.parseInt(invoicelist.get(0).getTaxpercent2());
-            percent=tax1+tax2;
+            tax1 = Integer.parseInt(invoicelist.get(0).getTaxpercent1());
+            tax2 = Integer.parseInt(invoicelist.get(0).getTaxpercent2());
+            percent = tax1 + tax2;
             modelAndView.addObject("taxdtlsID", "LTX4");
-            modelAndView.addObject("taxdtlsPercent", ""+percent);
+            modelAndView.addObject("taxdtlsPercent", "" + percent);
 
         } else if (!invoicelist.get(0).getTaxAmount1().equals("0")) {
             //check if it is vat
-            tax1=Integer.parseInt(invoicelist.get(0).getTaxpercent1());
+            tax1 = Integer.parseInt(invoicelist.get(0).getTaxpercent1());
             modelAndView.addObject("taxdtlsID", "LTX1");
-            modelAndView.addObject("taxdtlsPercent", ""+tax1);
+            modelAndView.addObject("taxdtlsPercent", "" + tax1);
 
         } else if (!invoicelist.get(0).getTaxAmount2().equals("0")) {
             //check if it is service
-            tax2=Integer.parseInt(invoicelist.get(0).getTaxpercent2());
+            tax2 = Integer.parseInt(invoicelist.get(0).getTaxpercent2());
             modelAndView.addObject("taxdtlsID", "LTX2");
-            modelAndView.addObject("taxdtlsPercent", ""+tax2);
+            modelAndView.addObject("taxdtlsPercent", "" + tax2);
         }
 
         return modelAndView;
